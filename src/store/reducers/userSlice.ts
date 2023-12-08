@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface userState {
-    accessToken: string,
-    userName: string
+interface IUserState {
+	accessToken: string;
+	userName: string;
 }
 
-const initialState: userState = {
-    accessToken: "",
-    userName: ""
-}
+const initialState: IUserState = {
+	accessToken: '',
+	userName: ''
+};
 
 const userSlice = createSlice({
     name: 'userInfo',
