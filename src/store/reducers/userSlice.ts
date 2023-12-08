@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IUserState {
 	accessToken: string;
@@ -11,21 +11,18 @@ const initialState: IUserState = {
 };
 
 const userSlice = createSlice({
-    name: 'userInfo',
-    initialState,
-    reducers: {
-        setAccessToken: (state, action) => {
-            state.accessToken = action.payload
-        },
-        setUserName: (state, action) => {
-            state.userName = action.payload
-        },
-    },
-})
+	name: 'userInfo',
+	initialState,
+	reducers: {
+		setAccessToken: (state, action) => {
+			state.accessToken = action.payload;
+		},
+		setUserName: (state, action) => {
+			state.userName = action.payload;
+		}
+	}
+});
 
-export const {
-    setAccessToken,
-    setUserName
-} = userSlice.actions
+export const { setAccessToken, setUserName } = userSlice.actions;
 
-export default userSlice.reducer;
+export const userStore = userSlice.reducer;
