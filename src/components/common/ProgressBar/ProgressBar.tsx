@@ -26,9 +26,16 @@ const StyledProgress = styled.progress`
   width: 100%;
   height: 100%;
   appearance: none;
+  -webkit-appearance: none;
 
   &::-webkit-progress-bar {
     background-color: ${({ theme }) => theme.colors.white};
+    border-radius: 20px;
+    border: none;
+  }
+
+  &::-moz-progress-bar {
+    background-color: #cbd2fc;
     border-radius: 20px;
     border: none;
   }
