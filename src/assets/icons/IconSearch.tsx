@@ -1,24 +1,11 @@
 type TIconProps = {
-  width?: number;
-  height?: number;
   fillColor?: string;
   strokeColor?: string;
 };
 
-export const IconSearch = ({
-  width = 27,
-  height = 32,
-  fillColor = '#ABABAB',
-  strokeColor = '#ABABAB'
-}: TIconProps) => {
+export const IconSearch = ({ fillColor = '#ABABAB', strokeColor = '#ABABAB' }: TIconProps) => {
   return (
-    <svg
-      width={`${width}`}
-      height={`${height}`}
-      viewBox={`0 0 ${width} ${height}`}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="27" height="32" viewBox="0 0 27 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M16.8953 21.7207L16.8953 21.7207L16.896 21.7202L17.6519 21.1993L17.6519 21.1993L17.6531 21.1985C17.8318 21.0739 18.0817 21.1193 18.2104 21.3118C18.2105 21.312 18.2106 21.3121 18.2107 21.3123L22.2203 27.3971C22.2204 27.3972 22.2204 27.3973 22.2205 27.3974C22.3479 27.5926 22.2939 27.8578 22.1121 27.9822L22.1114 27.9827L21.3555 28.5036L21.3543 28.5044C21.1756 28.629 20.9257 28.5836 20.797 28.3911C20.7969 28.391 20.7968 28.3908 20.7967 28.3906L16.7871 22.3058C16.787 22.3057 16.787 22.3056 16.7869 22.3055C16.6595 22.1103 16.7135 21.8451 16.8953 21.7207Z"
         fill={fillColor}
