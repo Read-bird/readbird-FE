@@ -1,0 +1,52 @@
+.success,
+.unstable,
+.failed,
+.today {
+  color: white;
+}
+
+svg.success path {
+  fill: #79f5e7;
+  stroke: #77ceff;
+}
+
+svg.unstable path {
+  fill: #ffcf53;
+  stroke: #f2bf3c;
+}
+
+svg.failed path {
+  fill: #ff76a7;
+  stroke: #a33f23;
+}
+
+svg.today path {
+  fill: #000000;
+  stroke: #000000;
+}
+
+.before {
+  color: #000000;
+}
+
+svg.before path {
+  fill: transparent;
+  stroke: #000000;
+}
+
+.after-today {
+  color: #ababab;
+}
+
+svg.after-today path {
+  fill: transparent;
+  stroke: #ababab;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}
