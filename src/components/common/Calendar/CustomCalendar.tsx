@@ -1,8 +1,7 @@
 import { TPlanRecord } from '@api/types';
 import { DayBird } from '@components/common/DayBird';
-import { cls } from '@utils/classname';
+import { cls, getClassByStatus } from '@utils/classname';
 import dayjs from 'dayjs';
-import { useCallback } from 'react';
 import styled from 'styled-components';
 
 type TProps = {
@@ -12,25 +11,6 @@ type TProps = {
 const dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
 export const CustomCalendar = ({ record }: TProps) => {
-  const colorName = useCallback((record: TPlanRecord) => {
-    const today = new Date();
-    const recordDate = new Date(record.createdAt);
-
-    if (recordDate.getMonth() > today.getMonth()) {
-      return 'after-today';
-    }
-
-    if (recordDate.getDate() === today.getDate()) {
-      return 'today';
-    }
-
-    if (record.status === null) {
-      return 'before';
-    }
-
-    return record.status;
-  }, []);
-
   return (
     <Wrap>
       <FlexBox>
@@ -41,13 +21,16 @@ export const CustomCalendar = ({ record }: TProps) => {
         ))}
       </FlexBox>
       <FlexBox>
-        {record.map((weekRecord) => (
-          <DayBird key={`${weekRecord.createdAt}`} className={cls(colorName(weekRecord))}>
-            <Text className={cls(colorName(weekRecord))}>
-              {dayjs(weekRecord.createdAt).format('DD')}
-            </Text>
-          </DayBird>
-        ))}
+        {record.map((weekRecord) => {
+          const date = new Date(weekRecord.createdAt);
+          const className = getClassByStatus(date, weekRecord.status);
+
+          return (
+            <DayBird key={`${weekRecord.createdAt}`} className={cls(className)}>
+              <Text className={cls(className)}>{dayjs(weekRecord.createdAt).format('DD')}</Text>
+            </DayBird>
+          );
+        })}
       </FlexBox>
     </Wrap>
   );
