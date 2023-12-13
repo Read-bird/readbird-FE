@@ -45,6 +45,12 @@ const NavLink = styled(Link)`
   align-items: center;
   gap: 7px;
 
+  transition: all 0.2s;
+
+  &:active {
+    transform: scale(1.1);
+  }
+
   &.selected {
     color: ${({ theme }) => theme.colors.basicDark};
 
