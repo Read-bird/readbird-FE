@@ -1,0 +1,1 @@
+export { MiniModal } from './Modal';

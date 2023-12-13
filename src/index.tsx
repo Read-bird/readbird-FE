@@ -3,7 +3,9 @@ import { store } from '@/store/state';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
+import './styles/font.css';
 import './styles/reset.css';
+import './styles/styled.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

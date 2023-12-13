@@ -1,0 +1,1 @@
+export { MonthTemplate } from './MonthTemplate';

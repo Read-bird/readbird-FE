@@ -1,0 +1,1 @@
+export { WeekTemplate } from './WeekTemplate';
