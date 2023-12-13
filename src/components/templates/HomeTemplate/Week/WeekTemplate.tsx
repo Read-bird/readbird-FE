@@ -4,8 +4,7 @@ import { IconEggNoPlan, IconEggOnePlan, IconEggThreePlan, IconEggTwoPlan } from 
 import { CustomCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
-import { Fragment } from 'react';
-import { AddPlanWrap, EmptyPlan, PlanListBox, PlanVisualBox } from './Styled';
+import { AddPlanWrap, EmptyPlan, PlanListBox, PlanVisualBox, Wrap } from './Styled';
 
 const calendarDummy: TPlanRecord[] = [
   {
@@ -83,7 +82,7 @@ export const WeekTemplate = () => {
   };
 
   return (
-    <Fragment>
+    <Wrap>
       <CustomCalendar record={calendarDummy} />
       <Spacing height={20} />
       <PlanVisualBox>
@@ -114,5 +113,7 @@ export const WeekTemplate = () => {
           <IconPlus />
         </AddPlanWrap>
       )}
+      <Spacing height={5} />
+    </Wrap>
   );
 };
