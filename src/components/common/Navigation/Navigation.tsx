@@ -8,7 +8,7 @@ export const Navigation = () => {
 
   return (
     <NavWrap>
-      <NavLink to="/" className={cls({ selected: pathname === '/' })}>
+      <NavLink to="/" className={cls({ selected: /^\/$|^\/calendar$/g.test(pathname) })}>
         <IconHome />
         <span>홈</span>
       </NavLink>
