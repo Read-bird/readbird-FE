@@ -17,9 +17,9 @@ export const TodayText = styled.strong`
 `;
 
 export const PlanVisualBox = styled.div`
+  flex: 0 0 180px;
   width: 100%;
   max-width: 364px;
-  height: 180px;
   border-radius: 20px;
   background-color: ${({ theme }) => `${theme.colors.basic}80`};
 
