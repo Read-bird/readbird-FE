@@ -16,7 +16,7 @@ export const Images = memo(({ imgUrl, imgAlt, imgWidth, imgHeight, imgStyle }: T
 
   return (
     <ImageStyle
-      imgStyle={imgStyle}
+      $imgStyle={imgStyle}
       src={imgUrl}
       alt={imgAlt}
       width={imgWidth}
@@ -27,10 +27,10 @@ export const Images = memo(({ imgUrl, imgAlt, imgWidth, imgHeight, imgStyle }: T
 });
 
 type TImageProps = {
-  imgStyle?: CSSObject;
+  $imgStyle?: CSSObject;
 };
 
 export const ImageStyle = styled.img<TImageProps>`
   font-size: 13px;
-  ${({ imgStyle }) => imgStyle};
+  ${({ $imgStyle }) => $imgStyle};
 `;
