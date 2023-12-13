@@ -108,9 +108,11 @@ export const WeekTemplate = () => {
       ) : (
         <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
       )}
-      <AddPlanWrap onClick={handleClickAdd}>
-        <IconPlus />
-      </AddPlanWrap>
-    </Fragment>
+      {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
+      {(planDummy?.length ?? 0) < 3 && (
+        <AddPlanWrap onClick={handleClickAdd}>
+          <IconPlus />
+        </AddPlanWrap>
+      )}
   );
 };
