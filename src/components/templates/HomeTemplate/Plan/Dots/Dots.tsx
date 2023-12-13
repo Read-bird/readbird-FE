@@ -1,6 +1,7 @@
 import { IconReact } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
 import { colors } from '@style/global-style';
+import { Alert } from '@utils/Alert';
 import { MouseEvent, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
@@ -29,8 +30,16 @@ export const Dots = ({ planId }: TProps) => {
   }, []);
 
   const handleClickRemove = useCallback(() => {
-    // 여기서 삭제하기 알럿 띄우기
-    setOpen(null);
+    Alert.confirm({
+      title: '이 플랜을 정말 삭제할까요?',
+      text: '* 삭제된 플랜은 마이페이지에서 2주동안 보관됩니다.',
+      action: (result) => {
+        if (result.isConfirmed) {
+          Alert.success({ text: '삭제되었습니다!' });
+        }
+        setOpen(null);
+      }
+    });
   }, []);
 
   return (
