@@ -8,7 +8,7 @@ export const Navigation = () => {
 
   return (
     <NavWrap>
-      <NavLink to="/" className={cls({ selected: pathname === '/' })}>
+      <NavLink to="/" className={cls({ selected: /^\/$|^\/calendar$/g.test(pathname) })}>
         <IconHome />
         <span>홈</span>
       </NavLink>
@@ -44,6 +44,12 @@ const NavLink = styled(Link)`
   flex-direction: column;
   align-items: center;
   gap: 7px;
+
+  transition: all 0.2s;
+
+  &:active {
+    transform: scale(1.1);
+  }
 
   &.selected {
     color: ${({ theme }) => theme.colors.basicDark};

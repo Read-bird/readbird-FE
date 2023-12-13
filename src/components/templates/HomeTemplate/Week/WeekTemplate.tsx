@@ -4,8 +4,7 @@ import { IconEggNoPlan, IconEggOnePlan, IconEggThreePlan, IconEggTwoPlan } from 
 import { CustomCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
-import { Fragment } from 'react';
-import { AddPlanWrap, EmptyPlan, PlanListBox, PlanVisualBox } from './Styled';
+import { AddPlanWrap, EmptyPlan, PlanListBox, PlanVisualBox, Wrap } from './Styled';
 
 const calendarDummy: TPlanRecord[] = [
   {
@@ -83,7 +82,7 @@ export const WeekTemplate = () => {
   };
 
   return (
-    <Fragment>
+    <Wrap>
       <CustomCalendar record={calendarDummy} />
       <Spacing height={20} />
       <PlanVisualBox>
@@ -108,9 +107,13 @@ export const WeekTemplate = () => {
       ) : (
         <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
       )}
-      <AddPlanWrap onClick={handleClickAdd}>
-        <IconPlus />
-      </AddPlanWrap>
-    </Fragment>
+      {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
+      {(planDummy?.length ?? 0) < 3 && (
+        <AddPlanWrap onClick={handleClickAdd}>
+          <IconPlus />
+        </AddPlanWrap>
+      )}
+      <Spacing height={5} />
+    </Wrap>
   );
 };

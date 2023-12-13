@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './styles/font.css';
 import './styles/reset.css';
 import './styles/styled.css';
+import './styles/sweet-alert.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

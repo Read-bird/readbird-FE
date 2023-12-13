@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+export const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  /* head(90px) + nav(70px) = 160px */
+  max-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const TodayText = styled.strong`
   font-size: 24px;
   font-weight: 700;
@@ -7,9 +17,9 @@ export const TodayText = styled.strong`
 `;
 
 export const PlanVisualBox = styled.div`
+  flex: 0 0 180px;
   width: 100%;
   max-width: 364px;
-  height: 180px;
   border-radius: 20px;
   background-color: ${({ theme }) => `${theme.colors.basic}80`};
 
@@ -22,7 +32,6 @@ export const PlanListBox = styled.ul`
   flex: 1;
   width: 100%;
   max-width: 364px;
-  max-height: 40vh;
   overflow-y: auto;
 
   display: flex;
