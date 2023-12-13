@@ -8,18 +8,20 @@ export const Navigation = () => {
 
   return (
     <NavWrap>
-      <NavLink to="/" className={cls({ selected: /^\/$|^\/calendar$/g.test(pathname) })}>
-        <IconHome />
-        <span>홈</span>
-      </NavLink>
-      <NavLink to="/search" className={cls({ selected: pathname === '/search' })}>
-        <IconSearch />
-        <span>검색</span>
-      </NavLink>
-      <NavLink to="/mypage" className={cls({ selected: pathname === '/mypage' })}>
-        <IconMyPage />
-        <span>마이페이지</span>
-      </NavLink>
+      <NavInner>
+        <NavLink to="/" className={cls({ selected: /^\/$|^\/calendar$/g.test(pathname) })}>
+          <IconHome />
+          <span>홈</span>
+        </NavLink>
+        <NavLink to="/search" className={cls({ selected: pathname === '/search' })}>
+          <IconSearch />
+          <span>검색</span>
+        </NavLink>
+        <NavLink to="/mypage" className={cls({ selected: pathname === '/mypage' })}>
+          <IconMyPage />
+          <span>마이페이지</span>
+        </NavLink>
+      </NavInner>
     </NavWrap>
   );
 };
@@ -27,7 +29,17 @@ export const Navigation = () => {
 const NavWrap = styled.nav`
   flex: 0 0 70px;
   width: 100%;
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`;
+
+const NavInner = styled.div`
+  width: 100%;
   max-width: 368px;
+  height: 100%;
   border-top: 1px solid ${({ theme }) => theme.colors.basic};
   padding-top: 10px;
 
