@@ -1,2 +1,2 @@
 export { Calendar } from './Calendar';
-export { CustomCalendar } from './CustomCalendar';
+export { WeekCalendar } from './WeekCalendar';
