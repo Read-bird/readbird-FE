@@ -37,6 +37,7 @@ export const TodayText = styled.strong`
   font-size: 24px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.white};
+  user-select: none;
 `;
 
 export const CalendarWrap = styled.div`
@@ -51,5 +52,18 @@ export const CalendarWrap = styled.div`
 
   &:active {
     transform: scale(1.1);
+  }
+`;
+
+export const FlexBox = styled.div<{ $view: boolean }>`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+
+  .arrow {
+    display: ${({ $view }) => ($view ? 'block' : 'none')};
   }
 `;

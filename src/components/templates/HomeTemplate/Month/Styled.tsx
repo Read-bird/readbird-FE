@@ -7,15 +7,19 @@ export const Wrap = styled.div`
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 `;
 
 export const Section = styled.section`
   width: 100%;
-  height: 100%;
 
   display: flex;
   flex-direction: column;
+
+  &.last {
+    min-height: 150px;
+  }
 `;
 
 export const GuideLabel = styled.span`

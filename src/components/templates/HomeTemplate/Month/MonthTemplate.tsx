@@ -1,8 +1,13 @@
+import { setCurrentDate } from '@/store/reducers';
+import { TAppDispatch, TRootState } from '@/store/state';
 import { EAchievementStatus } from '@api/types';
 import { IconBook, IconDayBirdMini, IconSuccess } from '@assets/icons';
 import { Calendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { dummy } from '@mocks/index';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { DefinitionList, FlexBox, GuideLabel, GuideText, Section, SubTitle, Wrap } from './Styled';
 
 const data = {
@@ -13,15 +18,31 @@ const data = {
 };
 
 export const MonthTemplate = () => {
+  const { currentDate } = useSelector((state: TRootState) => state.planStore);
+  const dispatch = useDispatch<TAppDispatch>();
+  const navigate = useNavigate();
+
+  const changeCurrentDate = useCallback(
+    (date: string) => {
+      dispatch(setCurrentDate(date));
+      navigate('/');
+    },
+    [dispatch, navigate]
+  );
+
   return (
     <Wrap>
       <Section>
-        <Calendar record={dummy.monthCalendar(new Date())} />
+        <Calendar
+          record={dummy.monthCalendar(new Date())}
+          currentDate={currentDate}
+          changeCurrentDate={changeCurrentDate}
+        />
         <Spacing height={14} />
         <GuideLabel>날짜를 터치하면 해당 플랜으로 이동합니다.</GuideLabel>
         <Spacing height={14} />
         {Object.entries(data).map(([key, value]) => (
-          <DefinitionList>
+          <DefinitionList key={key}>
             <dt>
               <IconDayBirdMini className={`${key}`} />
             </dt>
@@ -29,9 +50,8 @@ export const MonthTemplate = () => {
           </DefinitionList>
         ))}
       </Section>
-      <Spacing height={30} />
-      <Section>
-        <SubTitle>{new Date().getMonth() + 1}월의 플랜 달성 기록</SubTitle>
+      <Section className="last">
+        <SubTitle>{currentDate.getMonth() + 1}월의 플랜 달성 기록</SubTitle>
         <Spacing height={14} />
         <FlexBox $justify="space-between">
           <FlexBox>

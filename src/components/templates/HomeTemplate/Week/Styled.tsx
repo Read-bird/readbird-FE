@@ -39,6 +39,14 @@ export const PlanListBox = styled.ul`
   li {
     flex: 0 0 95px;
     width: 100%;
+
+    &.last {
+      flex: 0 0 24px;
+      width: 100%;
+
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 
@@ -72,4 +80,15 @@ export const AddPlanWrap = styled.div`
   &:active {
     transform: scale(1.1);
   }
+`;
+
+export const PageProgress = styled.span`
+  display: inline-block;
+  line-height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 15px;
 `;

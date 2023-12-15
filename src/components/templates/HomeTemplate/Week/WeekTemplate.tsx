@@ -1,19 +1,24 @@
+import { TRootState } from '@/store/state';
 import { IconPlus } from '@assets/icons';
 import { IconEggNoPlan, IconEggOnePlan, IconEggThreePlan, IconEggTwoPlan } from '@assets/images';
-import { CustomCalendar } from '@components/common/Calendar';
+import { WeekCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
+import { MAX_CREATION_COUNT } from '@constants/plan';
 import { dummy } from '@mocks/index';
-import { AddPlanWrap, EmptyPlan, PlanListBox, PlanVisualBox, Wrap } from './Styled';
+import { useSelector } from 'react-redux';
+import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
 
 export const WeekTemplate = () => {
+  const { currentDate } = useSelector((state: TRootState) => state.planStore);
+
   const handleClickAdd = () => {
     // 모달 띄움
   };
 
   return (
     <Wrap>
-      <CustomCalendar record={dummy.weekCalendar} />
+      <WeekCalendar currentDate={currentDate} record={dummy.weekCalendar} />
       <Spacing height={20} />
       <PlanVisualBox>
         {
@@ -33,6 +38,11 @@ export const WeekTemplate = () => {
               <Plan {...plan} />
             </li>
           ))}
+          <li className="last">
+            <PageProgress>
+              {dummy.plan?.length}/{MAX_CREATION_COUNT}
+            </PageProgress>
+          </li>
         </PlanListBox>
       ) : (
         <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
