@@ -37,7 +37,7 @@ export const monthCalendar = (currDate: Date): TPlanRecord[] => {
   let calendar: TPlanRecord[] = [];
   const lastDay = lastDayMonth(currDate)[currDate.getMonth() + 1];
 
-  const status: string[] = [];
+  const status: string[] = ['before'];
   for (let key in EAchievementStatus) {
     status.push(key);
   }
