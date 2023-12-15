@@ -1,4 +1,5 @@
 import { Loadable } from '@components/common/Loadable';
+import { ProtectedLogin } from '@components/common/ProtectedLogin';
 import { AppTemplate } from '@components/templates/AppTemplate';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
@@ -20,7 +21,7 @@ const AppNotFound = Loadable(
 export const appRouter = createBrowserRouter([
   {
     path: '/',
-    element: <AppTemplate />,
+    element: <ProtectedLogin appNode={<AppTemplate />} />,
     errorElement: <AppNotFound />,
     children: [
       {
@@ -40,7 +41,6 @@ export const appRouter = createBrowserRouter([
           }
         ]
       },
-
       {
         path: 'search',
         element: <div>검색</div>,
@@ -52,5 +52,10 @@ export const appRouter = createBrowserRouter([
         errorElement: <AppNotFound />
       }
     ]
+  },
+  {
+    path: '/login',
+    element: <ProtectedLogin loginNode={<div>로그인 화면 연결</div>} />,
+    errorElement: <AppNotFound />
   }
 ]);
