@@ -26,8 +26,11 @@ export const cls = (...classNames: TClassArgs) => {
 };
 
 // 캘린더 색상 적용을 위한 classname 산출
-export const getClassByStatus = (date: Date, status: EAchievementStatus | null) => {
-  const today = new Date();
+export const getClassByStatus = (
+  date: Date,
+  status: EAchievementStatus | null,
+  today = new Date()
+) => {
   const recordDate = date;
 
   if (recordDate.getMonth() !== today.getMonth()) {
