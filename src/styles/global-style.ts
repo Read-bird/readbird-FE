@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   #root {
+    position: relative;
     max-width: 390px;
     height: 100%;
     margin: 0 auto;
