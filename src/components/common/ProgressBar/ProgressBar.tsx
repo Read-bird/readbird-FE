@@ -35,13 +35,13 @@ const StyledProgress = styled.progress`
   }
 
   &::-moz-progress-bar {
-    background-color: #cbd2fc;
+    background-color: ${({ theme }) => theme.colors.subYellow};
     border-radius: 20px;
     border: none;
   }
 
   &::-webkit-progress-value {
-    background-color: #cbd2fc;
+    background-color: ${({ theme }) => theme.colors.subYellow};
     border-radius: 20px;
     border: none;
   }
