@@ -17,8 +17,10 @@ jobs:
       - name: .env setting
         run: |
           echo "REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }}" >> .env
+          echo "REACT_APP_SERVER_PATH=${{ secrets.REACT_APP_SERVER_PATH }}" >> .env
         env:
           REACT_APP_KAKAO_API_KEY: ${{ secrets.REACT_APP_KAKAO_API_KEY }}
+          REACT_APP_SERVER_PATH: ${{ secrets.REACT_APP_SERVER_PATH }}
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
