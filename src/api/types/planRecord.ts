@@ -32,3 +32,10 @@ export type TPlan = {
 
 // 플랜달성실패 데이터
 export type TPreviouslyFailedPlan = Omit<TPlan, 'target' | 'planStatus' | 'recordStatus'>;
+
+// 전체 타입
+export type TPlanData = {
+  weedRecord: TPlanRecord[] | null;
+  planData: TPlan[] | null;
+  previouslyFailedPlan: TPreviouslyFailedPlan[] | null;
+};
