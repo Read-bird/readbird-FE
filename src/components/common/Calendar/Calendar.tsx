@@ -1,28 +1,30 @@
-import { EAchievementStatus, TPlanRecord } from '@api/types';
+import { TPlanRecord } from '@api/types';
 import { DayBird } from '@components/common/DayBird';
 import { cls, getClassByStatus } from '@utils/classname';
+import { convertMap } from '@utils/function';
 import dayjs from 'dayjs';
-import { MouseEvent, useCallback, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import ReactCalendar, { TileContentFunc, TileDisabledFunc } from 'react-calendar';
 import '../../../styles/calendar.css';
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 type TProps = {
+  currentDate: Date;
   record: TPlanRecord[];
+  changeCurrentDate: (date: string) => void;
 };
 
-export const Calendar = ({ record }: TProps) => {
-  const [value, setValue] = useState<Value>(new Date());
-
-  const onChange = (value: Value, event: MouseEvent<HTMLButtonElement>) => {
-    console.log(value);
+export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => {
+  const planDateRecord = useMemo(() => convertMap(record, 'createdAt'), [record]);
+  const onChange = (value: Date) => {
+    changeCurrentDate(dayjs(value).format());
   };
 
   const tileContent: TileContentFunc = useCallback(
     ({ date }) => {
-      const className = getClassByStatus(date, EAchievementStatus.success);
+      const formatDate = dayjs(date).format('YYYY-MM-DD');
+
+      const data = planDateRecord.get(formatDate);
+      const className = getClassByStatus(date, data?.status ?? null, currentDate);
 
       return (
         <DayBird
@@ -34,17 +36,17 @@ export const Calendar = ({ record }: TProps) => {
         </DayBird>
       );
     },
-    [record]
+    [planDateRecord, currentDate]
   );
 
   const tileDisabled: TileDisabledFunc = useCallback(
-    ({ date }) => getClassByStatus(date, null) === 'after-today',
-    []
+    ({ date }) => getClassByStatus(date, null, currentDate) === 'after-today',
+    [currentDate]
   );
 
   return (
     <ReactCalendar
-      value={value}
+      value={currentDate}
       onClickDay={onChange}
       calendarType="gregory"
       formatDay={(_, date) => dayjs(date).format('D')}
@@ -53,6 +55,7 @@ export const Calendar = ({ record }: TProps) => {
       showNavigation={false}
       tileContent={tileContent}
       tileDisabled={tileDisabled}
+      activeStartDate={currentDate}
     />
   );
 };
