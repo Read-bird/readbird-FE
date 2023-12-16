@@ -5,8 +5,9 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {SelectLabel} from "@components/common/Form/SelectLabel";
 import dayjs from "dayjs";
 import {authFetch} from "@api/axios";
+import {useNavigate} from "react-router-dom";
 
-interface IRegisterForm {
+export interface IRegisterForm {
     bookId: number | null;
     title: string | null;
     author: string | null;
@@ -16,25 +17,26 @@ interface IRegisterForm {
     startDate: string;
     endDate: string;
 }
+
 type TProps = {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const RegisterModal = ({
                                   setIsOpen
-}: TProps) => {
+                              }: TProps) => {
     const {
         register,
         control,
         handleSubmit: onSubmit,
         watch,
         setValue,
-        formState: { errors },
+        formState: {errors},
     } = useForm<IRegisterForm>({
         mode: "onSubmit",
         defaultValues: {
             bookId: null,
-            title: null,
+            title: "",
             author: null,
             publisher: null,
             totalPage: null,
@@ -44,15 +46,16 @@ export const RegisterModal = ({
         },
     });
 
+    const navigate = useNavigate();
     const [yearOptions, setYearOptions] = useState<number[]>([]);
     const [monthOptions, setMonthOptions] = useState<(number | string)[]>([]);
     const [dayOptions, setDatOptions] = useState<(number | string)[]>([]);
-    const [startYear, setStartYear] = useState<string>('');
-    const [endYear, setEndYear] = useState<string>('');
-    const [startMonth, setStartMonth] = useState<string>('');
-    const [endMonth, setEndMonth] = useState<string>('');
-    const [startDay, setStartDay] = useState<string>('');
-    const [endDay, setEndDay] = useState<string>('');
+    const [startYear, setStartYear] = useState<string>(String(new Date().getMonth()));
+    const [endYear, setEndYear] = useState<string>('01');
+    const [startMonth, setStartMonth] = useState<string>('01');
+    const [endMonth, setEndMonth] = useState<string>(String(new Date().getMonth()));
+    const [startDay, setStartDay] = useState<string>('01');
+    const [endDay, setEndDay] = useState<string>('01');
 
     useEffect(() => {
         const generateYearOptions = () => {
@@ -84,10 +87,24 @@ export const RegisterModal = ({
         generateMonthOptions();
         generateDayOptions();
     }, []);
+    useEffect(() => {
+        const startDateForm = startYear ? `${startYear}-${startMonth}-${startDay}` : "";
+        const endDateForm = endYear ? `${endYear}-${endMonth}-${endDay}` : "";
+
+        setValue("startDate", startDateForm);
+        setValue("endDate", endDateForm);
+    }, [
+        startYear,
+        endYear,
+        startMonth,
+        endMonth,
+        startDay,
+        endDay
+    ]);
 
     const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let contId = event.target.id;
-        switch (contId){
+        switch (contId) {
             case "startDate-y":
                 setStartYear(event.target.value);
                 break;
@@ -112,18 +129,32 @@ export const RegisterModal = ({
     };
 
     const handleSubmit = async (data: IRegisterForm) => {
-        const startDateForm = startYear ? `${startYear}-${startMonth}-${startDay}` : "";
-        const endDateForm = endYear ? `${endYear}-${endMonth}-${endDay}` : "";
-        setValue("startDate", startDateForm);
-        setValue("endDate", endDateForm);
 
-        try{
-            const requestData = {
+        let requestData;
 
+        try {
+            requestData = data?.bookId ? {
+                bookId: data?.bookId,
+                startDate: data?.startDate,
+                endDate: data?.endDate,
+            } : {
+                bookId: null,
+                title: data?.title,
+                author: data?.author,
+                totalPage: data?.totalPage,
+                startDate: data?.startDate,
+                endDate: data?.endDate,
             }
-            const res = await authFetch.post("", requestData);
-        }catch (err){
+            // const res = await authFetch.post("/api/plan/", requestData);
+            // if (res.status === 200) {
+            //     alert("등록 성공");
+            //     navigate("/");
+            // }else{
+            //     alert("등록 실패");
+            // }
+        } catch (err) {
             console.log(err);
+            alert("등록 실패");
         }
 
         console.log(data);
@@ -132,15 +163,17 @@ export const RegisterModal = ({
         setIsOpen(false);
     }
 
-    return(
+    return (
         <StyledForm onSubmit={onSubmit(handleSubmit)}>
             <InputLabel
                 label={"책 이름"}
                 type={"text"}
                 id={"title"}
                 placeholder={"데미안"}
-                requiredText={"제목을 입력해주세요."}
+                required={"제목을 입력해주세요."}
                 name={"title"}
+                register={register}
+                errors={errors.title}
             />
             <div className="cont flex">
                 <InputLabel
@@ -149,6 +182,7 @@ export const RegisterModal = ({
                     id={"author"}
                     placeholder={"헤르만 헤세"}
                     name={"author"}
+                    register={register}
                 />
                 <InputLabel
                     label={"출판사"}
@@ -156,6 +190,7 @@ export const RegisterModal = ({
                     id={"publisher"}
                     placeholder={"민음사"}
                     name={"publisher"}
+                    register={register}
                 />
             </div>
             <div className="cont flex">
@@ -165,6 +200,7 @@ export const RegisterModal = ({
                     id={"totalPage"}
                     placeholder={"240"}
                     name={"totalPage"}
+                    register={register}
                 />
                 <InputLabel
                     label={"시작하는 쪽"}
@@ -172,6 +208,7 @@ export const RegisterModal = ({
                     id={"startPage"}
                     placeholder={"120"}
                     name={"startPage"}
+                    register={register}
                 />
             </div>
             <div className="cont">
@@ -225,7 +262,6 @@ export const RegisterModal = ({
             </div>
 
 
-
             <div className="cont flex" style={{marginTop: "10px"}}>
                 <button type="button" className="btn-1 btn" onClick={handleClose}>취소</button>
                 <button type="submit" className="btn-2 btn" onClick={onSubmit(handleSubmit)}>확인</button>
@@ -235,22 +271,25 @@ export const RegisterModal = ({
 }
 
 const StyledForm = styled.form`
-  div.cont{
+  div.cont {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-bottom: 17px;
     position: relative;
-    &.flex{
+
+    &.flex {
       flex-direction: row;
       gap: 15px;
       margin-bottom: 0;
     }
-    &.select{
+
+    &.select {
       gap: 5px;
       flex-direction: row;
       align-items: center;
-      span{
+
+      span {
         color: #ABABAB;
         font-size: 16px;
         font-style: normal;
@@ -260,7 +299,8 @@ const StyledForm = styled.form`
       }
     }
   }
-  label{
+
+  label {
     color: #B780DB;
     font-size: 16px;
     font-style: normal;
@@ -270,7 +310,8 @@ const StyledForm = styled.form`
     margin-bottom: 8px;
     display: block;
   }
-  input{
+
+  input {
     display: block;
     width: 100%;
     border-radius: 10px;
@@ -279,23 +320,40 @@ const StyledForm = styled.form`
     font-size: 16px;
     font-weight: 500;
     padding: 8px 15px;
-    &::placeholder{
+    &:invalid{
+      border: 1px solid #f00;
+    }
+
+    &::placeholder {
       color: #CFCFCF
     }
-    &[name="title"]{
+
+    &[name="title"] {
       padding: 8px 35px 8px 15px;
     }
   }
-  .search-icon{
+
+  .search-icon {
     position: absolute;
-    right: 8px; bottom: 0;
+    right: 8px;
+    top: 34px;
     cursor: pointer;
-    svg{
+
+    svg {
       width: 22px;
     }
   }
+  small[role="alert"]{
+    font-size: 12px;
+    color: #FF7C7C;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.2px;
+    
+  }
 
-  select{
+  select {
     display: block;
     width: 100%;
     border-radius: 10px;
@@ -304,21 +362,28 @@ const StyledForm = styled.form`
     font-size: 16px;
     font-weight: 500;
     padding: 8px;
-    &::placeholder{
+    option:first-child{
+      color: #CFCFCF;
+    }
+
+    &::placeholder {
       color: #CFCFCF
     }
-    &:nth-of-type(1){
+
+    &:nth-of-type(1) {
       width: 98px;
     }
-    &:nth-of-type(2){
+
+    &:nth-of-type(2) {
       width: 60px;
     }
-    &:nth-of-type(3){
+
+    &:nth-of-type(3) {
       width: 60px;
     }
   }
-  
-  .btn{
+
+  .btn {
     border-radius: 10px;
     padding: 12px 0;
     width: 100%;
@@ -330,10 +395,12 @@ const StyledForm = styled.form`
     line-height: normal;
     cursor: pointer;
   }
-  .btn-1{
+
+  .btn-1 {
     background: #CFCFCF;
   }
-  .btn-2{
+
+  .btn-2 {
     background: #B780DB;
   }
 `

@@ -8,8 +8,8 @@ authFetch.interceptors.request.use(
     (config) => {
         config.headers["Content-Type"] = "application/json"
         config.headers["Accept"] = "application/json";
-        // config.headers.Authorization
-        //     = `Bearer ${localStorage.getItem("rb-access-token")}`;
+        config.headers.Authorization
+            = `Bearer ${localStorage.getItem("rb-access-token")}`;
         return config;
     },
     (error) => {

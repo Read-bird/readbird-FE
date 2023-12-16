@@ -14,6 +14,7 @@ export const CallbackTemplate = () => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get('code');
     const grantType = "authorization_code";
+    const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL;
     const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
     const redirectUri: string = "http://localhost:3000/login/auth";
 
@@ -34,7 +35,7 @@ export const CallbackTemplate = () => {
             );
             if(res.status === 200){
                 const { access_token } = res.data;
-                const resData = await authFetch.post<TLoginResType>("/api/user/login", {}, {
+                const resData = await axios.post<TLoginResType>(`${REACT_APP_API_URL}api/user/login-guest`, {}, {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }

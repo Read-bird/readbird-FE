@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {TLoginResType} from "@api/types";
 import {setAccessToken} from "@/store/reducers";
 import {useDispatch} from "react-redux";
+import axios from "axios";
 
 type TProps = {
     className: string
@@ -14,6 +15,7 @@ export const LoginBtn = (props:TProps) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL;
     const REST_API_KEY: string | undefined = process.env.REACT_APP_KAKAO_API_KEY;
     const redirectUri: string = "http://localhost:3000/login/auth";
     const kakaoURL: string = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${redirectUri}&response_type=code`;
@@ -24,7 +26,7 @@ export const LoginBtn = (props:TProps) => {
 
     const handleClickGuest = async () => {
         try{
-            const res = await authFetch.post<TLoginResType>("/api/user/login-guest");
+            const res = await axios.post<TLoginResType>(`${REACT_APP_API_URL}api/user/login-guest`);
             if(res.status === 200){
                 const extractedToken = res.headers?.accesstoken?.replace("Bearer ", "");
                 localStorage.setItem("rb-access-token", extractedToken);
