@@ -12,8 +12,8 @@ export const Spacing = (props: TStyleProps) => {
 const SpaceWrap = styled.div.attrs<TStyleProps>(({ style }) => ({
   style: { ...style }
 }))<TStyleProps>`
-  width: ${({ width }) => `${width}px`};
-  min-width: ${({ width }) => `${width}px`};
-  height: ${({ height }) => `${height}px`};
-  min-height: ${({ height }) => `${height}px`};
+  width: ${({ width }) => (width ? `${width}px` : undefined)};
+  min-width: ${({ width }) => (width ? `${width}px` : undefined)};
+  height: ${({ height }) => (height ? `${height}px` : undefined)};
+  min-height: ${({ height }) => (height ? `${height}px` : undefined)};
 `;

@@ -23,3 +23,14 @@ export const go = (obj: Record<string, string>) => {
 
   return queryString;
 };
+
+// list 데이터 map 변환 함수
+export const convertMap = <T>(list: T[], key: keyof T) => {
+  const map = new Map<T[keyof T], T>();
+
+  for (const data of list) {
+    map.set(data[key], data);
+  }
+
+  return map;
+};

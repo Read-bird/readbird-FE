@@ -1,10 +1,12 @@
 import { IconBaseProps } from '@react-icons/all-files';
-import { FaPlus } from '@react-icons/all-files/fa/FaPlus';
 import { HiDotsHorizontal } from '@react-icons/all-files/hi/HiDotsHorizontal';
+import { IoIosArrowBack } from '@react-icons/all-files/io/IoIosArrowBack';
+import { IoIosArrowForward } from '@react-icons/all-files/io/IoIosArrowForward';
 
 const Icons = {
   dots: HiDotsHorizontal,
-  plus: FaPlus
+  arrow_left: IoIosArrowBack,
+  arrow_right: IoIosArrowForward
 };
 
 type TProps = {

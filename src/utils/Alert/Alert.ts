@@ -10,7 +10,6 @@ const template = ({ action, failed, ...args }: TSwalTemplate) => {
 
 const confirm: TSwal = (args) => {
   template({
-    icon: 'question',
     showCancelButton: true,
     confirmButtonText: '확인',
     cancelButtonText: '취소',

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 export const Wrap = styled.div`
   width: 100%;
   height: 100%;
-  /* head(90px) + nav(70px) = 160px */
-  max-height: calc(100vh - 160px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,6 +39,14 @@ export const PlanListBox = styled.ul`
   li {
     flex: 0 0 95px;
     width: 100%;
+
+    &.last {
+      flex: 0 0 24px;
+      width: 100%;
+
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 
@@ -74,4 +80,15 @@ export const AddPlanWrap = styled.div`
   &:active {
     transform: scale(1.1);
   }
+`;
+
+export const PageProgress = styled.span`
+  display: inline-block;
+  line-height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 15px;
 `;

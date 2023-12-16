@@ -1,25 +1,61 @@
-import { useState } from 'react';
-import ReactCalendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import { TPlanRecord } from '@api/types';
+import { DayBird } from '@components/common/DayBird';
+import { cls, getClassByStatus } from '@utils/classname';
+import { convertMap } from '@utils/function';
+import dayjs from 'dayjs';
+import { useCallback, useMemo } from 'react';
+import ReactCalendar, { TileContentFunc, TileDisabledFunc } from 'react-calendar';
+import '../../../styles/calendar.css';
 
-type ValuePiece = Date | null;
+type TProps = {
+  currentDate: Date;
+  record: TPlanRecord[];
+  changeCurrentDate: (date: string) => void;
+};
 
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
-export const Calendar = () => {
-  const [value, setValue] = useState<Value>(new Date());
-
-  const onChange = (value: Value, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(value);
+export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => {
+  const planDateRecord = useMemo(() => convertMap(record, 'createdAt'), [record]);
+  const onChange = (value: Date) => {
+    changeCurrentDate(dayjs(value).format());
   };
 
+  const tileContent: TileContentFunc = useCallback(
+    ({ date }) => {
+      const formatDate = dayjs(date).format('YYYY-MM-DD');
+
+      const data = planDateRecord.get(formatDate);
+      const className = getClassByStatus(date, data?.status ?? null, currentDate);
+
+      return (
+        <DayBird
+          key={`${date}`}
+          className={cls(className)}
+          cursor={className === 'after-today' ? 'default' : 'pointer'}
+        >
+          <p className={cls(className)}>{dayjs(date).format('DD')}</p>
+        </DayBird>
+      );
+    },
+    [planDateRecord, currentDate]
+  );
+
+  const tileDisabled: TileDisabledFunc = useCallback(
+    ({ date }) => getClassByStatus(date, null, currentDate) === 'after-today',
+    [currentDate]
+  );
+
   return (
-    <div className="Calendar">
-      <div className="Calendar__container">
-        <main className="Calendar__container__content">
-          <ReactCalendar onChange={onChange} value={value} />
-        </main>
-      </div>
-    </div>
+    <ReactCalendar
+      value={currentDate}
+      onClickDay={onChange}
+      calendarType="gregory"
+      formatDay={(_, date) => dayjs(date).format('D')}
+      goToRangeStartOnSelect={false}
+      maxDate={new Date(dayjs().add(1, 'year').format('YYYY-MM-DD'))}
+      showNavigation={false}
+      tileContent={tileContent}
+      tileDisabled={tileDisabled}
+      activeStartDate={currentDate}
+    />
   );
 };

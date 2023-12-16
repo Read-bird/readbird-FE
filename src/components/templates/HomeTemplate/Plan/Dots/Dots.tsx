@@ -35,7 +35,7 @@ export const Dots = ({ planId }: TProps) => {
       text: '* 삭제된 플랜은 마이페이지에서 2주동안 보관됩니다.',
       action: (result) => {
         if (result.isConfirmed) {
-          Alert.success({ text: '삭제되었습니다!' });
+          Alert.success({ title: '삭제되었습니다!' });
         }
         setOpen(null);
       }

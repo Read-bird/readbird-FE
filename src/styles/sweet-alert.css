@@ -1,20 +1,26 @@
 div.swal2-popup {
-  padding: 10px 0px 20px;
-  width: 320px;
-  min-height: 170px;
-  background-color: #ededed;
+  padding: 30px 10px 12px;
+  width: 340px;
+  min-height: 190px;
+  background-color: #ffffff;
 }
 
 div.swal2-html-container#swal2-html-container {
   font-size: 13px;
   font-weight: 400;
-  color: #333333;
+  color: #ababab;
   text-align: center;
+  margin: 0;
+}
+
+div.swal2-icon {
+  margin: 0 auto;
 }
 
 h2.swal2-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
+  color: #000000;
 }
 
 div.swal2-validation-message {
@@ -25,24 +31,28 @@ div.swal2-validation-message {
   word-break: break-word;
 }
 
+div.swal2-actions {
+  width: 100%;
+}
+
 button.swal2-styled {
   width: 130px;
   height: 40px;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 button.swal2-styled.swal2-confirm {
-  background-color: #3498db;
+  background-color: #b780db;
 }
 
 button.swal2-styled.swal2-confirm:focus {
-  box-shadow: 0 0 0 3px #3498db40;
+  box-shadow: 0 0 0 3px #b780db40;
 }
 
 button.swal2-styled.swal2-cancel {
-  background-color: #bebebe;
+  background-color: #cfcfcf;
 }
 
 button.swal2-styled.swal2-cancel:focus {
-  box-shadow: 0 0 0 3px #bebebe40;
+  box-shadow: 0 0 0 3px #cfcfcf40;
 }
