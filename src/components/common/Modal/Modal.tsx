@@ -35,7 +35,8 @@ export const Modal = ({
 					left: '50%',
 					right: 'auto',
 					bottom: 'auto',
-					transform: 'translate(-50%, -50%)'
+					transform: 'translate(-50%, -50%)',
+					borderRadius: "20px"
 				},
 				content
 			)

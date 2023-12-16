@@ -14,6 +14,12 @@ const AppWeek = Loadable(
 const AppMonth = Loadable(
   lazy(() => import('@pages/AppMonth').then((data) => ({ default: data.AppMonth })))
 );
+const AppLogin = Loadable(
+    lazy(() => import('@pages/AppLogin').then((data) => ({ default: data.AppLogin })))
+);
+const AppKakaoCallback = Loadable(
+    lazy(() => import('@pages/KakaoCallback').then((data) => ({ default: data.KakaoCallback })))
+);
 const AppNotFound = Loadable(
   lazy(() => import('@pages/AppNotFound').then((data) => ({ default: data.AppNotFound })))
 );
@@ -55,7 +61,12 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <ProtectedLogin loginNode={<div>로그인 화면 연결</div>} />,
+    element: <AppLogin />,
+    errorElement: <AppNotFound />,
+  },
+  {
+    path: '/login/auth',
+    element: <AppKakaoCallback />,
     errorElement: <AppNotFound />
   }
 ]);

@@ -81,16 +81,16 @@ export const plan = [
     planStatus: ERecordStatus.inProgress,
     recordStatus: ERecordStatus.inProgress
   },
-  {
-    planId: 3,
-    title: '천사와 악마',
-    author: 'author',
-    coverImage: 'url',
-    totalPage: 100,
-    currentPage: 1,
-    target: 30,
-    endDate: '2023-12-30',
-    planStatus: ERecordStatus.inProgress,
-    recordStatus: ERecordStatus.inProgress
-  }
+  // {
+  //   planId: 3,
+  //   title: '천사와 악마',
+  //   author: 'author',
+  //   coverImage: 'url',
+  //   totalPage: 100,
+  //   currentPage: 1,
+  //   target: 30,
+  //   endDate: '2023-12-30',
+  //   planStatus: ERecordStatus.inProgress,
+  //   recordStatus: ERecordStatus.inProgress
+  // }
 ];
