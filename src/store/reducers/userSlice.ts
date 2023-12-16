@@ -7,7 +7,7 @@ interface IUserState {
 
 const initialState: IUserState = {
 	accessToken: '',
-	userName: ''
+	userName: '',
 };
 
 const userSlice = createSlice({
@@ -19,10 +19,13 @@ const userSlice = createSlice({
 		},
 		setUserName: (state, action) => {
 			state.userName = action.payload;
-		}
+		},
 	}
 });
 
-export const { setAccessToken, setUserName } = userSlice.actions;
+export const {
+	setAccessToken,
+	setUserName ,
+} = userSlice.actions;
 
 export const userStore = userSlice.reducer;

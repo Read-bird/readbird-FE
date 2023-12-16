@@ -1,4 +1,4 @@
-export const mainBlack = "#000000";
+ export const mainBlack = "#000000";
 export const white = "#FFFFFF";
 export const primary = "#1351F9";
 export const subColor = "#28B2FF";
