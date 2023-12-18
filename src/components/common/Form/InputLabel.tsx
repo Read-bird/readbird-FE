@@ -10,7 +10,9 @@ type TProps = {
     required?: string;
     name: string;
     register: any;
-    errors?:any
+    errors?:any;
+    pattern?: RegExp;
+    defaultValue?: string | number;
 }
 
 export const InputLabel = ({
@@ -21,7 +23,9 @@ export const InputLabel = ({
                                required,
                                name,
                                register = () => {},
-                               errors
+                               errors,
+                               pattern,
+                               defaultValue
 
 }: TProps) => {
 
@@ -29,12 +33,19 @@ export const InputLabel = ({
         <div className="cont">
             <label htmlFor={id}>{label}</label>
             <input
-                {...register(name && name, {required: required})}
+                {...register(name && name, {
+                    required: required,
+                    pattern: {
+                        value: {pattern},
+                        message: "숫자만 입력해주세요."
+                    }
+                })}
                 type={type}
                 id={id}
                 placeholder={placeholder}
                 aria-invalid={errors ? "true" : "false"}
                 style={{ borderColor: errors ? "#FF7C7C" : "#ABABAB" }}
+                defaultValue={defaultValue}
             />
             {errors && <small role="alert">* {errors.message}</small>}
             {name === "title" &&

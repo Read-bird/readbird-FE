@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {TAppDispatch} from "@/store/state";
 import {setAccessToken} from "@/store/reducers";
+import {Alert} from "@/utils";
 
 export const CallbackTemplate = () => {
 
@@ -16,7 +17,7 @@ export const CallbackTemplate = () => {
     const grantType = "authorization_code";
     const REACT_APP_SERVER_PATH: string | undefined = process.env.REACT_APP_SERVER_PATH;
     const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
-    const redirectUri: string = "http://localhost:3000/login/auth";
+    const redirectUri: string = process.env.REACT_APP_REDIRECT_URL + '/login/auth';
 
     useEffect(() => {
         handleKakaoLogin();
@@ -35,7 +36,7 @@ export const CallbackTemplate = () => {
             );
             if(res.status === 200){
                 const { access_token } = res.data;
-                const resData = await axios.post<TLoginResType>(`${REACT_APP_SERVER_PATH}api/user/login-guest`, {}, {
+                const resData = await axios.post<TLoginResType>(`${REACT_APP_SERVER_PATH}/api/user/login-guest`, {}, {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }
@@ -47,15 +48,24 @@ export const CallbackTemplate = () => {
                     dispatch(setAccessToken(resData.data.accessToken));
                     navigate("/");
                 }else{
-                    console.log("error alert");
-                    // navigate("/login");
+                    Alert.error({
+                        title: 'Error',
+                        text: `로그인 에러가 발생했습니다.`
+                    });
+                    navigate("/login");
                 }
             }else{
-                console.log("kakao error");
-                // navigate("/login");
+                Alert.error({
+                    title: 'Error',
+                    text: `카카오 로그인 에러가 발생했습니다.`
+                });
+                navigate("/login");
             }
         }catch (err: any){
-            alert(err.message);
+            Alert.error({
+                title: 'Error',
+                text: `로그인 에러가 발생했습니다.`
+            });
             navigate("/login");
         }
     }
