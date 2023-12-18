@@ -1,10 +1,12 @@
 import { Loadable } from '@components/common/Loadable';
 import { ProtectedLogin } from '@components/common/ProtectedLogin';
-import { AppTemplate } from '@components/templates/AppTemplate';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 // lazy 적용(코드스플리팅)
+const AppRoot = Loadable(
+  lazy(() => import('@pages/AppRoot').then((data) => ({ default: data.AppRoot })))
+);
 const AppHome = Loadable(
   lazy(() => import('@pages/AppHome').then((data) => ({ default: data.AppHome })))
 );
@@ -15,10 +17,10 @@ const AppMonth = Loadable(
   lazy(() => import('@pages/AppMonth').then((data) => ({ default: data.AppMonth })))
 );
 const AppLogin = Loadable(
-    lazy(() => import('@pages/AppLogin').then((data) => ({ default: data.AppLogin })))
+  lazy(() => import('@pages/AppLogin').then((data) => ({ default: data.AppLogin })))
 );
 const AppKakaoCallback = Loadable(
-    lazy(() => import('@pages/KakaoCallback').then((data) => ({ default: data.KakaoCallback })))
+  lazy(() => import('@pages/KakaoCallback').then((data) => ({ default: data.KakaoCallback })))
 );
 const AppNotFound = Loadable(
   lazy(() => import('@pages/AppNotFound').then((data) => ({ default: data.AppNotFound })))
@@ -27,7 +29,7 @@ const AppNotFound = Loadable(
 export const appRouter = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedLogin appNode={<AppTemplate />} />,
+    element: <ProtectedLogin appNode={<AppRoot />} />,
     errorElement: <AppNotFound />,
     children: [
       {
@@ -61,8 +63,8 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <AppLogin />,
-    errorElement: <AppNotFound />,
+    element: <ProtectedLogin loginNode={<AppLogin />} />,
+    errorElement: <AppNotFound />
   },
   {
     path: '/login/auth',
