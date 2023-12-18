@@ -1,27 +1,16 @@
-import {Navigation} from '@components/common/Navigation';
-import {NavigateFunction, Outlet, useNavigate} from 'react-router-dom';
+import { Navigation } from '@components/common/Navigation';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import {useEffect} from "react";
 
 export const AppTemplate = () => {
-
-    const navigate = useNavigate();
-    const storageAccessToken: string|null = localStorage.getItem("rb-access-token");
-
-    useEffect(() => {
-        if(!storageAccessToken){
-            navigate("/login");
-        }
-    }, []);
-
-    return (
-        <AppWrap>
-            <MainWrap>
-                <Outlet/>
-            </MainWrap>
-            <Navigation/>
-        </AppWrap>
-    );
+  return (
+    <AppWrap>
+      <MainWrap>
+        <Outlet />
+      </MainWrap>
+      <Navigation />
+    </AppWrap>
+  );
 };
 
 const AppWrap = styled.div`

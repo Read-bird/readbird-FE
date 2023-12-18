@@ -61,8 +61,8 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <AppLogin />,
-    errorElement: <AppNotFound />,
+    element: <ProtectedLogin loginNode={<AppLogin />} />,
+    errorElement: <AppNotFound />
   },
   {
     path: '/login/auth',
