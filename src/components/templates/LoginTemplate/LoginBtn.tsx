@@ -27,7 +27,7 @@ export const LoginBtn = (props: TProps) => {
     try {
       const res = await authFetch.post<TLoginResType>(`/api/user/login-guest`);
       if (res.status === 200) {
-        const extractedToken = res.headers?.refreshtoken?.replace('Bearer ', '');
+        const extractedToken = res.headers?.authorization;
         localStorage.setItem('rb-access-token', extractedToken);
         localStorage.setItem('rb-user-info', JSON.stringify(res.data));
         dispatch(setAccessToken(extractedToken));
