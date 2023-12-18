@@ -12,8 +12,8 @@ export enum ERecordStatus {
 
 // 주간 플랜달성데이터
 export type TPlanRecord = {
-  createdAt: string;
-  status: EAchievementStatus | null;
+  date: string;
+  achievementStatus: EAchievementStatus | null;
 };
 
 // 플랜조회 데이터
@@ -35,7 +35,7 @@ export type TPreviouslyFailedPlan = Omit<TPlan, 'target' | 'planStatus' | 'recor
 
 // 전체 타입
 export type TPlanData = {
-  weedRecord: TPlanRecord[] | null;
-  planData: TPlan[] | null;
-  previouslyFailedPlan: TPreviouslyFailedPlan[] | null;
+  weedRecord: TPlanRecord[];
+  planData: TPlan[];
+  previouslyFailedPlan: TPreviouslyFailedPlan[];
 };
