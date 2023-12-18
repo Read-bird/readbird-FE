@@ -1,16 +1,20 @@
 import { TPlanRecord } from '@api/types';
 import { DayBird } from '@components/common/DayBird';
 import { DAY_OF_WEEK } from '@constants/plan';
+import { makeWeekArr } from '@utils/calendar';
 import { cls, getClassByStatus } from '@utils/classname';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 
 type TProps = {
-  record: TPlanRecord[];
-  currentDate: string;
+  record: Record<string, TPlanRecord>;
+  currentDate: Date;
 };
 
 export const WeekCalendar = ({ record, currentDate }: TProps) => {
+  const weeks = useMemo(() => makeWeekArr(currentDate), [currentDate]);
+
   return (
     <Wrap>
       <FlexBox>
@@ -21,14 +25,14 @@ export const WeekCalendar = ({ record, currentDate }: TProps) => {
         ))}
       </FlexBox>
       <FlexBox>
-        {record.map((weekRecord) => {
-          const date = new Date(weekRecord.createdAt);
-          const nowDate = new Date(currentDate);
-          const className = getClassByStatus(date, weekRecord.status, nowDate);
+        {weeks.map((date) => {
+          const achievementStatus =
+            record[dayjs(date).format('YYYY-MM-DD')]?.achievementStatus ?? null;
+          const className = getClassByStatus(date, achievementStatus, currentDate);
 
           return (
-            <DayBird key={`${weekRecord.createdAt}`} className={cls(className)}>
-              <Text className={cls(className)}>{dayjs(weekRecord.createdAt).format('DD')}</Text>
+            <DayBird key={`${date}`} className={cls(className)}>
+              <Text className={cls(className)}>{dayjs(date).format('DD')}</Text>
             </DayBird>
           );
         })}

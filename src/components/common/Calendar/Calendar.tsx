@@ -1,7 +1,7 @@
 import { TPlanRecord } from '@api/types';
 import { DayBird } from '@components/common/DayBird';
 import { cls, getClassByStatus } from '@utils/classname';
-import { convertMap } from '@utils/function';
+import { convertObject } from '@utils/function';
 import dayjs from 'dayjs';
 import { useCallback, useMemo } from 'react';
 import ReactCalendar, { TileContentFunc, TileDisabledFunc } from 'react-calendar';
@@ -14,7 +14,7 @@ type TProps = {
 };
 
 export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => {
-  const planDateRecord = useMemo(() => convertMap(record, 'createdAt'), [record]);
+  const planDateRecord = useMemo(() => convertObject(record, 'date'), [record]);
   const onChange = (value: Date) => {
     changeCurrentDate(dayjs(value).format());
   };
@@ -23,8 +23,8 @@ export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => 
     ({ date }) => {
       const formatDate = dayjs(date).format('YYYY-MM-DD');
 
-      const data = planDateRecord.get(formatDate);
-      const className = getClassByStatus(date, data?.status ?? null, currentDate);
+      const data = planDateRecord[formatDate];
+      const className = getClassByStatus(date, data?.achievementStatus ?? null, currentDate);
 
       return (
         <DayBird
