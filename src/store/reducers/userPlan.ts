@@ -1,18 +1,19 @@
 import { TPlan, TPlanRecord, TPreviouslyFailedPlan } from '@api/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 
 type TPlanData = {
   weekRecord: TPlanRecord[] | null;
   planData: TPlan[] | null;
   previouslyFailedPlan: TPreviouslyFailedPlan[] | null;
-  currentDate: Date;
+  currentDate: string;
 };
 
 const initialState: TPlanData = {
   weekRecord: null,
   planData: null,
   previouslyFailedPlan: null,
-  currentDate: new Date()
+  currentDate: dayjs().format()
 };
 
 const planSlice = createSlice({
@@ -26,7 +27,7 @@ const planSlice = createSlice({
       state.previouslyFailedPlan = previouslyFailedPlan;
     },
     setCurrentDate: (state, action: PayloadAction<string>) => {
-      state.currentDate = new Date(action.payload);
+      state.currentDate = action.payload;
     }
   }
 });
