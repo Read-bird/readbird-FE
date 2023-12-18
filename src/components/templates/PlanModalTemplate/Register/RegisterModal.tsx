@@ -6,17 +6,10 @@ import {SelectLabel} from "@components/common/Form/SelectLabel";
 import dayjs from "dayjs";
 import {authFetch} from "@api/axios";
 import {useNavigate} from "react-router-dom";
-
-export interface IRegisterForm {
-    bookId: number | null;
-    title: string | null;
-    author: string | null;
-    publisher: string | null
-    totalPage: string | null;
-    startPage: string;
-    startDate: string;
-    endDate: string;
-}
+import {Alert, go} from "@/utils";
+import {IRegisterForm} from "@api/types/planRegister";
+import {TBookDetail, TSearchBooks, TSearchBooksResult} from "@api/types/book";
+import {SearchList} from "@components/common/Search";
 
 type TProps = {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -35,12 +28,12 @@ export const RegisterModal = ({
     } = useForm<IRegisterForm>({
         mode: "onSubmit",
         defaultValues: {
-            bookId: null,
+            planId: null,
             title: "",
             author: null,
             publisher: null,
             totalPage: null,
-            startPage: "",
+            currentPage: "",
             startDate: "",
             endDate: ""
         },
@@ -50,12 +43,15 @@ export const RegisterModal = ({
     const [yearOptions, setYearOptions] = useState<number[]>([]);
     const [monthOptions, setMonthOptions] = useState<(number | string)[]>([]);
     const [dayOptions, setDatOptions] = useState<(number | string)[]>([]);
-    const [startYear, setStartYear] = useState<string>(String(new Date().getMonth()));
-    const [endYear, setEndYear] = useState<string>('01');
+    const [startYear, setStartYear] = useState<string>(String(new Date().getFullYear()));
+    const [endYear, setEndYear] = useState<string>(String(new Date().getFullYear()));
     const [startMonth, setStartMonth] = useState<string>('01');
-    const [endMonth, setEndMonth] = useState<string>(String(new Date().getMonth()));
+    const [endMonth, setEndMonth] = useState<string>('01');
     const [startDay, setStartDay] = useState<string>('01');
     const [endDay, setEndDay] = useState<string>('01');
+    const [bookList, setBookList] = useState<[]>([]);
+    const [isSearch, setIsSearch] = useState(false);
+    const [selectBook, setSelectBook] = useState<TBookDetail>();
 
     useEffect(() => {
         const generateYearOptions = () => {
@@ -101,6 +97,12 @@ export const RegisterModal = ({
         startDay,
         endDay
     ]);
+    useEffect(() => {
+        if(watch("title") !== ""){
+            setIsSearch(true);
+            searchBookInfo();
+        }
+    }, [watch("title")]);
 
     const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let contId = event.target.id;
@@ -133,34 +135,58 @@ export const RegisterModal = ({
         let requestData;
 
         try {
-            requestData = data?.bookId ? {
-                bookId: data?.bookId,
+            requestData = data?.planId ? {
+                planId: data?.planId,
                 startDate: data?.startDate,
                 endDate: data?.endDate,
             } : {
-                bookId: null,
+                planId: null,
                 title: data?.title,
                 author: data?.author,
                 totalPage: data?.totalPage,
                 startDate: data?.startDate,
                 endDate: data?.endDate,
             }
-            // const res = await authFetch.post("/api/plan/", requestData);
-            // if (res.status === 200) {
-            //     alert("등록 성공");
-            //     navigate("/");
-            // }else{
-            //     alert("등록 실패");
-            // }
+            const res = await authFetch.post("/api/plan", requestData);
+            console.log(res)
+            if (res.status === 200) {
+                Alert.success({
+                    title: '성공!',
+                    text: '플랜이 성공적으로 등록되었습니다.'
+                });
+                navigate("/");
+            }else{
+                Alert.error({
+                    title: 'Error',
+                    text: '플랜 등록에 실패했습니다.'
+                });
+            }
         } catch (err) {
-            console.log(err);
-            alert("등록 실패");
+            Alert.error({
+                title: 'Error',
+                text: '플랜 등록에 실패했습니다.'
+            });
         }
 
         console.log(data);
     };
     const handleClose = () => {
         setIsOpen(false);
+    }
+    const searchBookInfo = async () => {
+        try{
+            const requestData: TSearchBooks = {
+                title: watch("title") || "",
+                page: "1",
+                scale: "5"
+            }
+            const res = await authFetch.get<TSearchBooksResult>(`/api/book${go(requestData)}`);
+            if(res.status === 200){
+                setBookList(res?.data?.bookList);
+            }
+        }catch (err){
+            console.log(err);
+        }
     }
 
     return (
@@ -174,7 +200,16 @@ export const RegisterModal = ({
                 name={"title"}
                 register={register}
                 errors={errors.title}
+                defaultValue={selectBook && selectBook?.title}
             />
+            {isSearch &&
+                <SearchList
+                    searchWord={watch("title")}
+                    bookList={bookList}
+                    setIsSearch={setIsSearch}
+                    setSelectBook={setSelectBook}
+                />
+            }
             <div className="cont flex">
                 <InputLabel
                     label={"글쓴이"}
@@ -201,14 +236,19 @@ export const RegisterModal = ({
                     placeholder={"240"}
                     name={"totalPage"}
                     register={register}
+                    pattern={/^[0-9]*$/}
+                    errors={errors.totalPage}
                 />
                 <InputLabel
                     label={"시작하는 쪽"}
                     type={"text"}
-                    id={"startPage"}
+                    id={"currentPage"}
                     placeholder={"120"}
-                    name={"startPage"}
+                    name={"currentPage"}
                     register={register}
+                    pattern={/^[0-9]*$/}
+                    required={"시작 페이지를 입력해주세요."}
+                    errors={errors.currentPage}
                 />
             </div>
             <div className="cont">
@@ -362,9 +402,6 @@ const StyledForm = styled.form`
     font-size: 16px;
     font-weight: 500;
     padding: 8px;
-    option:first-child{
-      color: #CFCFCF;
-    }
 
     &::placeholder {
       color: #CFCFCF
