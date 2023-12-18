@@ -1,4 +1,4 @@
-import { setAccessToken } from '@/store/reducers';
+import { setAccessToken, setUserId } from '@/store/reducers';
 import { authFetch } from '@api/axios';
 import { TLoginResType } from '@api/types';
 import { BtnKakaoLogin } from '@assets/images/BtnKakaoLogin';
@@ -28,8 +28,11 @@ export const LoginBtn = (props: TProps) => {
       const res = await authFetch.post<TLoginResType>(`/api/user/login-guest`);
       if (res.status === 200) {
         const extractedToken = res.headers?.authorization;
+        const refreshToken = res.headers?.refreshtoken;
         localStorage.setItem('rb-access-token', extractedToken);
+        localStorage.setItem('rb-refresh-token', refreshToken);
         localStorage.setItem('rb-user-info', JSON.stringify(res.data));
+        dispatch(setUserId(res.data.userId));
         dispatch(setAccessToken(extractedToken));
         navigate('/');
       }
