@@ -3,7 +3,7 @@ export interface IRegisterForm {
     title: string | null;
     author: string | null;
     publisher: string | null
-    totalPage: string | null;
+    totalPage: string | number | null;
     currentPage: string;
     startDate: string;
     endDate: string;
