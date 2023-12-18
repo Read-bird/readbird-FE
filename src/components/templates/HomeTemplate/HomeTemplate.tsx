@@ -1,12 +1,14 @@
-import { setCurrentDate } from '@/store/reducers';
+import { setCurrentDate, setPlan } from '@/store/reducers';
 import { TAppDispatch, TRootState } from '@/store/state';
+import { getPlanList } from '@api/plan';
 import { IconReact } from '@assets/icons';
 import { CalendarBird } from '@components/common/CalendarBird';
 import { Spacing } from '@components/common/Spacing';
 import { colors } from '@style/global-style';
+import { Alert } from '@utils/Alert';
 import { lastDayMonth } from '@utils/calendar';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Body, CalendarWrap, FlexBox, Head, TodayText, Wrap } from './Styled';
@@ -34,6 +36,25 @@ export const HomeTemplate = () => {
   const handleClickArrowRight = () => {
     dispatch(setCurrentDate(dayjs(currentDate).add(1, 'month').format()));
   };
+
+  const getList = async () => {
+    const result = await getPlanList(dayjs(currentDate).format('YYYY-MM-DD'));
+
+    if (typeof result.data !== 'string') {
+      dispatch(setPlan({ ...result.data }));
+    } else if (result.error) {
+      Alert.error({
+        title: result.data,
+        action: () => {
+          dispatch(setPlan({ weedRecord: [], planData: [], previouslyFailedPlan: [] }));
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   return (
     <Wrap>
