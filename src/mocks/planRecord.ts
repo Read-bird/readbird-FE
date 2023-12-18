@@ -4,32 +4,32 @@ import { lastDayMonth } from '@utils/calendar';
 // 주간 캘린더
 export const weekCalendar: TPlanRecord[] = [
   {
-    createdAt: '2023-12-10',
-    status: EAchievementStatus.success
+    date: '2023-12-10',
+    achievementStatus: EAchievementStatus.success
   },
   {
-    createdAt: '2023-12-11',
-    status: EAchievementStatus.failed
+    date: '2023-12-11',
+    achievementStatus: EAchievementStatus.failed
   },
   {
-    createdAt: '2023-12-12',
-    status: EAchievementStatus.unstable
+    date: '2023-12-12',
+    achievementStatus: EAchievementStatus.unstable
   },
   {
-    createdAt: '2023-12-13',
-    status: null
+    date: '2023-12-13',
+    achievementStatus: null
   },
   {
-    createdAt: '2023-12-14',
-    status: null
+    date: '2023-12-14',
+    achievementStatus: null
   },
   {
-    createdAt: '2023-12-15',
-    status: null
+    date: '2023-12-15',
+    achievementStatus: null
   },
   {
-    createdAt: '2023-12-16',
-    status: null
+    date: '2023-12-16',
+    achievementStatus: null
   }
 ];
 
@@ -48,8 +48,8 @@ export const monthCalendar = (currDate: Date): TPlanRecord[] => {
     const data = status[random] ?? null;
 
     calendar.push({
-      createdAt: `${yearMonth}-${i}`,
-      status: data as EAchievementStatus | null
+      date: `${yearMonth}-${i}`,
+      achievementStatus: data as EAchievementStatus | null
     });
   }
 
@@ -80,7 +80,7 @@ export const plan = [
     endDate: '2023-12-15',
     planStatus: ERecordStatus.inProgress,
     recordStatus: ERecordStatus.inProgress
-  },
+  }
   // {
   //   planId: 3,
   //   title: '천사와 악마',
