@@ -5,7 +5,7 @@ import { IconBook, IconDayBirdMini, IconSuccess } from '@assets/icons';
 import { Calendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { dummy } from '@mocks/index';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DefinitionList, FlexBox, GuideLabel, GuideText, Section, SubTitle, Wrap } from './Styled';
@@ -19,6 +19,7 @@ const data = {
 
 export const MonthTemplate = () => {
   const { currentDate } = useSelector((state: TRootState) => state.planStore);
+  const nowDate = useMemo(() => new Date(currentDate), [currentDate]);
   const dispatch = useDispatch<TAppDispatch>();
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ export const MonthTemplate = () => {
       <Section>
         <Calendar
           record={dummy.monthCalendar(new Date())}
-          currentDate={currentDate}
+          currentDate={nowDate}
           changeCurrentDate={changeCurrentDate}
         />
         <Spacing height={14} />
@@ -51,7 +52,7 @@ export const MonthTemplate = () => {
         ))}
       </Section>
       <Section className="last">
-        <SubTitle>{currentDate.getMonth() + 1}월의 플랜 달성 기록</SubTitle>
+        <SubTitle>{nowDate.getMonth() + 1}월의 플랜 달성 기록</SubTitle>
         <Spacing height={14} />
         <FlexBox $justify="space-between">
           <FlexBox>

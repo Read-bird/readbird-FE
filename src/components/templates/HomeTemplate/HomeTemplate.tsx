@@ -6,12 +6,14 @@ import { Spacing } from '@components/common/Spacing';
 import { colors } from '@style/global-style';
 import { lastDayMonth } from '@utils/calendar';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Body, CalendarWrap, FlexBox, Head, TodayText, Wrap } from './Styled';
 
 export const HomeTemplate = () => {
   const { currentDate } = useSelector((state: TRootState) => state.planStore);
+  const nowDate = useMemo(() => new Date(currentDate), [currentDate]);
   const dispatch = useDispatch<TAppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,7 +64,7 @@ export const HomeTemplate = () => {
           <CalendarBird
             fillColor={location.pathname === '/calendar' ? colors.basicDark : colors.white}
           >
-            {lastDayMonth(currentDate)[currentDate.getMonth() + 1]}
+            {lastDayMonth(nowDate)[nowDate.getMonth() + 1]}
           </CalendarBird>
         </CalendarWrap>
       </Head>

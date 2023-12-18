@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 type TProps = {
   record: TPlanRecord[];
-  currentDate: Date;
+  currentDate: string;
 };
 
 export const WeekCalendar = ({ record, currentDate }: TProps) => {
@@ -23,7 +23,8 @@ export const WeekCalendar = ({ record, currentDate }: TProps) => {
       <FlexBox>
         {record.map((weekRecord) => {
           const date = new Date(weekRecord.createdAt);
-          const className = getClassByStatus(date, weekRecord.status, currentDate);
+          const nowDate = new Date(currentDate);
+          const className = getClassByStatus(date, weekRecord.status, nowDate);
 
           return (
             <DayBird key={`${weekRecord.createdAt}`} className={cls(className)}>
