@@ -11,14 +11,7 @@ type TProps = {
     className: string
 }
 
-export const LoginBtn = (props:TProps) => {
-
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const REACT_APP_SERVER_PATH: string | undefined = process.env.REACT_APP_SERVER_PATH;
-    const REST_API_KEY: string | undefined = process.env.REACT_APP_KAKAO_API_KEY;
-    const redirectUri: string = "http://localhost:3000/login/auth";
-    const kakaoURL: string = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${redirectUri}&response_type=code`;
+  const redirectUri: string = process.env.REACT_APP_REDIRECT_URL + '/login/auth';
 
     const handleClick = () => {
         window.location.href = kakaoURL;
