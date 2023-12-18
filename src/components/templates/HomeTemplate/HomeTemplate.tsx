@@ -43,12 +43,14 @@ export const HomeTemplate = () => {
     if (typeof result.data !== 'string') {
       dispatch(setPlan({ ...result.data }));
     } else if (result.error) {
-      Alert.error({
-        title: result.data,
-        action: () => {
-          dispatch(setPlan({ weedRecord: [], planData: [], previouslyFailedPlan: [] }));
-        }
-      });
+      if (result.data) {
+        Alert.error({
+          title: result.data,
+          action: () => {
+            dispatch(setPlan({ weedRecord: [], planData: [], previouslyFailedPlan: [] }));
+          }
+        });
+      }
     }
   };
 
