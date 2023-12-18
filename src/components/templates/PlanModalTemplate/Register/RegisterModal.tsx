@@ -101,8 +101,20 @@ export const RegisterModal = ({
         if(watch("title") !== ""){
             setIsSearch(true);
             searchBookInfo();
+        }else if(selectBook){
+            setIsSearch(false);
         }
     }, [watch("title")]);
+    useEffect(() => {
+        if(selectBook){
+            setIsSearch(false);
+            setValue("title", selectBook?.title);
+            setValue("author", selectBook?.author);
+            setValue("publisher", selectBook?.publisher);
+            setValue("totalPage", selectBook?.totalPage);
+        }
+        console.log(selectBook)
+    }, [selectBook]);
 
     const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let contId = event.target.id;
@@ -131,19 +143,14 @@ export const RegisterModal = ({
     };
 
     const handleSubmit = async (data: IRegisterForm) => {
-
-        let requestData;
-
         try {
-            requestData = data?.planId ? {
-                planId: data?.planId,
-                startDate: data?.startDate,
-                endDate: data?.endDate,
-            } : {
+            const requestData = {
                 planId: null,
                 title: data?.title,
                 author: data?.author,
                 totalPage: data?.totalPage,
+                currentPage: Number(data?.currentPage),
+                publisher: data?.publisher,
                 startDate: data?.startDate,
                 endDate: data?.endDate,
             }

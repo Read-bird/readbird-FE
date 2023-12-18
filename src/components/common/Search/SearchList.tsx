@@ -17,7 +17,6 @@ export const SearchList = ({
 
     const handleClick = (book: {}) => {
         setIsSearch(false);
-        console.log(book)
         setSelectBook(book);
     }
 

@@ -23,5 +23,5 @@ export type TBookDetail = {
     pubDate: string
     publisher: string
     title: string
-    totalPage: number
+    totalPage: number | string
 }
