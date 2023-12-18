@@ -19,7 +19,7 @@ type TProps = {
 
     const handleClickGuest = async () => {
         try{
-            const res = await axios.post<TLoginResType>(`${REACT_APP_SERVER_PATH}api/user/login-guest`);
+      const res = await axios.post<TLoginResType>(`${REACT_APP_SERVER_PATH}/api/user/login-guest`);
             if(res.status === 200){
                 const extractedToken = res.headers?.accesstoken?.replace("Bearer ", "");
                 localStorage.setItem("rb-access-token", extractedToken);
