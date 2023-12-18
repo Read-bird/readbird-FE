@@ -28,7 +28,7 @@ type TProps = {
                 navigate("/");
             }
         }catch (err: any){
-            alert(err.message);
+      Alert.error({ title: errors(err.message) });
             console.log(err)
             navigate("/login");
         }
