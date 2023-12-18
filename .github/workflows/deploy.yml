@@ -14,15 +14,6 @@ jobs:
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           ghtoken: ${{ secrets.GHP_TOKEN }}
-      - name: .env.development setting
-        run: |
-          echo "REACT_APP_KAKAO_API_KEY=${{ secrets.REACT_APP_KAKAO_API_KEY }}" >> .env.production
-          echo "REACT_APP_SERVER_PATH=${{ secrets.REACT_APP_SERVER_PATH }}" >> .env.production
-          echo "REACT_APP_REDIRECT_URL=${{ secrets.REACT_APP_REDIRECT_URL }}" >> .env.production
-        env:
-          REACT_APP_KAKAO_API_KEY: ${{ secrets.REACT_APP_KAKAO_API_KEY }}
-          REACT_APP_SERVER_PATH: ${{ secrets.REACT_APP_SERVER_PATH }}
-          REACT_APP_REDIRECT_URL: ${{ secrets.REACT_APP_REDIRECT_URL }}
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
@@ -36,7 +27,13 @@ jobs:
               nodeversion: "16"
               build: ""
               spa: true
-              healthz: ""
+              buildenv:
+                - name: REACT_APP_KAKAO_API_KEY
+                  secret: REACT_APP_KAKAO_API_KEY
+                - name: REACT_APP_SERVER_PATH
+                  secret: REACT_APP_SERVER_PATH
+                - name: REACT_APP_REDIRECT_URL
+                  secret: REACT_APP_REDIRECT_URL
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git
