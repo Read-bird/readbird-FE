@@ -4,6 +4,7 @@ import { TLoginResType } from '@api/types';
 import { BtnKakaoLogin } from '@assets/images/BtnKakaoLogin';
 import { Alert } from '@utils/Alert';
 import { errors } from '@utils/errors';
+import { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -36,10 +37,15 @@ export const LoginBtn = (props: TProps) => {
         dispatch(setAccessToken(extractedToken));
         navigate('/');
       }
-    } catch (err: any) {
-      Alert.error({ title: errors(err.message) });
-      console.log(err);
-      navigate('/login');
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({
+          title: errors(e.message),
+          action: () => {
+            navigate('/login');
+          }
+        });
+      }
     }
   };
 
