@@ -8,7 +8,8 @@ type TResponse<T> = { error: boolean; success: boolean; data: T };
 export const getPlanList = async (date: string): Promise<TResponse<TPlanData | string>> => {
   try {
     const result = await authFetch.get('/api/plan', { params: { date } });
-    return { error: false, success: true, data: result.data };
+
+    return { error: false, success: true, data: result?.data };
   } catch (e) {
     if (e instanceof AxiosError) {
       return { error: true, success: false, data: e.response?.data.message ?? '' };
