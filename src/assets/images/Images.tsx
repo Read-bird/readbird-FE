@@ -9,7 +9,7 @@ type TProps = {
   imgStyle?: CSSObject;
 };
 
-export const Images = memo(({ imgUrl, imgAlt, imgWidth, imgHeight, imgStyle }: TProps) => {
+export const Images = memo(({ imgUrl = '', imgAlt, imgWidth, imgHeight, imgStyle }: TProps) => {
   const handleError = useCallback((e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = require('/src/assets/images/noImage.jpeg');
   }, []);
