@@ -25,6 +25,15 @@ const AppLogin = Loadable(
 const AppKakaoCallback = Loadable(
   lazy(() => import('@pages/KakaoCallback').then((data) => ({ default: data.KakaoCallback })))
 );
+const AppSearch = Loadable(
+  lazy(() => import('@pages/AppSearch').then((data) => ({ default: data.AppSearch })))
+);
+const AppSearchMain = Loadable(
+  lazy(() => import('@pages/AppSearchMain').then((data) => ({ default: data.AppSearchMain })))
+);
+const AppSearchResult = Loadable(
+  lazy(() => import('@pages/AppSearchResult').then((data) => ({ default: data.AppSearchResult })))
+);
 const AppNotFound = Loadable(
   lazy(() => import('@pages/AppNotFound').then((data) => ({ default: data.AppNotFound })))
 );
@@ -54,8 +63,20 @@ export const appRouter = createBrowserRouter([
       },
       {
         path: 'search',
-        element: <div>검색</div>,
-        errorElement: <AppNotFound />
+        element: <AppSearch />,
+        errorElement: <AppNotFound />,
+        children: [
+          {
+            path: '',
+            element: <AppSearchMain />,
+            errorElement: <AppNotFound />
+          },
+          {
+            path: 'result',
+            element: <AppSearchResult />,
+            errorElement: <AppNotFound />
+          }
+        ]
       },
       {
         path: 'mypage',

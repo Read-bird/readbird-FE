@@ -1,0 +1,1 @@
+export { SearchMain } from './SearchMain';

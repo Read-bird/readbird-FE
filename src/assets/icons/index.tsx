@@ -1,3 +1,5 @@
+export * from './IconArrLeftWhite';
+export * from './IconArrRightGray';
 export * from './IconBook';
 export * from './IconCalendar';
 export * from './IconDayBird';
@@ -8,7 +10,6 @@ export * from './IconMyPage';
 export * from './IconPlus';
 export * from './IconProgress';
 export * from './IconReact';
+export * from './IconReady';
 export * from './IconSearch';
 export * from './IconSuccess';
-export * from './IconArrRightGray';
-export * from './IconArrLeftWhite';
