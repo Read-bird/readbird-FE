@@ -13,7 +13,7 @@ export const Navigation = () => {
           <IconHome />
           <span>홈</span>
         </NavLink>
-        <NavLink to="/search" className={cls({ selected: pathname === '/search' })}>
+        <NavLink to="/search" className={cls({ selected: /search/g.test(pathname) })}>
           <IconSearch />
           <span>검색</span>
         </NavLink>
