@@ -1,6 +1,10 @@
 import { DefaultTheme, createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: 'Pretendard', sans-serif;
+  }
+
   body {
     background: #f5f5f5;
   }
