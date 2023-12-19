@@ -19,19 +19,19 @@ const confirm: TSwal = (args) => {
 };
 
 const success: TSwal = (args) => {
-  template({ icon: 'success', ...args });
+  template({ icon: 'success', ...args, confirmButtonText: '확인' });
 };
 
 const error: TSwal = (args) => {
-  template({ icon: 'error', ...args });
+  template({ icon: 'error', ...args, confirmButtonText: '확인' });
 };
 
 const warning: TSwal = (args) => {
-  template({ icon: 'warning', ...args });
+  template({ icon: 'warning', ...args, confirmButtonText: '확인' });
 };
 
 const basic: TSwal = (args) => {
-  template({ ...args });
+  template({ ...args, confirmButtonText: '확인' });
 };
 
 const input: TSwal = (args) => {
