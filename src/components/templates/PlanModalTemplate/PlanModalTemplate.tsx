@@ -1,24 +1,35 @@
 import {Dispatch, Fragment, ReactNode, SetStateAction} from "react";
-import {RegisterModal} from "@components/templates/PlanModalTemplate/Register";
+import {CharacterModal, ReadLessModal, RegisterModal} from "src/components/templates/PlanModalTemplate/PlanModal";
 import styled, {CSSProperties} from "styled-components";
 import ReactModal from "react-modal";
 import {Modal} from "@components/common/Modal";
+import {SimpleModal} from "@components/templates/PlanModalTemplate/PlanModal";
 
 type TProps = {
 	isOpen: boolean;
 	setIsOpen: Dispatch<SetStateAction<boolean>>;
-	modalIndex: number
+	modalIndex: number;
+	modalText?: string;
+	modalSubText?: string;
+	buttonType?: number;
+	onConfirm?: any;
 };
 
 // modalIndex
 // 1 ---> 플랜 등록 모달
 // 2 ---> 플랜 달성 실패 모달
-// 9 ---> 단순 확인 모달
+// 3 ---> 덜 읽음 모달
+// 4 ---> 도감 캐릭터 모달
+// 9 ---> 단순 확인/취소 모달
 
 export const PlanModalTemplate = ({
 	isOpen,
 	setIsOpen,
-	modalIndex
+	modalIndex,
+	modalText,
+	modalSubText,
+	buttonType,
+	onConfirm
 }: TProps) => {
 
 	return (
@@ -32,6 +43,26 @@ export const PlanModalTemplate = ({
 			{modalIndex === 1 &&
 				<RegisterModal
 					setIsOpen={setIsOpen}
+				/>
+			}
+			{modalIndex === 3 &&
+				<ReadLessModal
+					setIsOpen={setIsOpen}
+					onConfirm={onConfirm}
+				/>
+			}
+			{modalIndex === 4 &&
+				<CharacterModal
+					setIsOpen={setIsOpen}
+				/>
+			}
+			{modalIndex === 9 &&
+				<SimpleModal
+					setIsOpen={setIsOpen}
+					modalText={modalText}
+					modalSubText={modalSubText}
+					buttonType={buttonType}
+					onConfirm={onConfirm}
 				/>
 			}
 		</Modal>

@@ -10,3 +10,5 @@ export * from './IconProgress';
 export * from './IconReact';
 export * from './IconSearch';
 export * from './IconSuccess';
+export * from './IconArrRightGray';
+export * from './IconArrLeftWhite';
