@@ -1,0 +1,1 @@
+export {MyLibraryTemplate} from "./MyLibraryTemplate";

@@ -98,10 +98,10 @@ export const RegisterModal = ({
         endDay
     ]);
     useEffect(() => {
-        if(watch("title") !== ""){
+        if(!selectBook && watch("title") !== ""){
             setIsSearch(true);
             searchBookInfo();
-        }else if(selectBook){
+        }else if(selectBook && watch("title") !== ""){
             setIsSearch(false);
         }
     }, [watch("title")]);

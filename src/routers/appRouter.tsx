@@ -2,6 +2,9 @@ import { Loadable } from '@components/common/Loadable';
 import { ProtectedLogin } from '@components/common/ProtectedLogin';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import {AppMyPage} from "@pages/AppMyPage";
+import {MyLibrary} from "@pages/MyPage/MyLibrary";
+import {MyEncyclopedia} from "@pages/MyPage/MyEncyclopedia";
 
 // lazy 적용(코드스플리팅)
 const AppRoot = Loadable(
@@ -56,8 +59,18 @@ export const appRouter = createBrowserRouter([
       },
       {
         path: 'mypage',
-        element: <div>마이페이지</div>,
-        errorElement: <AppNotFound />
+        element: <AppMyPage />,
+        errorElement: <AppNotFound />,
+      },
+      {
+        path: 'mypage/library',
+        element: <MyLibrary />,
+        errorElement: <AppNotFound />,
+      },
+      {
+        path: 'mypage/encyclopedia',
+        element: <MyEncyclopedia />,
+        errorElement: <AppNotFound />,
       }
     ]
   },

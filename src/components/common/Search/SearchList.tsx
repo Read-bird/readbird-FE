@@ -1,11 +1,12 @@
 import {TBookDetail} from "@api/types/book";
 import styled from "styled-components";
+import {Dispatch, SetStateAction} from "react";
 
 type TProps = {
     bookList: [];
     searchWord: string | null;
-    setIsSearch: any;
-    setSelectBook: any;
+    setIsSearch: Dispatch<SetStateAction<boolean>>;
+    setSelectBook: Dispatch<SetStateAction<any>>;
 }
 
 export const SearchList = ({
