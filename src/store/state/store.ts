@@ -1,4 +1,10 @@
-import { bookDetailStore, bookSearchStore, planStore, userStore } from '@/store/reducers';
+import {
+  bookDetailStore,
+  bookSearchStore,
+  loadingStore,
+  planStore,
+  userStore
+} from '@/store/reducers';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
@@ -6,7 +12,8 @@ export const store = configureStore({
     userStore: userStore,
     planStore: planStore,
     bookSearchStore: bookSearchStore,
-    bookDetailStore: bookDetailStore
+    bookDetailStore: bookDetailStore,
+    loadingStore: loadingStore
   }
 });
 

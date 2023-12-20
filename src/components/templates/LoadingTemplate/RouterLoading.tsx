@@ -1,20 +1,11 @@
-import { TRootState } from '@/store/state';
 import { Loading } from '@components/common/Loading';
-import { Fragment } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-export const LoadingTemplate = () => {
-  const { loading } = useSelector((state: TRootState) => state.loadingStore);
-
+export const RouterLoading = () => {
   return (
-    <Fragment>
-      {loading && (
-        <Wrap>
-          <Loading />
-        </Wrap>
-      )}
-    </Fragment>
+    <Wrap>
+      <Loading />
+    </Wrap>
   );
 };
 

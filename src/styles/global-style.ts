@@ -16,6 +16,14 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     background: white;
   }
+
+  .active {
+    transition: transform 0.2s;
+    
+    &:active {
+      transform: scale(1.1);
+    }
+  }
 `;
 
 export const colors = {

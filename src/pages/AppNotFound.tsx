@@ -1,3 +1,5 @@
+import { NotFoundTemplate } from '@components/templates/NotFoundTemplate';
+
 export const AppNotFound = () => {
-	return <div>경로를 찾지 못함</div>;
+  return <NotFoundTemplate />;
 };
