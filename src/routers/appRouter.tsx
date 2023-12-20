@@ -5,6 +5,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import {AppMyPage} from "@pages/AppMyPage";
 import {MyLibrary} from "@pages/MyPage/MyLibrary";
 import {MyEncyclopedia} from "@pages/MyPage/MyEncyclopedia";
+import {MyRestore} from "@pages/MyPage/MyRestore";
 
 // lazy 적용(코드스플리팅)
 const AppRoot = Loadable(
@@ -91,6 +92,11 @@ export const appRouter = createBrowserRouter([
       {
         path: 'mypage/encyclopedia',
         element: <MyEncyclopedia />,
+        errorElement: <AppNotFound />,
+      },
+      {
+        path: 'mypage/restore',
+        element: <MyRestore />,
         errorElement: <AppNotFound />,
       }
     ]

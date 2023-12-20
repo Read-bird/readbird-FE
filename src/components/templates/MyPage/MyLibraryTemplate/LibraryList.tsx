@@ -32,7 +32,6 @@ export const LibraryList = () => {
         }
     ]
     const [planList, setPlanList] = useState([]);
-    console.log(planList)
 
     const getPlanList = async () => {
         try{
@@ -74,7 +73,7 @@ export const LibraryList = () => {
 const StyledUl = styled.ul`
   width: 100%;
   margin-top: 36px;
-  padding: 0 13px;
+  padding: 0 13px 15px;
   overflow-y: scroll;
   &::-webkit-scrollbar{
     display: none;
