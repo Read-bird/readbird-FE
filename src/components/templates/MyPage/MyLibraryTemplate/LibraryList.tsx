@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import {Images} from "@/assets";
+import {authFetch} from "@api/axios";
+import {useEffect, useState} from "react";
 
 export const LibraryList = () => {
 
@@ -29,22 +31,39 @@ export const LibraryList = () => {
             totalPage: "240"
         }
     ]
+    const [planList, setPlanList] = useState([]);
+    console.log(planList)
+
+    const getPlanList = async () => {
+        try{
+            const res = await authFetch.get("/api/user/plan/success");
+            if(res.status === 200){
+                setPlanList(res?.data);
+            }
+        }catch (err){
+
+        }
+    }
+
+    useEffect(() => {
+        getPlanList()
+    }, []);
 
     return(
         <StyledUl>
-            {dummy?.map((item, key) => (
+            {planList?.map((item, key) => (
                 <li key={key}>
                     <div className="book-img">
                         <Images
-                            imgUrl=""
+                            imgUrl={item["Book.coverImage"]}
                             imgAlt="book-img"
                         />
                     </div>
                     <div className="book-info">
-                        <h3>{item.title}</h3>
-                        <p>{item.author}</p>
-                        <p>{item.publisher}</p>
-                        <span>총 {item.totalPage}쪽</span>
+                        <h3>{item["Book.title"]}</h3>
+                        <p>{item["Book.author"]}</p>
+                        <p>{item["Book.publisher"]}</p>
+                        <span>총 {item["Book.totalPage"]}쪽</span>
                     </div>
                 </li>
             ))}
@@ -56,6 +75,10 @@ const StyledUl = styled.ul`
   width: 100%;
   margin-top: 36px;
   padding: 0 13px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar{
+    display: none;
+  }
     li{
       padding: 8px 12px;
       border-radius: 20px;

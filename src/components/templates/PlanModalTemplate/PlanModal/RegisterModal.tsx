@@ -221,6 +221,7 @@ export const RegisterModal = ({
                 register={register}
                 errors={errors.title}
                 defaultValue={selectBook && selectBook?.title}
+                disabled={selectBook}
             />
             {isSearch &&
                 <SearchList
@@ -240,6 +241,7 @@ export const RegisterModal = ({
                     placeholder={"헤르만 헤세"}
                     name={"author"}
                     register={register}
+                    disabled={selectBook}
                 />
                 <InputLabel
                     label={"출판사"}
@@ -248,6 +250,7 @@ export const RegisterModal = ({
                     placeholder={"민음사"}
                     name={"publisher"}
                     register={register}
+                    disabled={selectBook}
                 />
             </div>
             <div className="cont flex">
@@ -260,6 +263,7 @@ export const RegisterModal = ({
                     register={register}
                     pattern={/^[0-9]*$/}
                     errors={errors.totalPage}
+                    disabled={selectBook}
                 />
                 <InputLabel
                     label={"시작하는 쪽"}
@@ -392,6 +396,10 @@ const StyledForm = styled.form`
 
     &[name="title"] {
       padding: 8px 35px 8px 15px;
+    }
+    
+    &:disabled{
+      background-color: #CFCFCF;
     }
   }
 
