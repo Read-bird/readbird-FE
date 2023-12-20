@@ -1,20 +1,21 @@
-import { TRootState } from '@/store/state';
 import { deletePlan } from '@api/plan';
 import { IconReact } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
 import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
-import { MouseEvent, useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import { MouseEvent, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 type TProps = {
   planId: number;
+  userId: number | null;
+  selectDate: string;
 };
 
-export const Dots = ({ planId }: TProps) => {
+export const Dots = ({ planId, userId, selectDate }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
-  const { userId } = useSelector((state: TRootState) => state.userStore);
+  const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
 
   const handleClose = useCallback(() => {
     setOpen(null);
@@ -23,9 +24,11 @@ export const Dots = ({ planId }: TProps) => {
   const handleClickOpenModal = useCallback(
     (e: MouseEvent<SVGElement>) => {
       e.stopPropagation();
-      setOpen((prev) => (prev === planId ? null : planId));
+      if (isSame) {
+        setOpen((prev) => (prev === planId ? null : planId));
+      }
     },
-    [planId]
+    [planId, isSame]
   );
 
   const handleClickOpenEdit = useCallback(() => {
@@ -62,7 +65,7 @@ export const Dots = ({ planId }: TProps) => {
         iconKey="dots"
         size={25}
         color={colors.darkGray}
-        cursor="pointer"
+        cursor={isSame ? 'pointer' : 'default'}
         onClick={handleClickOpenModal}
       />
       <MiniModal isOpen={isOpen === planId} handleClick={handleClose}>

@@ -1,18 +1,26 @@
-import { ERecordStatus } from '@api/types';
+import { completedPlan } from '@api/plan';
+import { EAchievementStatus, ERecordStatus } from '@api/types';
 import { IconFailed, IconProgress, IconSuccess } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
 import { colors } from '@style/global-style';
+import { Alert } from '@utils/Alert';
 import { cls } from '@utils/classname';
-import { MouseEvent, useCallback, useState } from 'react';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { MouseEvent, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
 type TProps = {
   planId: number;
   recordStatus: ERecordStatus;
+  selectDate: string;
+  maxPage: number;
 };
 
-export const Stamp = ({ planId, recordStatus }: TProps) => {
+export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
+  const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
 
   const handleClose = useCallback(() => {
     setOpen(null);
@@ -21,25 +29,61 @@ export const Stamp = ({ planId, recordStatus }: TProps) => {
   const handleClickOpenModal = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
-      setOpen((prev) => (prev === planId ? null : planId));
+
+      if (isSame) {
+        setOpen((prev) => (prev === planId ? null : planId));
+      }
     },
-    [planId]
+    [planId, isSame]
   );
 
-  const handleClickSuccess = useCallback(() => {
-    // 성공 로직
-    setOpen(null);
-  }, []);
+  const handleClickSuccess = useCallback(async () => {
+    try {
+      // 쪽 수 저장 및 보내기
+      const result = await completedPlan(planId, EAchievementStatus.success, maxPage);
+      console.log(result);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({ title: `${e.response?.data.message}` });
+      }
+    } finally {
+      setOpen(null);
+    }
+  }, [setOpen, maxPage, planId]);
 
   const handleClickFailed = useCallback(() => {
     // 실패 로직
-    setOpen(null);
-  }, []);
+    Alert.input({
+      title: '<strong class="alert-input-title">아쉬워요... 어디까지 읽으셨나요?</strong>',
+      inputLabel: '쪽 까지 읽었어요.',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      inputValidator: (value) => {
+        if (Number(value) >= maxPage) {
+          return '* 읽은 쪽을 다시 확인해주세요.';
+        }
+      },
+      preConfirm: async (page) => {
+        try {
+          // 쪽 수 저장 및 보내기
+          const result = await completedPlan(planId, EAchievementStatus.unstable, page);
+          console.log(result);
+        } catch (e: any) {
+          if (e instanceof AxiosError) {
+            Swal.showValidationMessage(e.response?.data.message);
+          }
+        } finally {
+          setOpen(null);
+        }
+      }
+    });
+  }, [setOpen, planId, maxPage]);
 
   return (
     <Wrap>
       <IconWrap
-        className={cls({ 'cursor-default': recordStatus !== ERecordStatus.inProgress })}
+        className={cls({ 'cursor-default': recordStatus !== ERecordStatus.inProgress && !isSame })}
         onClick={handleClickOpenModal}
       >
         {
@@ -78,6 +122,10 @@ const IconWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &.cursor-default {
+    cursor: default;
+  }
 `;
 
 const InnerIcon = styled.div`

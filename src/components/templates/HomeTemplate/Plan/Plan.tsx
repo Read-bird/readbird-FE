@@ -1,3 +1,4 @@
+import { TRootState } from '@/store/state';
 import { TPlan } from '@api/types';
 import { Images } from '@assets/images';
 import { ProgressBar } from '@components/common/ProgressBar';
@@ -6,6 +7,7 @@ import { Dots } from '@components/templates/HomeTemplate/Plan/Dots';
 import { Stamp } from '@components/templates/HomeTemplate/Plan/Stamp';
 import { calculateDday } from '@utils/calendar';
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 type TProps = TPlan;
@@ -21,6 +23,8 @@ export const Plan = ({
   recordStatus
 }: TProps) => {
   const imgStyle = useMemo(() => ({ borderRadius: '10px' }), []);
+  const { currentDate } = useSelector((state: TRootState) => state.planStore);
+  const { userId } = useSelector((state: TRootState) => state.userStore);
 
   return (
     <Wrap>
@@ -54,14 +58,19 @@ export const Plan = ({
         />
       </ProgressWrap>
       <StatusWrap>
-        <Dots planId={planId} />
-        <Stamp planId={planId} recordStatus={recordStatus} />
+        <Dots planId={planId} userId={userId} selectDate={currentDate} />
+        <Stamp
+          planId={planId}
+          recordStatus={recordStatus}
+          selectDate={currentDate}
+          maxPage={currentPage + target}
+        />
       </StatusWrap>
     </Wrap>
   );
 };
 
-export const Wrap = styled.div`
+const Wrap = styled.div`
   width: 100%;
   height: 100%;
 
@@ -75,11 +84,11 @@ export const Wrap = styled.div`
   gap: 10px;
 `;
 
-export const ImageWrap = styled.div`
+const ImageWrap = styled.div`
   flex: 0 0 55px;
 `;
 
-export const ProgressWrap = styled.div`
+const ProgressWrap = styled.div`
   flex: 1;
   height: 100%;
   display: flex;
@@ -87,7 +96,7 @@ export const ProgressWrap = styled.div`
   justify-content: space-between;
 `;
 
-export const StatusWrap = styled.div`
+const StatusWrap = styled.div`
   flex: 0 0 55px;
   height: 100%;
 
@@ -97,7 +106,7 @@ export const StatusWrap = styled.div`
   gap: 5px;
 `;
 
-export const FlexBox = styled.div<{ $justifyContent?: string }>`
+const FlexBox = styled.div<{ $justifyContent?: string }>`
   width: 100%;
   display: flex;
   justify-content: ${({ $justifyContent }) => $justifyContent || 'space-between'};
@@ -122,7 +131,7 @@ export const FlexBox = styled.div<{ $justifyContent?: string }>`
   }
 `;
 
-export const DDayLabel = styled.span`
+const DDayLabel = styled.span`
   display: inline-block;
   width: 53px;
   height: 24px;

@@ -1,5 +1,5 @@
 import { authFetch } from '@api/axios';
-import { TPlanData } from '@api/types';
+import { EAchievementStatus, TPlanData } from '@api/types';
 import { AxiosError } from 'axios';
 
 type TResponse<T> = { error: boolean; success: boolean; data: T };
@@ -31,5 +31,24 @@ export const deletePlan = async (planId: number, userId: number): Promise<TRespo
     }
 
     return { error: true, success: false, data: '' };
+  }
+};
+
+// 플랜 달성 등록
+export const completedPlan = async (
+  planId: number,
+  status: EAchievementStatus,
+  currentPage: number
+): Promise<TResponse<any>> => {
+  try {
+    const result = await authFetch.put(`/api/record/${planId}`, {
+      data: {
+        status,
+        currentPage
+      }
+    });
+    return { error: false, success: true, data: result.data };
+  } catch (e: any) {
+    throw e;
   }
 };
