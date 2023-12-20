@@ -45,6 +45,7 @@ const StyledModal = styled.div`
     line-height: 24px;
     letter-spacing: 0.16px;
     margin-top: 10px;
+    white-space: pre;
   }
   span{
     color: #ABABAB;

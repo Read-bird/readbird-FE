@@ -13,6 +13,7 @@ type TProps = {
     errors?:any;
     pattern?: RegExp;
     defaultValue?: string | number;
+    disabled?: any;
 }
 
 export const InputLabel = ({
@@ -25,7 +26,8 @@ export const InputLabel = ({
                                register = () => {},
                                errors,
                                pattern,
-                               defaultValue
+                               defaultValue,
+                               disabled
 
 }: TProps) => {
 
@@ -46,6 +48,7 @@ export const InputLabel = ({
                 aria-invalid={errors ? "true" : "false"}
                 style={{ borderColor: errors ? "#FF7C7C" : "#ABABAB" }}
                 defaultValue={defaultValue}
+                disabled={disabled }
             />
             {errors && <small role="alert">* {errors.message}</small>}
             {name === "title" &&

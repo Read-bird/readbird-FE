@@ -1,19 +1,23 @@
 import {TBookDetail} from "@api/types/book";
 import styled from "styled-components";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect} from "react";
 
 type TProps = {
-    bookList: [];
+    bookList: any[];
     searchWord: string | null;
     setIsSearch: Dispatch<SetStateAction<boolean>>;
     setSelectBook: Dispatch<SetStateAction<any>>;
+    setSearchPage: Dispatch<SetStateAction<number>>;
+    setIsScroll: Dispatch<SetStateAction<boolean>>;
 }
 
 export const SearchList = ({
                                bookList,
                                searchWord,
                                setIsSearch,
-                               setSelectBook
+                               setSelectBook,
+                               setSearchPage,
+                               setIsScroll
 }: TProps) => {
 
     const handleClick = (book: {}) => {
@@ -21,10 +25,36 @@ export const SearchList = ({
         setSelectBook(book);
     }
 
+    const handleScroll = () => {
+        const scrollContainer = document.getElementById("scroll-container");
+        if (
+            scrollContainer &&
+            scrollContainer.scrollHeight - scrollContainer.scrollTop ===
+            scrollContainer.clientHeight
+        ) {
+            setSearchPage(v => v + 1);
+            setIsScroll(true);
+        }else{
+            setIsScroll(false);
+        }
+    };
+
+    useEffect(() => {
+        const scrollContainer = document.getElementById("scroll-container");
+        if (scrollContainer) {
+            scrollContainer.addEventListener("scroll", handleScroll);
+        }
+        return () => {
+            if (scrollContainer) {
+                scrollContainer.removeEventListener("scroll", handleScroll);
+            }
+        };
+    }, []);
+
     return(
-        <StyledResultWrap>
-            {bookList?.length !== 0 ? bookList?.map((book: TBookDetail) => (
-                <li key={book.bookId} value={book.bookId} onClick={() => {
+        <StyledResultWrap id="scroll-container">
+            {bookList?.length !== 0 ? bookList?.map((book: TBookDetail, key) => (
+                <li key={key} value={book.bookId} onClick={() => {
                     handleClick(book)
                 }}>
                     <div className="img-wrap"><img src={book.coverImage} alt="cover-img" /></div>
@@ -37,7 +67,7 @@ export const SearchList = ({
             )) :
                 <p className="empty-list">
                     <span>"{searchWord}"에 대한 검색 결과가 없습니다.</span>
-                    <span>직접 입력하기</span>
+                    <span onClick={() => setIsSearch(false)}>직접 입력하기</span>
                 </p>
 
             }

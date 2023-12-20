@@ -49,9 +49,11 @@ export const RegisterModal = ({
     const [endMonth, setEndMonth] = useState<string>('01');
     const [startDay, setStartDay] = useState<string>('01');
     const [endDay, setEndDay] = useState<string>('01');
-    const [bookList, setBookList] = useState<[]>([]);
+    const [bookList, setBookList] = useState<any>([]);
     const [isSearch, setIsSearch] = useState(false);
     const [selectBook, setSelectBook] = useState<TBookDetail>();
+    const [searchPage, setSearchPage] = useState<number>(1);
+    const [isScroll, setIsScroll] = useState(false);
 
     useEffect(() => {
         const generateYearOptions = () => {
@@ -113,8 +115,12 @@ export const RegisterModal = ({
             setValue("publisher", selectBook?.publisher);
             setValue("totalPage", selectBook?.totalPage);
         }
-        console.log(selectBook)
     }, [selectBook]);
+    useEffect(() => {
+        if(isScroll && watch("title") !== ""){
+            searchBookInfo();
+        }
+    }, [searchPage]);
 
     const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let contId = event.target.id;
@@ -155,12 +161,12 @@ export const RegisterModal = ({
                 endDate: data?.endDate,
             }
             const res = await authFetch.post("/api/plan", requestData);
-            console.log(res)
-            if (res.status === 200) {
+            if (res.status === 201) {
                 Alert.success({
                     title: '성공!',
                     text: '플랜이 성공적으로 등록되었습니다.'
                 });
+                setIsOpen(false);
                 navigate("/");
             }else{
                 Alert.error({
@@ -174,25 +180,32 @@ export const RegisterModal = ({
                 text: '플랜 등록에 실패했습니다.'
             });
         }
-
-        console.log(data);
     };
     const handleClose = () => {
         setIsOpen(false);
     }
+
     const searchBookInfo = async () => {
         try{
             const requestData: TSearchBooks = {
                 title: watch("title") || "",
-                page: "1",
-                scale: "5"
+                page: String(searchPage),
+                scale: "10"
             }
             const res = await authFetch.get<TSearchBooksResult>(`/api/book${go(requestData)}`);
             if(res.status === 200){
-                setBookList(res?.data?.bookList);
+                if(res?.data?.bookList?.length !== 0){
+                    if(isScroll){
+                        setBookList((prev: []) => [...prev, ...res?.data?.bookList]);
+                    }else{
+                        setBookList(res?.data?.bookList);
+                    }
+                }
             }
-        }catch (err){
-            console.log(err);
+        }catch (err: any){
+            Alert.error({
+                title: `${err.message}`
+            })
         }
     }
 
@@ -208,6 +221,7 @@ export const RegisterModal = ({
                 register={register}
                 errors={errors.title}
                 defaultValue={selectBook && selectBook?.title}
+                disabled={selectBook}
             />
             {isSearch &&
                 <SearchList
@@ -215,6 +229,8 @@ export const RegisterModal = ({
                     bookList={bookList}
                     setIsSearch={setIsSearch}
                     setSelectBook={setSelectBook}
+                    setSearchPage={setSearchPage}
+                    setIsScroll={setIsScroll}
                 />
             }
             <div className="cont flex">
@@ -225,6 +241,7 @@ export const RegisterModal = ({
                     placeholder={"헤르만 헤세"}
                     name={"author"}
                     register={register}
+                    disabled={selectBook}
                 />
                 <InputLabel
                     label={"출판사"}
@@ -233,6 +250,7 @@ export const RegisterModal = ({
                     placeholder={"민음사"}
                     name={"publisher"}
                     register={register}
+                    disabled={selectBook}
                 />
             </div>
             <div className="cont flex">
@@ -245,6 +263,7 @@ export const RegisterModal = ({
                     register={register}
                     pattern={/^[0-9]*$/}
                     errors={errors.totalPage}
+                    disabled={selectBook}
                 />
                 <InputLabel
                     label={"시작하는 쪽"}
@@ -377,6 +396,10 @@ const StyledForm = styled.form`
 
     &[name="title"] {
       padding: 8px 35px 8px 15px;
+    }
+    
+    &:disabled{
+      background-color: #CFCFCF;
     }
   }
 
