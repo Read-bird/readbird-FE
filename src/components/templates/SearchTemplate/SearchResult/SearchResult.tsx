@@ -20,6 +20,14 @@ export const SearchResult = memo(() => {
     [setValue]
   );
 
+  const listHeight = useMemo(() => {
+    const scrollHeight = document.body.scrollHeight;
+    const headerHeight = 90;
+    const footerHeight = 70;
+    const bodyHeight = 20 + 30 + 20;
+    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+  }, []);
+
   return (
     <Wrap>
       <CheckList>
@@ -41,7 +49,7 @@ export const SearchResult = memo(() => {
         ))}
       </CheckList>
       <FixedSizeList
-        height={553}
+        height={listHeight}
         itemSize={142}
         width="100%"
         itemCount={bookDummy.books.bookList.length}
