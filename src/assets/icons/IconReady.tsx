@@ -3,14 +3,14 @@ export const IconReady = () => {
     <svg width="98" height="32" viewBox="0 0 98 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <mask id="path-1-inside-1_396_2312" fill="white">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M98 8C98 3.58172 94.4183 0 90 0L8 0C3.58172 0 0 3.58172 0 8V17C0 21.4183 3.58173 25 8 25L45.2042 25L49.375 32L53.5458 25L90 25C94.4183 25 98 21.4183 98 17V8Z"
         />
       </mask>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M98 8C98 3.58172 94.4183 0 90 0L8 0C3.58172 0 0 3.58172 0 8V17C0 21.4183 3.58173 25 8 25L45.2042 25L49.375 32L53.5458 25L90 25C94.4183 25 98 21.4183 98 17V8Z"
         fill="white"
       />

@@ -49,6 +49,7 @@ const NavInner = styled.div`
 `;
 
 const NavLink = styled(Link)`
+  flex: 1 0 33%;
   text-decoration: none;
   color: ${({ theme }) => theme.colors.darkGray};
 
