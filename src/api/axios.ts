@@ -66,16 +66,6 @@ authFetch.interceptors.response.use(
         }
       });
     }
-    // 기타
-    else {
-      Alert.error({
-        title: '오류가 발생하였습니다.',
-        action: () => {
-          localStorage.clear();
-          window.location.replace('/login');
-        }
-      });
-    }
     return Promise.reject(error);
   }
 );
