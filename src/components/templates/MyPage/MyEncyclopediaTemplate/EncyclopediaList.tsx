@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {PlanModalTemplate} from "@components/templates/PlanModalTemplate";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {authFetch} from "@api/axios";
 
 export const EncyclopediaList = () => {
 
@@ -26,10 +27,26 @@ export const EncyclopediaList = () => {
     ]
 
     const [isOpen, setIsOpen] = useState(false);
+    const [encyList, setEncyList] = useState([]);
+
+    const getEncyList = async () => {
+        try{
+            const res = await authFetch.get("/api/collection");
+            if(res.status === 200){
+                console.log(res)
+            }
+        }catch (err){
+
+        }
+    }
 
     const handleClick = (id: number) => {
         setIsOpen(true);
     }
+
+    useEffect(() => {
+        getEncyList();
+    }, []);
 
     return(
         <StyledUl>

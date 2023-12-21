@@ -10,13 +10,20 @@ import {Alert, go} from "@/utils";
 import {IRegisterForm} from "@api/types/planRegister";
 import {TBookDetail, TSearchBooks, TSearchBooksResult} from "@api/types/book";
 import {SearchList} from "@components/common/Search";
+import {useSelector} from "react-redux";
+import {TRootState} from "@/store/state";
+import {TPlan} from "@api/types";
 
 type TProps = {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
+    isEdit: boolean;
+    planId?: number
 }
 
 export const RegisterModal = ({
-                                  setIsOpen
+                                  setIsOpen,
+                                  isEdit,
+                                  planId
                               }: TProps) => {
     const {
         register,
@@ -40,6 +47,7 @@ export const RegisterModal = ({
     });
 
     const navigate = useNavigate();
+    const { currentDate, planData, weedRecord } = useSelector((state: TRootState) => state.planStore);
     const [yearOptions, setYearOptions] = useState<number[]>([]);
     const [monthOptions, setMonthOptions] = useState<(number | string)[]>([]);
     const [dayOptions, setDatOptions] = useState<(number | string)[]>([]);
@@ -54,6 +62,7 @@ export const RegisterModal = ({
     const [selectBook, setSelectBook] = useState<TBookDetail>();
     const [searchPage, setSearchPage] = useState<number>(1);
     const [isScroll, setIsScroll] = useState(false);
+    const [editPlanId, setEditPlanId] = useState<number>();
 
     useEffect(() => {
         const generateYearOptions = () => {
@@ -100,6 +109,10 @@ export const RegisterModal = ({
         endDay
     ]);
     useEffect(() => {
+        if(isEdit){
+            setIsSearch(false);
+            return;
+        }
         if(!selectBook && watch("title") !== ""){
             setIsSearch(true);
             searchBookInfo();
@@ -121,6 +134,22 @@ export const RegisterModal = ({
             searchBookInfo();
         }
     }, [searchPage]);
+    useEffect(() => {
+        if(isEdit){
+            const editPlanInfo: TPlan | undefined = planData?.find(plan => plan.planId === planId);
+            if(editPlanInfo){
+                const [eY, eM, eD] = editPlanInfo?.endDate.split('T')[0].split('-');
+                setValue("title", editPlanInfo?.title);
+                setValue("author", editPlanInfo?.author);
+                setValue("totalPage", editPlanInfo?.totalPage);
+                setValue("currentPage", String(editPlanInfo?.currentPage));
+                setEditPlanId(editPlanInfo?.planId);
+                setEndYear(eY);
+                setEndMonth(eM);
+                setEndDay(eD);
+            }
+        }
+    }, [isEdit]);
 
     const handleDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let contId = event.target.id;
@@ -148,6 +177,7 @@ export const RegisterModal = ({
         }
     };
 
+    // 등록/수정
     const handleSubmit = async (data: IRegisterForm) => {
         try {
             const requestData = {
@@ -160,27 +190,30 @@ export const RegisterModal = ({
                 startDate: data?.startDate,
                 endDate: data?.endDate,
             }
-            const res = await authFetch.post("/api/plan", requestData);
-            if (res.status === 201) {
+            const res = !isEdit ?
+                await authFetch.post("/api/plan", requestData):
+                await authFetch.put(`/api/plan/${editPlanId}`, {endDate : data?.endDate});
+            if (!isEdit ? res.status === 201 : res.status === 200) {
                 Alert.success({
                     title: '성공!',
-                    text: '플랜이 성공적으로 등록되었습니다.'
+                    text: !isEdit ? '플랜이 성공적으로 등록되었습니다.' : '플랜이 성공적으로 수정되었습니다.'
                 });
                 setIsOpen(false);
                 navigate("/");
             }else{
                 Alert.error({
                     title: 'Error',
-                    text: '플랜 등록에 실패했습니다.'
+                    text: !isEdit ? '플랜 등록에 실패했습니다.' : '플랜 수정에 실패했습니다.'
                 });
             }
         } catch (err) {
             Alert.error({
                 title: 'Error',
-                text: '플랜 등록에 실패했습니다.'
+                text: !isEdit ? '플랜 등록에 실패했습니다.' : '플랜 수정에 실패했습니다.'
             });
         }
     };
+
     const handleClose = () => {
         setIsOpen(false);
     }
@@ -221,7 +254,7 @@ export const RegisterModal = ({
                 register={register}
                 errors={errors.title}
                 defaultValue={selectBook && selectBook?.title}
-                disabled={selectBook}
+                disabled={selectBook || isEdit}
             />
             {isSearch &&
                 <SearchList
@@ -241,7 +274,7 @@ export const RegisterModal = ({
                     placeholder={"헤르만 헤세"}
                     name={"author"}
                     register={register}
-                    disabled={selectBook}
+                    disabled={selectBook || isEdit}
                 />
                 <InputLabel
                     label={"출판사"}
@@ -250,7 +283,7 @@ export const RegisterModal = ({
                     placeholder={"민음사"}
                     name={"publisher"}
                     register={register}
-                    disabled={selectBook}
+                    disabled={selectBook || isEdit}
                 />
             </div>
             <div className="cont flex">
@@ -263,7 +296,7 @@ export const RegisterModal = ({
                     register={register}
                     pattern={/^[0-9]*$/}
                     errors={errors.totalPage}
-                    disabled={selectBook}
+                    disabled={selectBook || isEdit}
                 />
                 <InputLabel
                     label={"시작하는 쪽"}
@@ -286,6 +319,8 @@ export const RegisterModal = ({
                         name={"startDate-y"}
                         options={yearOptions}
                         onChange={handleDateChange}
+                        disabled={isEdit}
+                        defaultValue={startYear}
                     /><span>년</span>
                     <SelectLabel
                         id={"startDate-m"}
@@ -293,6 +328,8 @@ export const RegisterModal = ({
                         name={"startDate-m"}
                         options={monthOptions}
                         onChange={handleDateChange}
+                        disabled={isEdit}
+                        defaultValue={startMonth}
                     /><span>월</span>
                     <SelectLabel
                         id={"startDate-d"}
@@ -300,6 +337,8 @@ export const RegisterModal = ({
                         name={"startDate-d"}
                         options={dayOptions}
                         onChange={handleDateChange}
+                        disabled={isEdit}
+                        defaultValue={startDay}
                     /><span>일 부터</span>
                 </div>
                 <div className="cont select">
@@ -309,6 +348,7 @@ export const RegisterModal = ({
                         name={"endDate-y"}
                         options={yearOptions}
                         onChange={handleDateChange}
+                        defaultValue={endYear}
                     /><span>년</span>
                     <SelectLabel
                         id={"endDate-m"}
@@ -316,6 +356,7 @@ export const RegisterModal = ({
                         name={"endDate-m"}
                         options={monthOptions}
                         onChange={handleDateChange}
+                        defaultValue={endMonth}
                     /><span>월</span>
                     <SelectLabel
                         id={"endDate-d"}
@@ -323,6 +364,7 @@ export const RegisterModal = ({
                         name={"endDate-d"}
                         options={dayOptions}
                         onChange={handleDateChange}
+                        defaultValue={endDay}
                     /><span>일 까지</span>
                 </div>
             </div>
@@ -330,7 +372,7 @@ export const RegisterModal = ({
 
             <div className="cont flex" style={{marginTop: "10px"}}>
                 <button type="button" className="btn-1 btn" onClick={handleClose}>취소</button>
-                <button type="submit" className="btn-2 btn" onClick={onSubmit(handleSubmit)}>확인</button>
+                <button type="submit" className="btn-2 btn" onClick={onSubmit(handleSubmit)}>{!isEdit ? "확인" : "수정"}</button>
             </div>
         </StyledForm>
     )
@@ -435,6 +477,10 @@ const StyledForm = styled.form`
 
     &::placeholder {
       color: #CFCFCF
+    }
+
+    &:disabled{
+      background-color: #CFCFCF;
     }
 
     &:nth-of-type(1) {

@@ -6,6 +6,7 @@ import { Alert } from '@utils/Alert';
 import dayjs from 'dayjs';
 import { MouseEvent, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import {PlanModalTemplate} from "@components/templates/PlanModalTemplate";
 
 type TProps = {
   planId: number;
@@ -16,6 +17,7 @@ type TProps = {
 export const Dots = ({ planId, userId, selectDate }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
   const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
+  const [isEditModal, setIsEditModal] = useState(false);
 
   const handleClose = useCallback(() => {
     setOpen(null);
@@ -33,7 +35,7 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
 
   const handleClickOpenEdit = useCallback(() => {
     // 여기서 수정하기 모달 열기
-    setOpen(null);
+    setIsEditModal(true);
   }, []);
 
   const handleClickRemove = useCallback(
@@ -72,6 +74,14 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
         <Button onClick={handleClickOpenEdit}>수정</Button>
         <Button onClick={handleClickRemove(planId, userId)}>삭제</Button>
       </MiniModal>
+
+        <PlanModalTemplate
+            isOpen={isEditModal}
+            setIsOpen={setIsEditModal}
+            modalIndex={1}
+            isEdit={true}
+            planId={planId}
+        />
     </Wrap>
   );
 };
