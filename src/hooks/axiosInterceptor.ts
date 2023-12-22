@@ -71,7 +71,7 @@ export const useAxiosInterceptor = () => {
           // 토큰과 리프레시 토큰이 모두 만료되어 로그인이 필요할 떄
           else if (message.includes('로그인')) {
             Alert.error({
-              title: '로그인이 필요합니다.',
+              title: '로그인이 만료되었습니다.',
               action: () => {
                 dispatch(setAccessToken(''));
                 localStorage.clear();

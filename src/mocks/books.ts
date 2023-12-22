@@ -15,7 +15,8 @@ export const books: TBookData = {
       isbn: '1231-1231-1231-1233',
       pubDate: '',
       publisher: '출판사명 출판사명 출판사명',
-      title: '도서명 도서명 도서명',
+      title:
+        '딸아, 외로울 때는 시를 읽으렴 - 지금 생의 가장 아름다운 시절을 보내고 있는 당신에게 주고 싶은 시 90편',
       totalPage: 200
     },
     {
