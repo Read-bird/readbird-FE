@@ -1,8 +1,7 @@
-import { setLoading } from '@/store/reducers';
+import { setAccessToken, setLoading } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
-import { authFetch } from '@api/axios';
+import { authFetch, axiosFetch } from '@api/axios';
 import { Alert } from '@utils/Alert';
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -18,8 +17,8 @@ export const useAxiosInterceptor = () => {
         return config;
       },
       (error) => {
-        dispatch(setLoading(true));
-        Promise.reject(error);
+        dispatch(setLoading(false));
+        return Promise.reject(error);
       }
     );
 
@@ -29,35 +28,52 @@ export const useAxiosInterceptor = () => {
         return response;
       },
       async (error) => {
-        const {
-          config,
-          response: { status, data: message }
-        } = error;
-
         dispatch(setLoading(false));
+
+        if (error.response === undefined) {
+          Alert.error({
+            title: '서버와 연결이 원활하지 않습니다.',
+            action: () => {
+              dispatch(setAccessToken(''));
+              localStorage.clear();
+              window.location.replace('/login');
+            }
+          });
+
+          return Promise.reject(error);
+        }
+
+        const config = error.config;
+        const status = error.response.status;
+        const message = error.response.data;
 
         // 토큰이 만료되을 때
         if (status === 412) {
           if (message.includes('토큰 갱신')) {
-            const response = await authFetch.post('/api/user/token', {
-              RefreshToken: localStorage.getItem('rb-refresh-token')
+            const response = await axiosFetch({
+              method: 'post',
+              url: '/api/user/token',
+              options: {
+                headers: {
+                  RefreshToken: `${localStorage.getItem('rb-refresh-token')}`
+                }
+              }
             });
+
             // 리프레시 토큰 요청이 성공할 때
             if (response.status === 200) {
               const authorization = response.headers?.authorization;
               localStorage.setItem('rb-access-token', authorization);
-              axios.defaults.headers.common.Authorization = `Bearer ${authorization}`;
               // 진행중이던 요청 이어서하기
-              const originRequest = config;
-              originRequest.headers.Authorization = `Bearer ${authorization}`;
-              return axios(originRequest);
+              return authFetch(config);
             }
           }
           // 토큰과 리프레시 토큰이 모두 만료되어 로그인이 필요할 떄
           else if (message.includes('로그인')) {
             Alert.error({
-              title: '로그인이 필요합니다.',
+              title: '로그인이 만료되었습니다.',
               action: () => {
+                dispatch(setAccessToken(''));
                 localStorage.clear();
                 window.location.replace('/login');
               }
@@ -69,6 +85,7 @@ export const useAxiosInterceptor = () => {
           Alert.error({
             title: '유저정보가 올바르지 않습니다.',
             action: () => {
+              dispatch(setAccessToken(''));
               localStorage.clear();
               window.location.replace('/login');
             }

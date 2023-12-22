@@ -70,6 +70,15 @@ export const Inner = styled.div`
       color: #ababab;
     }
   }
+
+  .last-wrap {
+    flex: 1 0 20px;
+    overflow-y: scroll;
+
+    font-size: 14px;
+    font-weight: 400;
+    color: #ababab;
+  }
 `;
 
 export const IconWrap = styled.div`
@@ -99,9 +108,18 @@ export const FlexBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: 5px;
 
   .info-wrap {
-    flex: 1;
+    flex: 0 0 100px;
+
+    &:nth-of-type(2) {
+      flex: 1 0 100px;
+    }
+
+    &:last-of-type {
+      flex: 0 0 70px;
+    }
   }
 `;
 
@@ -129,10 +147,17 @@ export const ButtonWrap = styled.div`
       cursor: default;
 
       .icon-wrap {
+        display: none;
         position: absolute;
         bottom: 100%;
         left: 50%;
         transform: translateX(-50%);
+      }
+
+      &:hover {
+        .icon-wrap {
+          display: block;
+        }
       }
     }
 

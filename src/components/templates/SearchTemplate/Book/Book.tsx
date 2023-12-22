@@ -69,6 +69,7 @@ const ListItem = styled.div`
   padding: 9px 12px;
 
   display: flex;
+  align-items: center;
   gap: 7px;
 
   img {
@@ -81,6 +82,7 @@ const Inner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 95px;
 
   .book-info {
     width: 100%;
@@ -91,6 +93,12 @@ const BookTitle = styled.h2`
   font-size: 14px;
   font-weight: 700;
   color: black;
+
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `;
 
 const TextSpan = styled.span`

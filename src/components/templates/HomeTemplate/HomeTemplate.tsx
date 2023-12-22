@@ -1,12 +1,13 @@
 import { setCurrentDate, setPlan } from '@/store/reducers';
 import { TAppDispatch, TRootState } from '@/store/state';
-import { getPlanList } from '@api/plan';
+import { axiosFetch } from '@api/axios';
 import { IconReact } from '@assets/icons';
 import { CalendarBird } from '@components/common/CalendarBird';
 import { Spacing } from '@components/common/Spacing';
 import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
 import { lastDayMonth } from '@utils/calendar';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,19 +39,25 @@ export const HomeTemplate = () => {
   };
 
   const getList = async () => {
-    const result = await getPlanList(dayjs(currentDate).format('YYYY-MM-DD'));
+    try {
+      const result = await axiosFetch({
+        method: 'get',
+        url: '/api/plan',
+        options: { params: { date: dayjs(currentDate).format('YYYY-MM-DD') } }
+      });
 
-    if (typeof result.data !== 'string') {
       dispatch(setPlan({ ...result.data }));
-    } else if (result.error) {
-      if (result.data) {
+    } catch (e) {
+      if (e instanceof AxiosError) {
         Alert.error({
-          title: result.data,
+          title: e.response?.data,
           action: () => {
             dispatch(setPlan({ weedRecord: [], planData: [], previouslyFailedPlan: [] }));
           }
         });
       }
+
+      throw e;
     }
   };
 

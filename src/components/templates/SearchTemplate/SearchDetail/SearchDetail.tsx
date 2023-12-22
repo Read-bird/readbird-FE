@@ -65,8 +65,10 @@ export const SearchDetail = (props: TProps) => {
         <Spacing height={20} />
         <div className="info-wrap">
           <h3>책 소개</h3>
-          <p>{description}</p>
         </div>
+        <Spacing height={16} />
+        <p className="last-wrap">{description}</p>
+        <Spacing height={16} />
       </Inner>
       <ButtonWrap>
         <button type="button" className="btn-buy">
