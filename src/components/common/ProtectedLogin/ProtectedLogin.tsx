@@ -1,5 +1,6 @@
-import { setAccessToken } from '@/store/reducers';
+import { setAccessToken, setCurrentDate } from '@/store/reducers';
 import { TAppDispatch, TRootState } from '@/store/state';
+import dayjs from 'dayjs';
 import { Fragment, ReactNode, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -17,6 +18,9 @@ export const ProtectedLogin = ({ loginNode, appNode }: TProps) => {
   const isLoginPath = useMemo(() => /login/g.test(location.pathname), [location.pathname]);
 
   useEffect(() => {
+    // 첫 접속시 당일 날짜 등록
+    dispatch(setCurrentDate(dayjs().format()));
+    // 토큰 등록
     dispatch(setAccessToken(localStorage.getItem('rb-access-token') ?? ''));
   }, []);
 
