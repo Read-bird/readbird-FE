@@ -1,5 +1,10 @@
+import { ErrorBoundary } from '@components/common/ErrorBoundary';
 import { HomeTemplate } from '@components/templates/HomeTemplate';
 
 export const AppHome = () => {
-  return <HomeTemplate />;
+  return (
+    <ErrorBoundary>
+      <HomeTemplate />
+    </ErrorBoundary>
+  );
 };
