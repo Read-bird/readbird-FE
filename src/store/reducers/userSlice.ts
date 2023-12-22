@@ -7,7 +7,7 @@ interface IUserState {
 }
 
 const initialState: IUserState = {
-  accessToken: '',
+  accessToken: localStorage.getItem('rb-access-token') ?? '',
   userName: '',
   userId: null
 };
