@@ -5,6 +5,8 @@ import {useState} from "react";
 import {PlanModalTemplate} from "@components/templates/PlanModalTemplate";
 import {Alert} from "@/utils";
 import {authFetch} from "@api/axios";
+import {setAccessToken} from "@/store/reducers";
+import {useDispatch} from "react-redux";
 
 export const MyMenu = () => {
 
@@ -34,12 +36,14 @@ export const MyMenu = () => {
             path: "/withdrawal"
         },
     ]
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isReset, setIsReset] = useState(false);
     const [isWithdrawal, setIsWithdrawal] = useState(false);
 
     const handleClick = (path: string) => {
         if(path === "/logout"){
+            dispatch(setAccessToken(""));
             navigate("/login");
             localStorage.clear();
         }else if(path === "/reset"){
