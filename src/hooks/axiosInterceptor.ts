@@ -18,8 +18,8 @@ export const useAxiosInterceptor = () => {
         return config;
       },
       (error) => {
-        dispatch(setLoading(true));
-        Promise.reject(error);
+        dispatch(setLoading(false));
+        return Promise.reject(error);
       }
     );
 
@@ -29,12 +29,22 @@ export const useAxiosInterceptor = () => {
         return response;
       },
       async (error) => {
-        const {
-          config,
-          response: { status, data: message }
-        } = error;
-
         dispatch(setLoading(false));
+
+        if (error.response === undefined) {
+          Alert.error({
+            title: '서버와의 연결이 원활하지 않습니다.',
+            action: () => {
+              localStorage.clear();
+              window.location.replace('/login');
+            }
+          });
+          return;
+        }
+
+        const config = error.config;
+        const status = error.response.status;
+        const message = error.response.data;
 
         // 토큰이 만료되을 때
         if (status === 412) {
