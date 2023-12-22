@@ -11,10 +11,10 @@ export const books: TBookData = {
       bookId: 1,
       coverImage: '',
       description:
-        'Lorem ipsum dolor sit amet consectetur. Ac purus ut cras quam. Volutpat aliquam semper sem in purus aliquam eget non. Lacus purus tellus quis euismod condimentum et. Sit condimentum in non sed est. In tellus faucibus pulvinar vestibulum risus sagittis ultrices at.',
+        'Lorem ipsum dolor sit amet consectetur. Ac purus ut cras quam. Volutpat aliquam semper sem in purus aliquam eget non. Lacus purus tellus quis euismod condimentum et. Sit condimentum in non sed est. In tellus faucibus pulvinar vestibulum risus sagittis ultrices at. Lorem ipsum dolor sit amet consectetur. Ac purus ut cras quam. Volutpat aliquam semper sem in purus aliquam eget non. Lacus purus tellus quis euismod condimentum et. Sit condimentum in non sed est. In tellus faucibus pulvinar vestibulum risus sagittis ultrices at.',
       isbn: '1231-1231-1231-1233',
       pubDate: '',
-      publisher: '출판사명 출판사명 출판사명',
+      publisher: '출판사명 출판사명 출판사명 출판사명 출판사명',
       title:
         '딸아, 외로울 때는 시를 읽으렴 - 지금 생의 가장 아름다운 시절을 보내고 있는 당신에게 주고 싶은 시 90편',
       totalPage: 200
