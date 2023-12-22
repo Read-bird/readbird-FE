@@ -1,4 +1,4 @@
-import { setLoading } from '@/store/reducers';
+import { setAccessToken, setLoading } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { authFetch } from '@api/axios';
 import { Alert } from '@utils/Alert';
@@ -35,6 +35,7 @@ export const useAxiosInterceptor = () => {
           Alert.error({
             title: '서버와의 연결이 원활하지 않습니다.',
             action: () => {
+              dispatch(setAccessToken(''));
               localStorage.clear();
               window.location.replace('/login');
             }
@@ -68,6 +69,7 @@ export const useAxiosInterceptor = () => {
             Alert.error({
               title: '로그인이 필요합니다.',
               action: () => {
+                dispatch(setAccessToken(''));
                 localStorage.clear();
                 window.location.replace('/login');
               }
@@ -79,6 +81,7 @@ export const useAxiosInterceptor = () => {
           Alert.error({
             title: '유저정보가 올바르지 않습니다.',
             action: () => {
+              dispatch(setAccessToken(''));
               localStorage.clear();
               window.location.replace('/login');
             }
