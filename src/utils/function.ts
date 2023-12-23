@@ -28,6 +28,10 @@ export const go = (obj: Record<string, string>) => {
 export const convertObject = <T>(list: T[], key: keyof T): Record<string, T> => {
   const object: Record<string, T> = {};
 
+  if (typeof list !== 'object') {
+    return object;
+  }
+
   for (const data of list) {
     const mapKey: T[keyof T] = data[key];
 
