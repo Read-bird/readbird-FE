@@ -11,6 +11,9 @@ type TProps = {
   data: {
     list: TBook[];
     totalPage: number;
+    lastIndex: number;
+    currentPage: number;
+    getBookList?: () => void;
   };
   index: number;
   style: CSSProperties;
@@ -21,6 +24,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
   const props = data.list[index];
   const { coverImage, title, author, publisher } = props;
   const dispatch = useDispatch<TAppDispatch>();
+  const observer = useRef<IntersectionObserver | null>(null);
 
   const handleClickItem = useCallback(
     (props: TBook) => () => {
@@ -28,6 +32,29 @@ export const Book = memo(({ data, index, style }: TProps) => {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    if (data.lastIndex === index) {
+      const handleObserver = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (data.totalPage > data.currentPage) {
+              data.getBookList?.();
+            }
+          }
+        });
+      };
+
+      observer.current = new IntersectionObserver(handleObserver);
+
+      const lastItem = document.querySelector('.last-item');
+      if (lastItem) observer.current.observe(lastItem);
+    }
+
+    return () => {
+      observer.current?.disconnect();
+    };
+  }, [data.lastIndex, index]);
 
   return (
     <div style={style} onClick={handleClickItem(props)}>
@@ -50,6 +77,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
           <TextSpan className="dark">총 {totalPage.toLocaleString()}쪽</TextSpan>
         </Inner>
       </ListItem>
+      {data.lastIndex === index && <div className="last-item" />}
     </div>
   );
 }, areEqual);

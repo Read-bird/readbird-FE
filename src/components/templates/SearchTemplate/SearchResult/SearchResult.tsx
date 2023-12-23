@@ -1,17 +1,23 @@
+import { initBookList } from '@/store/reducers';
+import { TRootState } from '@/store/state';
 import { IconDayBird } from '@assets/icons';
 import { Book } from '@components/templates/SearchTemplate/Book';
 import { TFormValue } from '@components/templates/SearchTemplate/SearchTemplate';
-import { useSearchOutletProps } from '@hooks/searchOutlet';
-import { bookDummy } from '@mocks/index';
-import { memo, useCallback, useMemo } from 'react';
+import { useGetSearchList } from '@components/templates/SearchTemplate/hooks';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
 export const SearchResult = memo(() => {
   const checkboxes = useMemo(() => ['전체', '책 이름', '글쓴이', '출판사'], []);
-  const { setValue } = useFormContext<TFormValue>();
-  const { searchItem } = useSearchOutletProps();
+  const dispatch = useDispatch();
+  const { bookList, totalPage } = useSelector((state: TRootState) => state.bookSearchStore);
+  const getSearchBookList = useGetSearchList();
+  const { watch, setValue, getValues, reset } = useFormContext<TFormValue>();
+  const searchItem = watch('searchItem');
+  const currentPage = watch('page');
 
   const handleClick = useCallback(
     (checkbox: string) => () => {
@@ -26,6 +32,33 @@ export const SearchResult = memo(() => {
     const footerHeight = 70;
     const bodyHeight = 20 + 30 + 20;
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+  }, []);
+
+  const getBookList = useCallback(async () => {
+    const values = getValues();
+    const result = await getSearchBookList(values);
+
+    if (result) {
+      setValue('page', values.page + 1);
+    }
+  }, [getValues, setValue, getSearchBookList]);
+
+  const itemData = useMemo(
+    () => ({
+      list: bookList,
+      totalPage: totalPage,
+      lastIndex: bookList.length - 1,
+      currentPage: currentPage,
+      getBookList: getBookList
+    }),
+    [bookList, totalPage, currentPage, getBookList]
+  );
+
+  useEffect(() => {
+    return () => {
+      dispatch(initBookList());
+      reset();
+    };
   }, []);
 
   return (
@@ -48,18 +81,19 @@ export const SearchResult = memo(() => {
           </li>
         ))}
       </CheckList>
-      <FixedSizeList
-        height={listHeight}
-        itemSize={142}
-        width="100%"
-        itemCount={bookDummy.books.bookList.length}
-        itemData={{
-          list: bookDummy.books.bookList,
-          totalPage: bookDummy.books.totalPage
-        }}
-      >
-        {Book}
-      </FixedSizeList>
+      {!!bookList.length ? (
+        <FixedSizeList
+          height={listHeight}
+          itemSize={142}
+          width="100%"
+          itemCount={bookList.length}
+          itemData={itemData}
+        >
+          {Book}
+        </FixedSizeList>
+      ) : (
+        <Empty>검색된 도서가 없어요</Empty>
+      )}
     </Wrap>
   );
 });
@@ -138,4 +172,13 @@ const IconWrap = styled.div`
   svg {
     width: 20px;
   }
+`;
+
+const Empty = styled.p`
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #747474;
 `;
