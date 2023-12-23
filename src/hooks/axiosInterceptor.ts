@@ -90,9 +90,9 @@ export const useAxiosInterceptor = () => {
               window.location.replace('/login');
             }
           });
+        } else {
+          return Promise.reject(error);
         }
-
-        return Promise.reject(error);
       }
     );
   }, []);
