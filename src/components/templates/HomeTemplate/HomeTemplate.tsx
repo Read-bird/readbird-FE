@@ -26,6 +26,8 @@ export const HomeTemplate = () => {
       // 홈 캘린더로 이동
       navigate('/calendar');
     } else {
+      // 캘린더 아이콘으로 홈으로 돌아가면 오늘 날짜로 변경
+      dispatch(setCurrentDate(dayjs().format('YYYY-MM-DD')));
       navigate('/');
     }
   };
