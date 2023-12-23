@@ -35,7 +35,7 @@ export const CallbackTemplate = () => {
       if (res.status === 200) {
         const { access_token } = res.data;
         const resData = await axios.post<TLoginResType>(
-          `${REACT_APP_SERVER_PATH}/api/user/login-guest`,
+          `${REACT_APP_SERVER_PATH}/api/user/login`,
           {},
           {
             headers: {

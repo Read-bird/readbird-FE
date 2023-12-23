@@ -5,32 +5,6 @@ import {useEffect, useState} from "react";
 
 export const LibraryList = () => {
 
-    const dummy = [
-        {
-            bookId: 1,
-            bookImg: "",
-            title: "데미안",
-            author: "헤르만 헤세",
-            publisher: "민음사",
-            totalPage: "240"
-        },
-        {
-            bookId: 2,
-            bookImg: "",
-            title: "데미안",
-            author: "데미안 길어지면데미안 길어지면데미안 길어지면데미안 길어지면",
-            publisher: "민음사",
-            totalPage: "240"
-        },
-        {
-            bookId: 3,
-            bookImg: "",
-            title: "데미안 길어지면 데미안 길어지면데미안 길어지면데미안 길어지면",
-            author: "헤르만 헤세",
-            publisher: "민음사",
-            totalPage: "240"
-        }
-    ]
     const [planList, setPlanList] = useState([]);
 
     const getPlanList = async () => {
@@ -45,7 +19,7 @@ export const LibraryList = () => {
     }
 
     useEffect(() => {
-        getPlanList()
+        getPlanList();
     }, []);
 
     return(

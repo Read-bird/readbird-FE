@@ -116,6 +116,10 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
     font-size: 16px;
     font-weight: 700;
     color: #000000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 155px;
   }
 
   .book-page {

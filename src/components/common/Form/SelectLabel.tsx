@@ -8,6 +8,8 @@ type TProps = {
     name: string;
     options: (number | string)[];
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    disabled?: boolean;
+    defaultValue?: string;
 }
 
 export const SelectLabel = ({
@@ -16,7 +18,9 @@ export const SelectLabel = ({
                                 requiredText,
                                 name,
                                 options,
-                                onChange
+                                onChange,
+                                disabled,
+                                defaultValue
                             }: TProps) => {
     const {
         register,
@@ -33,6 +37,8 @@ export const SelectLabel = ({
                 required: requiredText !== "",
             })}
             onChange={onChange}
+            disabled={disabled}
+            value={defaultValue}
         >
             {options.map((option, index) => (
                 <option key={index} value={option}>
