@@ -1,8 +1,4 @@
-import { TBookDetail, TSearchBooksResult } from '@api/types';
-
-export type TBook = Omit<TBookDetail, 'totalPage'> & { totalPage: number };
-
-export type TBookData = Omit<TSearchBooksResult, 'bookList'> & { bookList: TBook[] };
+import { TBookData } from '@/store/reducers';
 
 export const books: TBookData = {
   bookList: [

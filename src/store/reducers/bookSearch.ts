@@ -1,13 +1,10 @@
-import { TSearchBooksResult } from '@api/types';
+import { TBookDetail, TSearchBooksResult } from '@api/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-type TSearchData = {
-  searchText: string | null;
-  searchPage: number;
-  searchScale?: number;
-};
+export type TBook = Omit<TBookDetail, 'totalPage'> & { totalPage: number };
 
-type TState = TSearchBooksResult & TSearchData;
+export type TBookData = Omit<TSearchBooksResult, 'bookList'> & { bookList: TBook[] };
+
 
 const initialState: TState = {
   bookList: [],

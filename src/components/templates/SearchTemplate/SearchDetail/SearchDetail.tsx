@@ -1,15 +1,14 @@
-import { setBookDetail } from '@/store/reducers';
+import { TBook, setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { IconReact, IconReady } from '@assets/icons';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
-import { TBook } from '@mocks/books';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ButtonWrap, FlexBox, IconWrap, Inner, Wrap, imgStyle } from './Styled';
 
-type TProps = TBook & { totalPage: number };
+type TProps = TBook;
 
 export const SearchDetail = (props: TProps) => {
   const { coverImage, title, author, publisher, description, isbn, totalPage } = props;

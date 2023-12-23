@@ -1,9 +1,8 @@
-import { setBookDetail } from '@/store/reducers';
+import { TBook, setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
-import { TBook } from '@mocks/books';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
 import styled, { CSSObject, CSSProperties } from 'styled-components';

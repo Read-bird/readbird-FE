@@ -1,4 +1,4 @@
-import { TBook } from '@mocks/books';
+import { TBook } from '@/store/reducers/bookSearch';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const bookDetailSlice = createSlice({
