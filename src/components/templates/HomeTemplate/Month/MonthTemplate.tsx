@@ -18,8 +18,8 @@ const data = {
 };
 
 export const MonthTemplate = () => {
-  const { currentDate } = useSelector((state: TRootState) => state.planStore);
-  const nowDate = useMemo(() => new Date(currentDate), [currentDate]);
+  const { monthCurrentDate } = useSelector((state: TRootState) => state.planStore);
+  const nowDate = useMemo(() => new Date(monthCurrentDate), [monthCurrentDate]);
   const dispatch = useDispatch<TAppDispatch>();
   const navigate = useNavigate();
 

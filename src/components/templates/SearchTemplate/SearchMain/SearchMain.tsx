@@ -14,6 +14,16 @@ export const SearchMain = () => {
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
   }, []);
 
+  const itemData = useMemo(
+    () => ({
+      list: bookDummy.books.bookList,
+      totalPage: bookDummy.books.totalPage,
+      lastIndex: bookDummy.books.bookList.length - 1,
+      currentPage: 1
+    }),
+    [bookDummy.books]
+  );
+
   return (
     <Wrap>
       <Spacing height={20} />
@@ -26,10 +36,7 @@ export const SearchMain = () => {
         width="100%"
         height={listHeight}
         itemCount={bookDummy.books.bookList.length}
-        itemData={{
-          list: bookDummy.books.bookList,
-          totalPage: bookDummy.books.totalPage
-        }}
+        itemData={itemData}
       >
         {Book}
       </FixedSizeList>

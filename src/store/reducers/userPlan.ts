@@ -8,13 +8,15 @@ type TState = {
   planData: TPlan[];
   previouslyFailedPlan: TPreviouslyFailedPlan[];
   currentDate: string;
+  monthCurrentDate: string;
 };
 
 const initialState: TState = {
   weedRecord: {},
   planData: [],
   previouslyFailedPlan: [],
-  currentDate: dayjs().format()
+  currentDate: dayjs().format(),
+  monthCurrentDate: dayjs().format()
 };
 
 const planSlice = createSlice({
@@ -29,10 +31,13 @@ const planSlice = createSlice({
     },
     setCurrentDate: (state, action: PayloadAction<string>) => {
       state.currentDate = action.payload;
+    },
+    setMonthCurrentDate: (state, action: PayloadAction<string>) => {
+      state.monthCurrentDate = action.payload;
     }
   }
 });
 
-export const { setPlan, setCurrentDate } = planSlice.actions;
+export const { setPlan, setCurrentDate, setMonthCurrentDate } = planSlice.actions;
 
 export const planStore = planSlice.reducer;

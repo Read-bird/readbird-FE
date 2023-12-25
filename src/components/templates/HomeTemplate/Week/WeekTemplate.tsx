@@ -1,4 +1,6 @@
+import { setPlan } from '@/store/reducers';
 import { TRootState } from '@/store/state';
+import { axiosFetch } from '@api/axios';
 import { IconPlus } from '@assets/icons';
 import { IconEggNoPlan, IconEggOnePlan, IconEggThreePlan, IconEggTwoPlan } from '@assets/images';
 import { WeekCalendar } from '@components/common/Calendar';
@@ -6,12 +8,16 @@ import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { MAX_CREATION_COUNT } from '@constants/plan';
-import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Alert } from '@utils/Alert';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
 
 export const WeekTemplate = () => {
   const { currentDate, planData, weedRecord } = useSelector((state: TRootState) => state.planStore);
+  const dispatch = useDispatch();
   const date = useMemo(() => new Date(currentDate), [currentDate]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,6 +25,33 @@ export const WeekTemplate = () => {
     // 모달 띄움
     setIsModalOpen(true);
   };
+
+  const getList = async () => {
+    try {
+      const result = await axiosFetch({
+        method: 'get',
+        url: '/api/plan',
+        options: { params: { date: dayjs(currentDate).format('YYYY-MM-DD') } }
+      });
+
+      dispatch(setPlan({ ...result.data }));
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({
+          title: e.response?.data,
+          action: () => {
+            dispatch(setPlan({ weedRecord: [], planData: [], previouslyFailedPlan: [] }));
+          }
+        });
+      }
+
+      throw e;
+    }
+  };
+
+  useEffect(() => {
+    getList();
+  }, [currentDate]);
 
   return (
     <Wrap>

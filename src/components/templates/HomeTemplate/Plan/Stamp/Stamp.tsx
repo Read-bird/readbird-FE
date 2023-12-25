@@ -1,4 +1,4 @@
-import { completedPlan } from '@api/plan';
+import { axiosFetch } from '@api/axios';
 import { EAchievementStatus, ERecordStatus } from '@api/types';
 import { IconFailed, IconProgress, IconSuccess } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
@@ -30,18 +30,30 @@ export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => 
     (e: MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
 
-      if (isSame) {
+      if (isSame && recordStatus === ERecordStatus.inProgress) {
         setOpen((prev) => (prev === planId ? null : planId));
       }
     },
-    [planId, isSame]
+    [planId, isSame, recordStatus]
   );
 
   const handleClickSuccess = useCallback(async () => {
     try {
       // 쪽 수 저장 및 보내기
-      const result = await completedPlan(planId, EAchievementStatus.success, maxPage);
-      console.log(result);
+      const result = await axiosFetch<
+        { status: EAchievementStatus; currentPage: number },
+        {
+          message: string;
+          newCharacter: string;
+        }
+      >({
+        method: 'put',
+        url: `/api/record/${planId}`,
+        options: { data: { status: EAchievementStatus.success, currentPage: maxPage } }
+      });
+
+      console.log(result.data.message);
+      console.log(result.data.newCharacter);
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.error({ title: `${e.response?.data.message}` });
@@ -67,8 +79,20 @@ export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => 
       preConfirm: async (page) => {
         try {
           // 쪽 수 저장 및 보내기
-          const result = await completedPlan(planId, EAchievementStatus.unstable, page);
-          console.log(result);
+          const result = await axiosFetch<
+            { status: EAchievementStatus; currentPage: number },
+            {
+              message: string;
+              newCharacter: string;
+            }
+          >({
+            method: 'put',
+            url: `/api/record/${planId}`,
+            options: { data: { status: EAchievementStatus.unstable, currentPage: page } }
+          });
+
+          console.log(result.data.message);
+          console.log(result.data.newCharacter);
         } catch (e: any) {
           if (e instanceof AxiosError) {
             Swal.showValidationMessage(e.response?.data.message);
@@ -83,7 +107,7 @@ export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => 
   return (
     <Wrap>
       <IconWrap
-        className={cls({ 'cursor-default': recordStatus !== ERecordStatus.inProgress && !isSame })}
+        className={cls({ 'cursor-default': recordStatus !== ERecordStatus.inProgress || !isSame })}
         onClick={handleClickOpenModal}
       >
         {
