@@ -21,10 +21,12 @@ export type TPlan = {
   planId: number;
   title: string;
   author: string;
+  publisher: string;
   coverImage: string | null;
   totalPage: number;
   currentPage: number;
   target: number;
+  startDate: string;
   endDate: string;
   planStatus: ERecordStatus; // 플랜 전체의 달성여부
   recordStatus: ERecordStatus; // 당일 목표치

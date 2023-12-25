@@ -13,7 +13,7 @@ export const MyRestoreList = () => {
     const { currentDate, planData, weedRecord } = useSelector((state: TRootState) => state.planStore);
     const [restoreList, setRestoreList] = useState([]);
 
-    console.log(planData);
+    // console.log(planData);
 
     const getRestoreList = async () => {
         try{
