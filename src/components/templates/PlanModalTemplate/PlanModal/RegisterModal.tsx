@@ -138,12 +138,17 @@ export const RegisterModal = ({
         if(isEdit){
             const editPlanInfo: TPlan | undefined = planData?.find(plan => plan.planId === planId);
             if(editPlanInfo){
+                const [sY, sM, sD] = editPlanInfo?.startDate?.split('T')[0].split('-');
                 const [eY, eM, eD] = editPlanInfo?.endDate.split('T')[0].split('-');
                 setValue("title", editPlanInfo?.title);
                 setValue("author", editPlanInfo?.author);
+                setValue("publisher", editPlanInfo?.publisher);
                 setValue("totalPage", editPlanInfo?.totalPage);
                 setValue("currentPage", String(editPlanInfo?.currentPage));
                 setEditPlanId(editPlanInfo?.planId);
+                setStartYear(sY);
+                setStartMonth(sM);
+                setStartDay(sD);
                 setEndYear(eY);
                 setEndMonth(eM);
                 setEndDay(eD);
