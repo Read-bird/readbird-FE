@@ -1,20 +1,18 @@
 import { TPlanRecord } from '@api/types';
 import { DayBird } from '@components/common/DayBird';
 import { cls, getClassByStatus } from '@utils/classname';
-import { convertObject } from '@utils/function';
 import dayjs from 'dayjs';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import ReactCalendar, { TileContentFunc, TileDisabledFunc } from 'react-calendar';
 import '../../../styles/calendar.css';
 
 type TProps = {
   currentDate: Date;
-  record: TPlanRecord[];
+  record: Record<string, TPlanRecord>;
   changeCurrentDate: (date: string) => void;
 };
 
 export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => {
-  const planDateRecord = useMemo(() => convertObject(record, 'date'), [record]);
   const onChange = (value: Date) => {
     changeCurrentDate(dayjs(value).format());
   };
@@ -23,7 +21,7 @@ export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => 
     ({ date }) => {
       const formatDate = dayjs(date).format('YYYY-MM-DD');
 
-      const data = planDateRecord[formatDate];
+      const data = record[formatDate];
       const className = getClassByStatus(date, data?.achievementStatus ?? null, currentDate);
 
       return (
@@ -36,7 +34,7 @@ export const Calendar = ({ record, currentDate, changeCurrentDate }: TProps) => 
         </DayBird>
       );
     },
-    [planDateRecord, currentDate]
+    [record, currentDate]
   );
 
   const tileDisabled: TileDisabledFunc = useCallback(

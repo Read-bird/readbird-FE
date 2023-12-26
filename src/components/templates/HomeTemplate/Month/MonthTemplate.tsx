@@ -1,11 +1,15 @@
-import { setCurrentDate } from '@/store/reducers';
+import { setCurrentDate, setMonthRecord } from '@/store/reducers';
 import { TAppDispatch, TRootState } from '@/store/state';
+import { axiosFetch } from '@api/axios';
 import { EAchievementStatus } from '@api/types';
 import { IconBook, IconDayBirdMini, IconSuccess } from '@assets/icons';
 import { Calendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
-import { dummy } from '@mocks/index';
-import { useCallback, useMemo } from 'react';
+import { Alert } from '@utils/Alert';
+import { convertError } from '@utils/errors';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DefinitionList, FlexBox, GuideLabel, GuideText, Section, SubTitle, Wrap } from './Styled';
@@ -18,7 +22,7 @@ const data = {
 };
 
 export const MonthTemplate = () => {
-  const { monthCurrentDate } = useSelector((state: TRootState) => state.planStore);
+  const { monthCurrentDate, monthRecord } = useSelector((state: TRootState) => state.planStore);
   const nowDate = useMemo(() => new Date(monthCurrentDate), [monthCurrentDate]);
   const dispatch = useDispatch<TAppDispatch>();
   const navigate = useNavigate();
@@ -31,11 +35,37 @@ export const MonthTemplate = () => {
     [dispatch, navigate]
   );
 
+  const getRecordList = async () => {
+    try {
+      const response = await axiosFetch({
+        url: '/api/record',
+        method: 'get',
+        options: {
+          params: {
+            date: dayjs(monthCurrentDate).format('YYYY-MM')
+          }
+        }
+      });
+
+      if (response.status === 200) {
+        dispatch(setMonthRecord(response.data.record));
+      }
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({ title: convertError(e.response?.data.message) });
+      }
+    }
+  };
+
+  useEffect(() => {
+    getRecordList();
+  }, [monthCurrentDate]);
+
   return (
     <Wrap>
       <Section>
         <Calendar
-          record={dummy.monthCalendar(new Date())}
+          record={monthRecord}
           currentDate={nowDate}
           changeCurrentDate={changeCurrentDate}
         />
