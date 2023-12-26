@@ -18,18 +18,3 @@ export const getPlanList = async (date: string): Promise<TResponse<TPlanData | s
     return { error: true, success: false, data: '' };
   }
 };
-
-// 플랜 삭제하기
-export const deletePlan = async (planId: number, userId: number): Promise<TResponse<string>> => {
-  try {
-    const result = await authFetch.delete(`/api/plan/${planId}`, { data: { userId } });
-
-    return { error: false, success: true, data: result.data };
-  } catch (e: any) {
-    if (e instanceof AxiosError) {
-      return { error: true, success: false, data: e.response?.data.message ?? '' };
-    }
-
-    return { error: true, success: false, data: '' };
-  }
-};
