@@ -1,12 +1,16 @@
-import { deletePlan } from '@api/plan';
+import { deletePlanData } from '@/store/reducers';
+import { axiosFetch } from '@api/axios';
 import { IconReact } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
+import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
+import { convertError } from '@utils/errors';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { MouseEvent, useCallback, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import {PlanModalTemplate} from "@components/templates/PlanModalTemplate";
 
 type TProps = {
   planId: number;
@@ -18,6 +22,7 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
   const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
   const [isEditModal, setIsEditModal] = useState(false);
+  const dispatch = useDispatch();
 
   const handleClose = useCallback(() => {
     setOpen(null);
@@ -38,6 +43,7 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
     setIsEditModal(true);
   }, []);
 
+  // 플랜삭제
   const handleClickRemove = useCallback(
     (planId: number, userId: number | null) => () => {
       if (userId === null) return;
@@ -47,13 +53,29 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
         text: '* 삭제된 플랜은 마이페이지에서 2주동안 보관됩니다.',
         action: async (result) => {
           if (result.isConfirmed) {
-            const result = await deletePlan(planId, userId);
-            if (result.success) {
-              Alert.success({ title: '삭제되었습니다!' });
-            } else {
-              Alert.error({ title: `${result.data.replace('Bad Request :', '')}` });
+            try {
+              const result = await axiosFetch({
+                url: `api/plan/${planId}`,
+                method: 'delete',
+                options: {
+                  data: { userId }
+                }
+              });
+
+              if (result.status === 200) {
+                Alert.success({
+                  title: '삭제되었습니다!',
+                  action: () => {
+                    dispatch(deletePlanData(planId));
+                    setOpen(null);
+                  }
+                });
+              }
+            } catch (e) {
+              if (e instanceof AxiosError) {
+                Alert.error({ title: convertError(e.response?.data.message) });
+              }
             }
-            setOpen(null);
           }
         }
       });
@@ -75,13 +97,12 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
         <Button onClick={handleClickRemove(planId, userId)}>삭제</Button>
       </MiniModal>
 
-        <PlanModalTemplate
-            isOpen={isEditModal}
-            setIsOpen={setIsEditModal}
-            modalIndex={1}
-            isEdit={true}
-            planId={planId}
-        />
+      <PlanModalTemplate
+        isOpen={isEditModal}
+        setIsOpen={setIsEditModal}
+        modalIndex={1}
+        planId={planId}
+      />
     </Wrap>
   );
 };
