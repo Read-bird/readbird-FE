@@ -275,10 +275,10 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
   );
 
   // 도서 다음페이지 호출
-  const handleNextPage = () => {
+  const handleNextPage = useCallback(() => {
     const { title, searchData } = getValues();
     searchBookInfo(title ?? undefined, searchData.page + 1 ?? undefined);
-  };
+  }, [searchBookInfo, getValues]);
 
   const titleRegister = useMemo(
     () =>
