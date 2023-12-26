@@ -12,8 +12,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { Body, Head, Wrap } from './Styled';
 
 export type TFormValue = {
+  searchType: 'all' | 'title' | 'author' | 'publisher';
   searchText: string | null;
-  searchItem: string;
   page: number;
   scale: number;
 };
@@ -25,8 +25,8 @@ export const SearchTemplate = () => {
 
   const methods = useForm<TFormValue>({
     defaultValues: {
-      searchText: null,
-      searchItem: '전체',
+      searchType: 'all',
+      searchText: '',
       page: 1,
       scale: 10
     }

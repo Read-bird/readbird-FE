@@ -9,11 +9,13 @@ import { useDispatch } from 'react-redux';
 export const useGetSearchList = () => {
   const dispatch = useDispatch<TAppDispatch>();
 
-  return async ({ searchText, page, scale }: TFormValue) => {
+  return async ({ searchType, searchText, page, scale }: TFormValue) => {
     try {
       const result = await axiosFetch<any, TBookData>({
         method: 'get',
-        url: `/api/book?title="${searchText}"&page=${page}&scale=${scale}`
+        url: `/api/book?${
+          searchType !== 'all' ? `type=${searchType}&` : ''
+        }value="${searchText}"&page=${page}&scale=${scale}`
       });
 
       const call = page === 1 ? setBookList : addBookList;
@@ -22,7 +24,7 @@ export const useGetSearchList = () => {
       return true;
     } catch (e) {
       if (e instanceof AxiosError) {
-        Alert.error({ title: e.response?.data });
+        Alert.error({ title: e.response?.data.message });
       }
       return false;
     }
