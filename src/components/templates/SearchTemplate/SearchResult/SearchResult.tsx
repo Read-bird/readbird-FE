@@ -22,7 +22,7 @@ export const SearchResult = memo(() => {
   const checkboxes = useMemo(() => ['전체', '책 이름', '글쓴이', '출판사'], []);
   const dispatch = useDispatch();
   const { bookList, totalPage } = useSelector((state: TRootState) => state.bookSearchStore);
-  const getSearchBookList = useGetSearchList();
+  const { searchList } = useGetSearchList();
   const { watch, setValue, getValues, reset } = useFormContext<TFormValue>();
   const searchType = watch('searchType');
   const currentPage = watch('page');
@@ -38,10 +38,11 @@ export const SearchResult = memo(() => {
 
       // 타입 변경
       setValue('searchType', CheckBoxType[checkbox as keyof typeof CheckBoxType]);
+      setValue('page', 1);
 
-      await getSearchBookList(props);
+      await searchList(props);
     },
-    [setValue, getSearchBookList, getValues]
+    [setValue, searchList, getValues]
   );
 
   const listHeight = useMemo(() => {
@@ -52,14 +53,14 @@ export const SearchResult = memo(() => {
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
   }, []);
 
-  const getBookList = useCallback(async () => {
+  const getNextPage = useCallback(async () => {
     const values = getValues();
-    const result = await getSearchBookList(values);
+    const result = await searchList(values);
 
     if (result) {
       setValue('page', values.page + 1);
     }
-  }, [getValues, setValue, getSearchBookList]);
+  }, [getValues, setValue, searchList]);
 
   const itemData = useMemo(
     () => ({
@@ -67,9 +68,9 @@ export const SearchResult = memo(() => {
       totalPage: totalPage,
       lastIndex: bookList.length - 1,
       currentPage: currentPage,
-      getBookList: getBookList
+      getNextPage: getNextPage
     }),
-    [bookList, totalPage, currentPage, getBookList]
+    [bookList, totalPage, currentPage, getNextPage]
   );
 
   useEffect(() => {
