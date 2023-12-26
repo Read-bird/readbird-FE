@@ -1,6 +1,7 @@
 import { setPlan } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { axiosFetch } from '@api/axios';
+import { TRegisterFormValue } from '@api/types';
 import { IconPlus } from '@assets/icons';
 import { IconEggNoPlan, IconEggOnePlan, IconEggThreePlan, IconEggTwoPlan } from '@assets/images';
 import { WeekCalendar } from '@components/common/Calendar';
@@ -9,13 +10,35 @@ import { Plan } from '@components/templates/HomeTemplate/Plan';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { MAX_CREATION_COUNT } from '@constants/plan';
 import { Alert } from '@utils/Alert';
+import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
 
 export const WeekTemplate = () => {
+  const methods = useForm<TRegisterFormValue>({
+    mode: 'onSubmit',
+    defaultValues: {
+      bookId: null,
+      planId: null,
+      title: null,
+      author: null,
+      publisher: null,
+      currentPage: 0,
+      totalPage: 0,
+      startDate: dayjs().format('YYYY-MM-DD'),
+      endDate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+      searchData: {
+        bookList: [],
+        page: 1,
+        totalPage: 0
+      }
+    }
+  });
+
   const { currentDate, planData, weedRecord } = useSelector((state: TRootState) => state.planStore);
   const dispatch = useDispatch();
   const date = useMemo(() => new Date(currentDate), [currentDate]);
@@ -26,6 +49,7 @@ export const WeekTemplate = () => {
     setIsModalOpen(true);
   };
 
+  // 플랜 조회
   const getList = async () => {
     try {
       const result = await axiosFetch({
@@ -38,7 +62,7 @@ export const WeekTemplate = () => {
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.error({
-          title: e.response?.data,
+          title: convertError(e.response?.data.messgae),
           action: () => {
             dispatch(setPlan({ weedRecord: [], planData: [], previouslyFailedPlan: [] }));
           }
@@ -92,7 +116,9 @@ export const WeekTemplate = () => {
       )}
       <Spacing height={5} />
 
-      <PlanModalTemplate isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalIndex={1} />
+      <FormProvider {...methods}>
+        <PlanModalTemplate isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalIndex={1} />
+      </FormProvider>
     </Wrap>
   );
 };
