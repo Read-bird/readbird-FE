@@ -31,6 +31,7 @@ export const Inner = styled.div`
   z-index: 10;
   flex: 1;
   width: 100%;
+  max-height: calc(100vh - 178px);
 
   display: flex;
   flex-direction: column;
@@ -51,6 +52,11 @@ export const Inner = styled.div`
     color: black;
   }
 
+  .scroll-area {
+    flex: 1 0 150px;
+    overflow-y: auto;
+  }
+
   .info-wrap {
     width: 100%;
     display: flex;
@@ -69,15 +75,6 @@ export const Inner = styled.div`
       font-weight: 400;
       color: #ababab;
     }
-  }
-
-  .last-wrap {
-    flex: 1 0 20px;
-    overflow-y: scroll;
-
-    font-size: 14px;
-    font-weight: 400;
-    color: #ababab;
   }
 `;
 

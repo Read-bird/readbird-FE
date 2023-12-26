@@ -40,34 +40,35 @@ export const SearchDetail = (props: TProps) => {
           imgStyle={imgStyle}
         />
         <Spacing height={15} />
-        <h2>{title}</h2>
-        <Spacing height={15} />
-        <FlexBox>
+        <div className="scroll-area">
+          <h2>{title}</h2>
+          <Spacing height={15} />
+          <FlexBox>
+            <div className="info-wrap">
+              <h3>글쓴이</h3>
+              <span>{author}</span>
+            </div>
+            <div className="info-wrap">
+              <h3>출판사</h3>
+              <span>{publisher}</span>
+            </div>
+            <div className="info-wrap">
+              <h3>총 쪽 수</h3>
+              <span>{totalPage.toLocaleString()}쪽</span>
+            </div>
+          </FlexBox>
+          <Spacing height={20} />
           <div className="info-wrap">
-            <h3>글쓴이</h3>
-            <span>{author}</span>
+            <h3>ISBM</h3>
+            <span>{isbn}</span>
           </div>
+          <Spacing height={20} />
           <div className="info-wrap">
-            <h3>출판사</h3>
-            <span>{publisher}</span>
+            <h3>책 소개</h3>
+            <p>{description}</p>
           </div>
-          <div className="info-wrap">
-            <h3>총 쪽 수</h3>
-            <span>{totalPage.toLocaleString()}쪽</span>
-          </div>
-        </FlexBox>
-        <Spacing height={20} />
-        <div className="info-wrap">
-          <h3>ISBM</h3>
-          <span>{isbn}</span>
+          <Spacing height={15} />
         </div>
-        <Spacing height={20} />
-        <div className="info-wrap">
-          <h3>책 소개</h3>
-        </div>
-        <Spacing height={16} />
-        <p className="last-wrap">{description}</p>
-        <Spacing height={16} />
       </Inner>
       <ButtonWrap>
         <button type="button" className="btn-buy">
