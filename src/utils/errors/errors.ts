@@ -1,4 +1,8 @@
-export const errors = (err: string) => {
+export const convertError = (err: string) => {
+  if (err.includes('Bad Request :')) {
+    return err.replace('Bad Request :', '');
+  }
+
   switch (err) {
     case 'Network Error':
       return '네트워크가 원활하지 않습니다.';
