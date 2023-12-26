@@ -118,6 +118,30 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
     setValue(name, dayjs(date).format('YYYY-MM-DD'));
   };
 
+  // 도서 등록 유효성 검사
+  const checkReadBook = async (bookId: number) => {
+    try {
+      const result = await axiosFetch({
+        url: `/api/user/${bookId}`,
+        method: 'get'
+      });
+
+      if (result.status === 200) {
+        if (!result.data.readStatus) {
+          return false;
+        } else {
+          Alert.warning({ title: '플랜으로 등록된 책입니다.' });
+          return true;
+        }
+      }
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({ title: convertError(e.response?.data.messgae) });
+      }
+      return true;
+    }
+  };
+
   // 등록/수정
   const handleSubmitValue = async (props: TRegisterFormValue) => {
     try {
@@ -132,6 +156,11 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
         endDate: props.endDate,
         bookId: props.bookId ?? undefined
       };
+
+      if (props.bookId) {
+        const result = await checkReadBook(props.bookId);
+        if (result) return;
+      }
 
       const res = !planId
         ? await axiosFetch<TRegisterProps, TResponseProps>({
