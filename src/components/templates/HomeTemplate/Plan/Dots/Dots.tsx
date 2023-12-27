@@ -16,9 +16,10 @@ type TProps = {
   planId: number;
   userId: number | null;
   selectDate: string;
+  isProgress: boolean;
 };
 
-export const Dots = ({ planId, userId, selectDate }: TProps) => {
+export const Dots = ({ planId, userId, selectDate, isProgress }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
   const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -31,11 +32,12 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
   const handleClickOpenModal = useCallback(
     (e: MouseEvent<SVGElement>) => {
       e.stopPropagation();
-      if (isSame) {
+
+      if (isSame && isProgress) {
         setOpen((prev) => (prev === planId ? null : planId));
       }
     },
-    [planId, isSame]
+    [planId, isSame, isProgress]
   );
 
   const handleClickOpenEdit = useCallback(() => {
@@ -89,7 +91,7 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
         iconKey="dots"
         size={25}
         color={colors.darkGray}
-        cursor={isSame ? 'pointer' : 'default'}
+        cursor={isSame && isProgress ? 'pointer' : 'default'}
         onClick={handleClickOpenModal}
       />
       <MiniModal isOpen={isOpen === planId} handleClick={handleClose}>
