@@ -1,1 +1,0 @@
-export { ProtectedLogin } from './ProtectedLogin';

@@ -1,5 +1,5 @@
 import { Loadable } from '@components/common/Loadable';
-import { ProtectedLogin } from '@components/common/ProtectedLogin';
+import { ProtectedLogin } from '@components/connections';
 import { MyMain } from '@pages/MyPage/MyMain';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
