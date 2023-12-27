@@ -12,19 +12,15 @@ import styled from 'styled-components';
 export const MyMenu = () => {
   const myPageMenu = [
     {
-      title: '나의 서재',
+      title: '나의서재',
       path: '/library'
     },
     {
-      title: '나의 도감',
+      title: '나의도감',
       path: '/encyclopedia'
     },
     {
-      title: '기록 초기화',
-      path: '/reset'
-    },
-    {
-      title: '플랜 복원',
+      title: '플랜복원',
       path: '/restore'
     },
     {
@@ -32,13 +28,12 @@ export const MyMenu = () => {
       path: '/logout'
     },
     {
-      title: '회원 탈퇴',
+      title: '회원탈퇴',
       path: '/withdrawal'
     }
   ];
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isReset, setIsReset] = useState(false);
   const [isWithdrawal, setIsWithdrawal] = useState(false);
 
   const handleClick = (path: string) => {
@@ -46,36 +41,10 @@ export const MyMenu = () => {
       dispatch(setAccessToken(''));
       navigate('/login');
       localStorage.clear();
-    } else if (path === '/reset') {
-      setIsReset(true);
     } else if (path === '/withdrawal') {
       setIsWithdrawal(true);
     } else {
       navigate(`/mypage${path}`);
-    }
-  };
-
-  const handleReset = async () => {
-    try {
-      const res = await axiosFetch({
-        url: '/api/user/plan/delete',
-        method: 'delete'
-      });
-
-      if (res.status === 200) {
-        Alert.success({
-          title: '모든 기록이 초기화되었습니다.',
-          action: () => {
-            setIsReset(false);
-          }
-        });
-      } else {
-        Alert.error({ title: '오류가 발생했습니다.' });
-      }
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        Alert.error({ title: convertError(err.response?.data.message) });
-      }
     }
   };
 
@@ -113,15 +82,6 @@ export const MyMenu = () => {
         </li>
       ))}
 
-      <PlanModalTemplate
-        isOpen={isReset}
-        setIsOpen={setIsReset}
-        modalIndex={9}
-        modalText={'기록 초기화 시 회원님의\n' + '도감, 기록, 서재가 초기화됩니다.'}
-        modalSubText={'초기화하시겠습니까?'}
-        buttonType={2}
-        onConfirm={handleReset}
-      />
       <PlanModalTemplate
         isOpen={isWithdrawal}
         setIsOpen={setIsWithdrawal}
