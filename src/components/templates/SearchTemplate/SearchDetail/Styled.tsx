@@ -47,7 +47,7 @@ export const Inner = styled.div`
   }
 
   h2 {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     color: black;
     text-align: center;
