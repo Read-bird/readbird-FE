@@ -17,7 +17,7 @@ export const Navigation = () => {
           <IconSearch />
           <span>검색</span>
         </NavLink>
-        <NavLink to="/mypage" className={cls({ selected: pathname === '/mypage' })}>
+        <NavLink to="/mypage" className={cls({ selected: /mypage/g.test(pathname) })}>
           <IconMyPage />
           <span>마이페이지</span>
         </NavLink>
