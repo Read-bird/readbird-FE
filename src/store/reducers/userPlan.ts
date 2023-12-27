@@ -1,4 +1,4 @@
-import { TPlan, TPlanData, TPlanRecord, TPreviouslyFailedPlan } from '@api/types';
+import { ERecordStatus, TPlan, TPlanData, TPlanRecord, TPreviouslyFailedPlan } from '@api/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { convertObject } from '@utils/function';
 import dayjs from 'dayjs';
@@ -61,6 +61,20 @@ const planSlice = createSlice({
     setTrophy: (state, action: PayloadAction<{ recordTrophy: number; planTrophy: number }>) => {
       state.recordTrophy = action.payload.recordTrophy;
       state.planTrophy = action.payload.planTrophy;
+    },
+    setRecordStatus: (
+      state,
+      action: PayloadAction<{ planId: number; recordStatus: ERecordStatus }>
+    ) => {
+      state.planData = state.planData.map((plan) => {
+        if (plan.planId === action.payload.planId) {
+          return { ...plan, recordStatus: action.payload.recordStatus };
+        }
+        return plan;
+      });
+    },
+    addFailedPlan: (state, action: PayloadAction<TPreviouslyFailedPlan>) => {
+      state.previouslyFailedPlan.push(action.payload);
     }
   }
 });
@@ -73,7 +87,9 @@ export const {
   addPlanData,
   deletePlanData,
   setMonthRecord,
-  setTrophy
+  setTrophy,
+  setRecordStatus,
+  addFailedPlan
 } = planSlice.actions;
 
 export const planStore = planSlice.reducer;
