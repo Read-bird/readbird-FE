@@ -14,6 +14,7 @@ type TProps = {
     lastIndex: number;
     currentPage: number;
     getNextPage?: () => void;
+    disabled?: boolean;
   };
   index: number;
   style: CSSProperties;
@@ -28,9 +29,10 @@ export const Book = memo(({ data, index, style }: TProps) => {
 
   const handleClickItem = useCallback(
     (props: TBook) => () => {
+      if (data.disabled) return;
       dispatch(setBookDetail(props));
     },
-    [dispatch]
+    [dispatch, data.disabled]
   );
 
   useEffect(() => {
