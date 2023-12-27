@@ -1,17 +1,27 @@
+import { Spacing } from '@components/common/Spacing';
 import { Body, Head, Wrap } from '@components/templates/HomeTemplate/Styled';
-import { MyBanner } from '@components/templates/MyPageTemplate/MyBanner';
-import { MyMenu } from '@components/templates/MyPageTemplate/MyMenu';
+import { BackTitle } from '@components/templates/MyPage/BackTitle';
 import { MyUser } from '@components/templates/MyPageTemplate/MyUser';
+import { Outlet, useLocation } from 'react-router-dom';
 
 export const MyPageTemplate = () => {
+  const location = useLocation();
+
   return (
     <Wrap>
-      <Head style={{ paddingBottom: '10px', flex: '0 0 95px' }}>
-        <MyUser />
+      <Head>
+        {
+          {
+            '/mypage': <MyUser />,
+            '/mypage/restore': <BackTitle title="플랜 복원" />,
+            '/mypage/library': <BackTitle title="나의 서재" />,
+            '/mypage/encyclopedia': <BackTitle title="나의 도감" />
+          }[location.pathname]
+        }
+        <Spacing height={10} />
       </Head>
       <Body>
-        <MyBanner />
-        <MyMenu />
+        <Outlet />
       </Body>
     </Wrap>
   );
