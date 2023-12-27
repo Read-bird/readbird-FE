@@ -38,6 +38,9 @@ const AppSearchResult = Loadable(
 const AppNotFound = Loadable(
   lazy(() => import('@pages/AppNotFound').then((data) => ({ default: data.AppNotFound })))
 );
+const AppError = Loadable(
+  lazy(() => import('@pages/AppError').then((data) => ({ default: data.AppError })))
+);
 
 export const appRouter = createBrowserRouter([
   {
@@ -53,12 +56,12 @@ export const appRouter = createBrowserRouter([
           {
             path: '',
             element: <AppWeek />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           },
           {
             path: 'calendar',
             element: <AppMonth />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           }
         ]
       },
@@ -70,12 +73,12 @@ export const appRouter = createBrowserRouter([
           {
             path: '',
             element: <AppSearchMain />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           },
           {
             path: 'result',
             element: <AppSearchResult />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           }
         ]
       },
