@@ -10,6 +10,8 @@ type TState = {
   currentDate: string;
   monthCurrentDate: string;
   monthRecord: Record<string, TPlanRecord>;
+  recordTrophy: number;
+  planTrophy: number;
 };
 
 const initialState: TState = {
@@ -18,7 +20,9 @@ const initialState: TState = {
   previouslyFailedPlan: [],
   currentDate: dayjs().format(),
   monthCurrentDate: dayjs().format(),
-  monthRecord: {}
+  monthRecord: {},
+  recordTrophy: 0,
+  planTrophy: 0
 };
 
 const planSlice = createSlice({
@@ -53,6 +57,10 @@ const planSlice = createSlice({
     },
     setMonthRecord: (state, action: PayloadAction<TPlanRecord[]>) => {
       state.monthRecord = convertObject(action.payload, 'date');
+    },
+    setTrophy: (state, action: PayloadAction<{ recordTrophy: number; planTrophy: number }>) => {
+      state.recordTrophy = action.payload.recordTrophy;
+      state.planTrophy = action.payload.planTrophy;
     }
   }
 });
@@ -64,7 +72,8 @@ export const {
   setPlanEndData,
   addPlanData,
   deletePlanData,
-  setMonthRecord
+  setMonthRecord,
+  setTrophy
 } = planSlice.actions;
 
 export const planStore = planSlice.reducer;

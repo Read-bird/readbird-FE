@@ -1,7 +1,7 @@
-import { setCurrentDate, setMonthRecord } from '@/store/reducers';
+import { setCurrentDate, setMonthRecord, setTrophy } from '@/store/reducers';
 import { TAppDispatch, TRootState } from '@/store/state';
 import { axiosFetch } from '@api/axios';
-import { EAchievementStatus } from '@api/types';
+import { EAchievementStatus, TResponseMonthRecord } from '@api/types';
 import { IconBook, IconDayBirdMini, IconSuccess } from '@assets/icons';
 import { Calendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
@@ -22,7 +22,9 @@ const data = {
 };
 
 export const MonthTemplate = () => {
-  const { monthCurrentDate, monthRecord } = useSelector((state: TRootState) => state.planStore);
+  const { monthCurrentDate, monthRecord, recordTrophy, planTrophy } = useSelector(
+    (state: TRootState) => state.planStore
+  );
   const nowDate = useMemo(() => new Date(monthCurrentDate), [monthCurrentDate]);
   const dispatch = useDispatch<TAppDispatch>();
   const navigate = useNavigate();
@@ -35,9 +37,10 @@ export const MonthTemplate = () => {
     [dispatch, navigate]
   );
 
+  // 월별 플랜 조회
   const getRecordList = async () => {
     try {
-      const response = await axiosFetch({
+      const response = await axiosFetch<any, TResponseMonthRecord>({
         url: '/api/record',
         method: 'get',
         options: {
@@ -49,6 +52,7 @@ export const MonthTemplate = () => {
 
       if (response.status === 200) {
         dispatch(setMonthRecord(response.data.record));
+        dispatch(setTrophy(response.data.trophy));
       }
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -90,7 +94,7 @@ export const MonthTemplate = () => {
             <Spacing width={10} />
             <span>100% 달성한 플랜</span>
           </FlexBox>
-          <strong>00개</strong>
+          <strong>{planTrophy.toLocaleString()}개</strong>
         </FlexBox>
         <Spacing height={14} />
         <FlexBox $justify="space-between">
@@ -99,7 +103,7 @@ export const MonthTemplate = () => {
             <Spacing width={10} />
             <span>완독에 성공한 책</span>
           </FlexBox>
-          <strong>00권</strong>
+          <strong>{recordTrophy.toLocaleString()}권</strong>
         </FlexBox>
       </Section>
     </Wrap>
