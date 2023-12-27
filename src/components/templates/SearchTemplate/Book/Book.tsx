@@ -2,6 +2,7 @@ import { TBook, setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
+import { cls } from '@utils/classname';
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
@@ -60,7 +61,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
 
   return (
     <div style={style} onClick={handleClickItem(props)}>
-      <ListItem>
+      <ListItem className={cls({ 'cursor-default': !!data.disabled })}>
         <Images
           imgUrl={coverImage}
           imgAlt={title + '책 표지'}
@@ -91,6 +92,11 @@ const imgStyle: CSSObject = {
 
 const ListItem = styled.div`
   cursor: pointer;
+
+  &.cursor-default {
+    cursor: default;
+  }
+
   width: 100%;
   height: 122px;
   border-radius: 20px;
