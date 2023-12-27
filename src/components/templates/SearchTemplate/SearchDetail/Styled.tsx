@@ -50,9 +50,11 @@ export const Inner = styled.div`
     font-size: 18px;
     font-weight: 700;
     color: black;
+    text-align: center;
   }
 
   .scroll-area {
+    width: 100%;
     flex: 1 0 150px;
     overflow-y: auto;
   }
