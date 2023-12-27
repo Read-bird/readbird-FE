@@ -2,7 +2,7 @@ import { TRootState } from '@/store/state';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, Fragment, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -19,6 +19,12 @@ export const CharacterModal = ({ setIsOpen }: TPops) => {
 
   return (
     <StyledModal>
+      {selectCollection?.title && (
+        <Fragment>
+          <h2>{selectCollection.title}</h2>
+          <Spacing height={20} />
+        </Fragment>
+      )}
       <div className="img-wrap">
         <Images
           imgUrl={selectCollection?.imageUrl}
@@ -32,7 +38,14 @@ export const CharacterModal = ({ setIsOpen }: TPops) => {
         <h4>{selectCollection?.name}</h4>
         <p>{selectCollection?.content}</p>
         <span>획득일 : {dayjs(selectCollection?.getDate).format('YYYY / MM / DD')}</span>
+        {selectCollection?.title && <i>* 부화한 새는 마이 페이지에서 확인 가능해요.</i>}
       </div>
+      {selectCollection?.description && (
+        <Fragment>
+          <Spacing height={20} />
+          <p className="description">{selectCollection.description}</p>
+        </Fragment>
+      )}
       <Spacing height={20} />
       <div className="flex">
         <button className="btn-2 btn" onClick={handleConfirm}>
@@ -45,12 +58,30 @@ export const CharacterModal = ({ setIsOpen }: TPops) => {
 
 const StyledModal = styled.div`
   width: 100%;
-  height: 430px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.basicDark};
+    max-width: 240px;
+    text-align: center;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .description {
+    font-size: 22px;
+    font-weight: 700;
+    white-space: pre-wrap;
+    text-align: center;
+    max-width: 240px;
+    color: ${({ theme }) => theme.colors.darkGray};
+  }
 
   .img-wrap {
     width: 253px;
@@ -69,7 +100,7 @@ const StyledModal = styled.div`
     flex-direction: column;
 
     h4 {
-      color: #b780db;
+      color: ${({ theme }) => theme.colors.basicDark};
       text-align: center;
       font-size: 22px;
       font-style: normal;
@@ -94,6 +125,12 @@ const StyledModal = styled.div`
       font-weight: 500;
       line-height: 24px;
       letter-spacing: 0.16px;
+    }
+
+    i {
+      font-size: 14px;
+      font-weight: 500;
+      color: #cfcfcf;
     }
   }
 

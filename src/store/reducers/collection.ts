@@ -1,11 +1,18 @@
 import { TResponseCollection } from '@api/types/collection';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export type TCollection = Omit<TResponseCollection, 'characterId'> & { characterId: number | null };
+export type TCollection = Omit<TResponseCollection, 'characterId'> & {
+  characterId: number | null;
+};
+
+export type TSelectCollection = TResponseCollection & {
+  title?: string;
+  description?: string;
+};
 
 type TState = {
   collections: TCollection[];
-  selectCollection: TResponseCollection | null;
+  selectCollection: TSelectCollection | null;
 };
 
 const COLLECT_SIZE = 18;
@@ -26,7 +33,7 @@ const collectionSlice = createSlice({
         state.collections[i] = action.payload[i];
       }
     },
-    setSelectCollection: (state, action: PayloadAction<TResponseCollection>) => {
+    setSelectCollection: (state, action: PayloadAction<TSelectCollection>) => {
       state.selectCollection = action.payload;
     }
   }
