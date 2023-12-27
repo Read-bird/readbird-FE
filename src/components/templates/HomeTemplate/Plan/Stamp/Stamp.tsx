@@ -1,5 +1,6 @@
+import { setRecordStatus, setSelectCollection } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
-import { EAchievementStatus, ERecordStatus } from '@api/types';
+import { ERecordStatus, TResponseCollection } from '@api/types';
 import { IconFailed, IconProgress, IconSuccess } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
 import { colors } from '@style/global-style';
@@ -9,6 +10,7 @@ import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { MouseEvent, useCallback, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
@@ -17,55 +19,98 @@ type TProps = {
   recordStatus: ERecordStatus;
   selectDate: string;
   maxPage: number;
+  dday: boolean;
+  openSuccess: () => void;
+  openFailed: () => void;
 };
 
-export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => {
-  const [isOpen, setOpen] = useState<number | null>(null);
+export const Stamp = ({
+  planId,
+  recordStatus,
+  selectDate,
+  maxPage,
+  dday,
+  openSuccess,
+  openFailed
+}: TProps) => {
+  const dispatch = useDispatch();
+  const [isOpenModal, setOpenModal] = useState<number | null>(null);
   const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
 
   const handleClose = useCallback(() => {
-    setOpen(null);
-  }, [setOpen]);
+    setOpenModal(null);
+  }, [setOpenModal]);
 
   const handleClickOpenModal = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
 
       if (isSame && recordStatus === ERecordStatus.inProgress) {
-        setOpen((prev) => (prev === planId ? null : planId));
+        setOpenModal((prev) => (prev === planId ? null : planId));
       }
     },
     [planId, isSame, recordStatus]
   );
 
+  const handleClickCheck = () => {
+    // 오늘이 dday인경우
+    if (dday) {
+      Alert.confirm({
+        title: '오늘은 플랜 마지막날!',
+        text: '책을 끝까지 읽으셨군요.',
+        confirmButtonText: '네!',
+        cancelButtonText: '잘못 눌렀어요',
+        action: () => {
+          handleClickSuccess();
+        }
+      });
+    } else {
+      handleClickSuccess();
+    }
+  };
+
+  // 플랜성공 로직
   const handleClickSuccess = useCallback(async () => {
     try {
       // 쪽 수 저장 및 보내기
       const result = await axiosFetch<
-        { status: EAchievementStatus; currentPage: number },
+        { status: ERecordStatus; currentPage: number },
         {
           message: string;
-          newCharacter: string;
+          newCharacter: TResponseCollection;
         }
       >({
         method: 'put',
         url: `/api/record/${planId}`,
-        options: { data: { status: EAchievementStatus.success, currentPage: maxPage } }
+        options: { data: { status: ERecordStatus.success, currentPage: maxPage } }
       });
 
-      console.log(result.data.message);
-      console.log(result.data.newCharacter);
+      if (result.status === 200) {
+        if (result.data.message.includes('success')) {
+          // 플랜달성 모달을 띄워주며 캐릭터 획득
+          dispatch(
+            setSelectCollection({
+              ...result.data.newCharacter,
+              title: '축하해요! 새가 부화했어요!'
+            })
+          );
+          openSuccess();
+        } else {
+          // 플랜의 recordStatus 수정
+          dispatch(setRecordStatus({ planId, recordStatus: ERecordStatus.success }));
+        }
+      }
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.error({ title: convertError(e.response?.data.message) });
       }
     } finally {
-      setOpen(null);
+      setOpenModal(null);
     }
-  }, [setOpen, maxPage, planId]);
+  }, [setOpenModal, maxPage, planId, dispatch, openSuccess]);
 
+  // 실패 로직
   const handleClickFailed = useCallback(() => {
-    // 실패 로직
     Alert.input({
       title: '<strong class="alert-input-title">아쉬워요... 어디까지 읽으셨나요?</strong>',
       inputLabel: '쪽 까지 읽었어요.',
@@ -81,29 +126,35 @@ export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => 
         try {
           // 쪽 수 저장 및 보내기
           const result = await axiosFetch<
-            { status: EAchievementStatus; currentPage: number },
+            { status: ERecordStatus; currentPage: number },
             {
               message: string;
-              newCharacter: string;
             }
           >({
             method: 'put',
             url: `/api/record/${planId}`,
-            options: { data: { status: EAchievementStatus.unstable, currentPage: page } }
+            options: { data: { status: ERecordStatus.failed, currentPage: page } }
           });
 
-          console.log(result.data.message);
-          console.log(result.data.newCharacter);
+          if (result.status === 200) {
+            if (result.data.message.includes('failed')) {
+              // 실패 모달 띄우기
+              openFailed();
+            } else {
+              // 플랜의 recordStatus 수정
+              dispatch(setRecordStatus({ planId, recordStatus: ERecordStatus.failed }));
+            }
+          }
         } catch (e: any) {
           if (e instanceof AxiosError) {
             Swal.showValidationMessage(e.response?.data.message);
           }
         } finally {
-          setOpen(null);
+          setOpenModal(null);
         }
       }
     });
-  }, [setOpen, planId, maxPage]);
+  }, [setOpenModal, planId, maxPage, dispatch, openFailed]);
 
   return (
     <Wrap>
@@ -113,14 +164,14 @@ export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => 
       >
         {
           {
-            success: <IconSuccess />,
+            success: <IconSuccess fillColor={colors.subBlue} />,
             inProgress: <IconProgress />,
-            failed: <IconFailed />
+            failed: <IconFailed fillColor={colors.subRed} />
           }[recordStatus]
         }
       </IconWrap>
-      <MiniModal isOpen={isOpen === planId} handleClick={handleClose}>
-        <InnerIcon onClick={handleClickSuccess}>
+      <MiniModal isOpen={isOpenModal === planId} handleClick={handleClose}>
+        <InnerIcon onClick={handleClickCheck}>
           <IconSuccess fillColor={colors.subBlue} />
           <p>완독 성공</p>
         </InnerIcon>

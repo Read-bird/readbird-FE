@@ -2,6 +2,7 @@ import { TBook, setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
+import { cls } from '@utils/classname';
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
@@ -14,6 +15,7 @@ type TProps = {
     lastIndex: number;
     currentPage: number;
     getNextPage?: () => void;
+    disabled?: boolean;
   };
   index: number;
   style: CSSProperties;
@@ -28,9 +30,10 @@ export const Book = memo(({ data, index, style }: TProps) => {
 
   const handleClickItem = useCallback(
     (props: TBook) => () => {
+      if (data.disabled) return;
       dispatch(setBookDetail(props));
     },
-    [dispatch]
+    [dispatch, data.disabled]
   );
 
   useEffect(() => {
@@ -58,7 +61,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
 
   return (
     <div style={style} onClick={handleClickItem(props)}>
-      <ListItem>
+      <ListItem className={cls({ 'cursor-default': !!data.disabled })}>
         <Images
           imgUrl={coverImage}
           imgAlt={title + '책 표지'}
@@ -89,6 +92,11 @@ const imgStyle: CSSObject = {
 
 const ListItem = styled.div`
   cursor: pointer;
+
+  &.cursor-default {
+    cursor: default;
+  }
+
   width: 100%;
   height: 122px;
   border-radius: 20px;

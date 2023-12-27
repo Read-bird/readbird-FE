@@ -1,5 +1,6 @@
 import { deletePlanData } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
+import { TRegisterFormValue } from '@api/types';
 import { IconReact } from '@assets/icons';
 import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
@@ -9,6 +10,7 @@ import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { MouseEvent, useCallback, useMemo, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -16,13 +18,16 @@ type TProps = {
   planId: number;
   userId: number | null;
   selectDate: string;
+  isProgress: boolean;
+  endDate: string;
 };
 
-export const Dots = ({ planId, userId, selectDate }: TProps) => {
+export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
   const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
   const [isEditModal, setIsEditModal] = useState(false);
   const dispatch = useDispatch();
+  const { setValue } = useFormContext<TRegisterFormValue>();
 
   const handleClose = useCallback(() => {
     setOpen(null);
@@ -31,17 +36,19 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
   const handleClickOpenModal = useCallback(
     (e: MouseEvent<SVGElement>) => {
       e.stopPropagation();
-      if (isSame) {
+
+      if (isSame && isProgress) {
         setOpen((prev) => (prev === planId ? null : planId));
       }
     },
-    [planId, isSame]
+    [planId, isSame, isProgress]
   );
 
   const handleClickOpenEdit = useCallback(() => {
     // 여기서 수정하기 모달 열기
+    setValue('endDate', endDate);
     setIsEditModal(true);
-  }, []);
+  }, [endDate, setValue]);
 
   // 플랜삭제
   const handleClickRemove = useCallback(
@@ -89,7 +96,7 @@ export const Dots = ({ planId, userId, selectDate }: TProps) => {
         iconKey="dots"
         size={25}
         color={colors.darkGray}
-        cursor={isSame ? 'pointer' : 'default'}
+        cursor={isSame && isProgress ? 'pointer' : 'default'}
         onClick={handleClickOpenModal}
       />
       <MiniModal isOpen={isOpen === planId} handleClick={handleClose}>

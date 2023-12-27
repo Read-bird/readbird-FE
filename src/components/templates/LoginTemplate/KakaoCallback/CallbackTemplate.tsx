@@ -1,4 +1,4 @@
-import { setAccessToken } from '@/store/reducers';
+import { setAccessToken, setOpen, setSelectCollection, setUserInfo } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { Alert } from '@/utils';
 import { TLoginResType } from '@api/types';
@@ -43,11 +43,31 @@ export const CallbackTemplate = () => {
             }
           }
         );
+
         if (resData.status === 200) {
           const extractedToken = resData.headers?.authorization;
+          const refreshToken = resData.headers?.refreshtoken;
           localStorage.setItem('rb-access-token', extractedToken);
-          localStorage.setItem('rb-user-info', JSON.stringify(resData.data));
-          dispatch(setAccessToken(resData.data.accessToken));
+          localStorage.setItem('rb-refresh-token', refreshToken);
+          dispatch(
+            setUserInfo({
+              id: resData.data.userId,
+              email: resData.data.email,
+              nickname: resData.data.nickname,
+              profile: resData.data.imageUrl
+            })
+          );
+          dispatch(setAccessToken(extractedToken));
+          if (resData.data?.character) {
+            dispatch(
+              setSelectCollection({
+                ...resData.data.character,
+                title: `회원가입을 축하해요!\n새가 부화했어요!`,
+                description: `읽어보새와 함께 책을 읽고\n더 많은 새를 만나보세요!`
+              })
+            );
+            dispatch(setOpen(true));
+          }
           navigate('/');
         } else {
           Alert.error({

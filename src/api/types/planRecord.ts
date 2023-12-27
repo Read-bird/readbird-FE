@@ -41,3 +41,12 @@ export type TPlanData = {
   planData: TPlan[];
   previouslyFailedPlan: TPreviouslyFailedPlan[];
 };
+
+// month plan
+export type TResponseMonthRecord = {
+  trophy: {
+    recordTrophy: number;
+    planTrophy: number;
+  };
+  record: TPlanRecord[];
+};

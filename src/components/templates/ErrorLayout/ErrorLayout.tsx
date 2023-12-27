@@ -1,11 +1,11 @@
 import { Spacing } from '@components/common/Spacing';
 import styled from 'styled-components';
 
-type TProps = {
-  handleClickRetry?: () => void;
-};
+export const ErrorLayout = () => {
+  const handleRetry = () => {
+    window.location.reload();
+  };
 
-export const ErrorLayout = ({ handleClickRetry }: TProps) => {
   return (
     <Wrap>
       <strong>문제가 발생했어요!</strong>
@@ -13,7 +13,7 @@ export const ErrorLayout = ({ handleClickRetry }: TProps) => {
       <p>데이터를 불러오는데에 실패했어요.</p>
       <p>다시 시도해주세요!</p>
       <Spacing height={20} />
-      <button type="button" className="active" onClick={handleClickRetry}>
+      <button type="button" className="active" onClick={handleRetry}>
         다시 시도하기
       </button>
     </Wrap>

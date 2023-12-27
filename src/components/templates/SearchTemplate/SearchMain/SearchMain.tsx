@@ -8,7 +8,7 @@ import styled from 'styled-components';
 export const SearchMain = () => {
   const listHeight = useMemo(() => {
     const scrollHeight = document.body.scrollHeight;
-    const headerHeight = 90;
+    const headerHeight = 95;
     const footerHeight = 70;
     const bodyHeight = 20 + 66 + 18 + 23 + 18;
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);

@@ -4,6 +4,7 @@ export * from './IconBook';
 export * from './IconCalendar';
 export * from './IconDayBird';
 export * from './IconDayBirdMini';
+export * from './IconEmptyBird';
 export * from './IconFailed';
 export * from './IconHome';
 export * from './IconMyPage';

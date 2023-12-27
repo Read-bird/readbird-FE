@@ -1,14 +1,16 @@
+import { addFailedPlan, setOpen, setOpenType } from '@/store/reducers';
 import { TRootState } from '@/store/state';
-import { TPlan, TRegisterFormValue } from '@api/types';
+import { ERecordStatus, TPlan, TRegisterFormValue } from '@api/types';
 import { Images } from '@assets/images';
 import { ProgressBar } from '@components/common/ProgressBar';
 import { Spacing } from '@components/common/Spacing';
 import { Dots } from '@components/templates/HomeTemplate/Plan/Dots';
 import { Stamp } from '@components/templates/HomeTemplate/Plan/Stamp';
 import { calculateDday } from '@utils/calendar';
-import { useMemo } from 'react';
+import dayjs from 'dayjs';
+import { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 type TProps = TPlan;
@@ -27,10 +29,9 @@ export const Plan = (props: TProps) => {
     author,
     publisher
   } = props;
-
-  const imgStyle = useMemo(() => ({ borderRadius: '10px' }), []);
+  const dispatch = useDispatch();
   const { currentDate } = useSelector((state: TRootState) => state.planStore);
-  const { userId } = useSelector((state: TRootState) => state.userStore);
+  const { userInfo } = useSelector((state: TRootState) => state.userStore);
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
@@ -51,12 +52,23 @@ export const Plan = (props: TProps) => {
     }
   });
 
+  const openSuccess = useCallback(() => {
+    dispatch(setOpen(true));
+    dispatch(setOpenType(4));
+  }, [dispatch]);
+
+  const openFailed = useCallback(() => {
+    dispatch(addFailedPlan(props));
+    dispatch(setOpen(true));
+    dispatch(setOpenType(3));
+  }, [dispatch, props]);
+
   return (
     <Wrap>
       <ImageWrap>
         <Images
           imgUrl={coverImage ?? undefined}
-          imgAlt={`${title.padEnd(10, '')} 책 표지 이미지`}
+          imgAlt={`책 표지 이미지`}
           imgWidth={55}
           imgHeight={78}
           imgStyle={imgStyle}
@@ -84,13 +96,22 @@ export const Plan = (props: TProps) => {
       </ProgressWrap>
       <StatusWrap>
         <FormProvider {...methods}>
-          <Dots planId={planId} userId={userId} selectDate={currentDate} />
+          <Dots
+            planId={planId}
+            userId={userInfo?.id ?? null}
+            selectDate={currentDate}
+            isProgress={recordStatus === ERecordStatus.inProgress}
+            endDate={endDate}
+          />
         </FormProvider>
         <Stamp
           planId={planId}
           recordStatus={recordStatus}
           selectDate={currentDate}
           maxPage={currentPage + target}
+          dday={dayjs(endDate).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')}
+          openSuccess={openSuccess}
+          openFailed={openFailed}
         />
       </StatusWrap>
     </Wrap>
@@ -110,6 +131,8 @@ const Wrap = styled.div`
   align-items: center;
   gap: 10px;
 `;
+
+const imgStyle = { borderRadius: '10px' };
 
 const ImageWrap = styled.div`
   flex: 0 0 55px;
@@ -131,6 +154,10 @@ const StatusWrap = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5px;
+
+  .dots-wrap {
+    height: 28px;
+  }
 `;
 
 const FlexBox = styled.div<{ $justifyContent?: string }>`

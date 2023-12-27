@@ -1,11 +1,8 @@
 import { Loadable } from '@components/common/Loadable';
-import { ProtectedLogin } from '@components/common/ProtectedLogin';
+import { ProtectedLogin } from '@components/connections';
+import { MyMain } from '@pages/MyPage/MyMain';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import {AppMyPage} from "@pages/AppMyPage";
-import {MyLibrary} from "@pages/MyPage/MyLibrary";
-import {MyEncyclopedia} from "@pages/MyPage/MyEncyclopedia";
-import {MyRestore} from "@pages/MyPage/MyRestore";
 
 // lazy 적용(코드스플리팅)
 const AppRoot = Loadable(
@@ -35,8 +32,25 @@ const AppSearchMain = Loadable(
 const AppSearchResult = Loadable(
   lazy(() => import('@pages/AppSearchResult').then((data) => ({ default: data.AppSearchResult })))
 );
+const AppMyPage = Loadable(
+  lazy(() => import('@pages/AppMyPage').then((data) => ({ default: data.AppMyPage })))
+);
+const MyLibrary = Loadable(
+  lazy(() => import('@pages/MyPage/MyLibrary').then((data) => ({ default: data.MyLibrary })))
+);
+const MyEncyclopedia = Loadable(
+  lazy(() =>
+    import('@pages/MyPage/MyEncyclopedia').then((data) => ({ default: data.MyEncyclopedia }))
+  )
+);
+const MyRestore = Loadable(
+  lazy(() => import('@pages/MyPage/MyRestore').then((data) => ({ default: data.MyRestore })))
+);
 const AppNotFound = Loadable(
   lazy(() => import('@pages/AppNotFound').then((data) => ({ default: data.AppNotFound })))
+);
+const AppError = Loadable(
+  lazy(() => import('@pages/AppError').then((data) => ({ default: data.AppError })))
 );
 
 export const appRouter = createBrowserRouter([
@@ -53,12 +67,12 @@ export const appRouter = createBrowserRouter([
           {
             path: '',
             element: <AppWeek />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           },
           {
             path: 'calendar',
             element: <AppMonth />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           }
         ]
       },
@@ -70,12 +84,12 @@ export const appRouter = createBrowserRouter([
           {
             path: '',
             element: <AppSearchMain />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           },
           {
             path: 'result',
             element: <AppSearchResult />,
-            errorElement: <AppNotFound />
+            errorElement: <AppError />
           }
         ]
       },
@@ -83,21 +97,28 @@ export const appRouter = createBrowserRouter([
         path: 'mypage',
         element: <AppMyPage />,
         errorElement: <AppNotFound />,
-      },
-      {
-        path: 'mypage/library',
-        element: <MyLibrary />,
-        errorElement: <AppNotFound />,
-      },
-      {
-        path: 'mypage/encyclopedia',
-        element: <MyEncyclopedia />,
-        errorElement: <AppNotFound />,
-      },
-      {
-        path: 'mypage/restore',
-        element: <MyRestore />,
-        errorElement: <AppNotFound />,
+        children: [
+          {
+            path: '',
+            element: <MyMain />,
+            errorElement: <AppError />
+          },
+          {
+            path: 'library',
+            element: <MyLibrary />,
+            errorElement: <AppError />
+          },
+          {
+            path: 'encyclopedia',
+            element: <MyEncyclopedia />,
+            errorElement: <AppError />
+          },
+          {
+            path: 'restore',
+            element: <MyRestore />,
+            errorElement: <AppError />
+          }
+        ]
       }
     ]
   },

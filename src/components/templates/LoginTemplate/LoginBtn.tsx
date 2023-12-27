@@ -1,4 +1,4 @@
-import { setAccessToken, setUserId } from '@/store/reducers';
+import { setAccessToken, setUserInfo } from '@/store/reducers';
 import { authFetch } from '@api/axios';
 import { TLoginResType } from '@api/types';
 import { BtnKakaoLogin } from '@assets/images/BtnKakaoLogin';
@@ -32,8 +32,14 @@ export const LoginBtn = (props: TProps) => {
         const refreshToken = res.headers?.refreshtoken;
         localStorage.setItem('rb-access-token', extractedToken);
         localStorage.setItem('rb-refresh-token', refreshToken);
-        localStorage.setItem('rb-user-info', JSON.stringify(res.data));
-        dispatch(setUserId(res.data.userId));
+        dispatch(
+          setUserInfo({
+            id: res.data.userId,
+            email: res.data.email,
+            nickname: res.data.nickname,
+            profile: res.data.imageUrl
+          })
+        );
         dispatch(setAccessToken(extractedToken));
         navigate('/');
       }

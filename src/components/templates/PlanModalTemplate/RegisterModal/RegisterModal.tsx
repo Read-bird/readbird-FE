@@ -8,6 +8,7 @@ import {
   TRegisterFormValue,
   TSearchBooksResult
 } from '@api/types';
+import { usePlanValidation } from '@hooks/planValidation';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
@@ -15,9 +16,9 @@ import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { InputLabel } from './InputLabel';
-import { SearchList } from './SearchList';
-import { SelectLabel } from './SelectLabel';
+import { InputLabel } from '../InputLabel';
+import { SearchList } from '../SearchList';
+import { SelectLabel } from '../SelectLabel';
 
 type TRegisterProps = {
   bookId?: number;
@@ -49,6 +50,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSearch, setSearch] = useState(false);
+  const { planValidation, checkReadBook } = usePlanValidation();
 
   const {
     watch,
@@ -118,28 +120,33 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
     setValue(name, dayjs(date).format('YYYY-MM-DD'));
   };
 
-  // 도서 등록 유효성 검사
-  const checkReadBook = async (bookId: number) => {
-    try {
-      const result = await axiosFetch({
-        url: `/api/user/${bookId}`,
-        method: 'get'
-      });
-
-      if (result.status === 200) {
-        if (!result.data.readStatus) {
-          return false;
-        } else {
-          Alert.warning({ title: '플랜으로 등록된 책입니다.' });
-          return true;
-        }
-      }
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        Alert.error({ title: convertError(e.response?.data.messgae) });
-      }
-      return true;
+  // 등록/수정 전 check
+  const handleSubmitCheck = async (props: TRegisterFormValue) => {
+    // 플랜 유효성 검사
+    if (!planId) {
+      const result = await planValidation();
+      if (!result) return;
     }
+
+    // 도서 등록 유효성 검사
+    if (props.bookId) {
+      const result = await checkReadBook(props.bookId);
+      if (result) {
+        Alert.confirm({
+          title: '이미 읽은 책은 새가 부화하지 않습니다.',
+          text: '그래도 플랜을 등록하시겠어요?',
+          action: () => {
+            handleSubmitValue(props);
+          },
+          failed: () => {
+            setIsOpen(false);
+          }
+        });
+        return;
+      }
+    }
+
+    handleSubmitValue(props);
   };
 
   // 등록/수정
@@ -156,11 +163,6 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
         endDate: props.endDate,
         bookId: props.bookId ?? undefined
       };
-
-      if (props.bookId) {
-        const result = await checkReadBook(props.bookId);
-        if (result) return;
-      }
 
       const res = !planId
         ? await axiosFetch<TRegisterProps, TResponseProps>({
@@ -193,7 +195,10 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
                 title: props.title,
                 author: props.author,
                 publisher: props.publisher,
-                coverImage: null,
+                startDate: props.startDate,
+                endDate: props.endDate,
+                totalPage: props.totalPage,
+                currentPage: props.currentPage,
                 planStatus: ERecordStatus.inProgress,
                 recordStatus: ERecordStatus.inProgress
               };
@@ -299,18 +304,11 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
   }, [title, bookId]);
 
   useEffect(() => {
-    const editPlanInfo = planData?.find((plan) => plan.planId === planId);
-    if (editPlanInfo) {
-      setValue('endDate', editPlanInfo.endDate);
-    }
-  }, [planId, planData]);
-
-  useEffect(() => {
     return () => reset();
   }, []);
 
   return (
-    <StyledForm onSubmit={handleSubmit(handleSubmitValue)}>
+    <StyledForm onSubmit={handleSubmit(handleSubmitCheck)}>
       <InputLabel
         label={'책 이름'}
         type="text"
