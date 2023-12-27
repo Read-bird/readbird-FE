@@ -6,11 +6,12 @@ ReactModal.setAppElement('#root');
 
 type TProps = {
   isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
   content?: CSSProperties;
   overlay?: CSSProperties;
   contentLabel?: string;
+  handleClose?: () => void;
 };
 
 export const Modal = ({
@@ -19,7 +20,8 @@ export const Modal = ({
   children,
   content,
   overlay,
-  contentLabel = 'Modal'
+  contentLabel = 'Modal',
+  handleClose
 }: TProps) => {
   const customStyles = useMemo(
     () => ({
@@ -46,8 +48,9 @@ export const Modal = ({
   );
 
   const closeModal = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
+    setIsOpen?.(false);
+    handleClose?.();
+  }, [setIsOpen, handleClose]);
 
   return (
     <ReactModal
