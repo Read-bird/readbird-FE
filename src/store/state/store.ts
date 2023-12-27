@@ -3,6 +3,7 @@ import {
   bookSearchStore,
   collectionStore,
   loadingStore,
+  modalStore,
   planStore,
   userStore
 } from '@/store/reducers';
@@ -15,7 +16,8 @@ export const store = configureStore({
     bookSearchStore: bookSearchStore,
     bookDetailStore: bookDetailStore,
     loadingStore: loadingStore,
-    collectionStore: collectionStore
+    collectionStore: collectionStore,
+    modalStore: modalStore
   }
 });
 
