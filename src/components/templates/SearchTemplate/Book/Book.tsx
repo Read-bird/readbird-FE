@@ -13,7 +13,7 @@ type TProps = {
     totalPage: number;
     lastIndex: number;
     currentPage: number;
-    getBookList?: () => void;
+    getNextPage?: () => void;
   };
   index: number;
   style: CSSProperties;
@@ -39,7 +39,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             if (data.totalPage > data.currentPage) {
-              data.getBookList?.();
+              data.getNextPage?.();
             }
           }
         });
@@ -54,7 +54,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
     return () => {
       observer.current?.disconnect();
     };
-  }, [data.lastIndex, index]);
+  }, [data, index]);
 
   return (
     <div style={style} onClick={handleClickItem(props)}>

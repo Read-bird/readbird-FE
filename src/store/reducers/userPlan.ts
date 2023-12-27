@@ -9,6 +9,7 @@ type TState = {
   previouslyFailedPlan: TPreviouslyFailedPlan[];
   currentDate: string;
   monthCurrentDate: string;
+  monthRecord: Record<string, TPlanRecord>;
 };
 
 const initialState: TState = {
@@ -16,7 +17,8 @@ const initialState: TState = {
   planData: [],
   previouslyFailedPlan: [],
   currentDate: dayjs().format(),
-  monthCurrentDate: dayjs().format()
+  monthCurrentDate: dayjs().format(),
+  monthRecord: {}
 };
 
 const planSlice = createSlice({
@@ -34,10 +36,35 @@ const planSlice = createSlice({
     },
     setMonthCurrentDate: (state, action: PayloadAction<string>) => {
       state.monthCurrentDate = action.payload;
+    },
+    setPlanEndData: (state, action: PayloadAction<{ planId: number; endDate: string }>) => {
+      state.planData = state.planData.map((plan) => {
+        if (plan.planId === action.payload.planId) {
+          return { ...plan, endDate: action.payload.endDate };
+        }
+        return plan;
+      });
+    },
+    addPlanData: (state, action: PayloadAction<TPlan>) => {
+      state.planData.push(action.payload);
+    },
+    deletePlanData: (state, action: PayloadAction<number>) => {
+      state.planData = state.planData.filter((plan) => plan.planId !== action.payload);
+    },
+    setMonthRecord: (state, action: PayloadAction<TPlanRecord[]>) => {
+      state.monthRecord = convertObject(action.payload, 'date');
     }
   }
 });
 
-export const { setPlan, setCurrentDate, setMonthCurrentDate } = planSlice.actions;
+export const {
+  setPlan,
+  setCurrentDate,
+  setMonthCurrentDate,
+  setPlanEndData,
+  addPlanData,
+  deletePlanData,
+  setMonthRecord
+} = planSlice.actions;
 
 export const planStore = planSlice.reducer;

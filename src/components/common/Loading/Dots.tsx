@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export const Dots = () => {
   const intervalId = useRef<NodeJS.Timeout | null>(null);
-  const [dots, setDots] = useState('.');
+  const [dots, setDots] = useState('...');
 
   useEffect(() => {
     if (intervalId.current !== null) {

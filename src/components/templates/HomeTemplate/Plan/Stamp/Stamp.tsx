@@ -5,6 +5,7 @@ import { MiniModal } from '@components/templates/HomeTemplate/Plan/Modal';
 import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
 import { cls } from '@utils/classname';
+import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { MouseEvent, useCallback, useMemo, useState } from 'react';
@@ -56,7 +57,7 @@ export const Stamp = ({ planId, recordStatus, selectDate, maxPage }: TProps) => 
       console.log(result.data.newCharacter);
     } catch (e) {
       if (e instanceof AxiosError) {
-        Alert.error({ title: `${e.response?.data.message}` });
+        Alert.error({ title: convertError(e.response?.data.message) });
       }
     } finally {
       setOpen(null);

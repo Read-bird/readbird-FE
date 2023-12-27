@@ -1,27 +1,73 @@
 import { TBook, setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
+import { axiosFetch } from '@api/axios';
+import { TRegisterFormValue } from '@api/types';
 import { IconReact, IconReady } from '@assets/icons';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
+import { Alert } from '@utils/Alert';
+import { convertError } from '@utils/errors';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { ButtonWrap, FlexBox, IconWrap, Inner, Wrap, imgStyle } from './Styled';
 
 type TProps = TBook;
 
 export const SearchDetail = (props: TProps) => {
+  const methods = useForm<TRegisterFormValue>({
+    mode: 'onSubmit',
+    defaultValues: {
+      bookId: props.bookId,
+      planId: null,
+      title: props.title,
+      author: props.author,
+      publisher: props.publisher,
+      currentPage: 0,
+      totalPage: props.totalPage,
+      startDate: dayjs().format('YYYY-MM-DD'),
+      endDate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+      searchData: {
+        bookList: [],
+        page: 1,
+        totalPage: 0
+      }
+    }
+  });
+
   const { coverImage, title, author, publisher, description, isbn, totalPage } = props;
   const dispatch = useDispatch<TAppDispatch>();
   const [isOpen, setOpen] = useState(false);
 
+  // 뒤로가기
   const handleClickBack = useCallback(() => {
     dispatch(setBookDetail(null));
   }, [dispatch]);
 
-  const handleClickOpenModal = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
+  // 도서 등록하기
+  const handleClickOpenModal = useCallback(async () => {
+    try {
+      const result = await axiosFetch({
+        url: `/api/user/${props.bookId}`,
+        method: 'get'
+      });
+
+      if (result.status === 200) {
+        if (!result.data.readStatus) {
+          setOpen(true);
+        } else {
+          Alert.warning({ title: '플랜으로 등록된 책입니다.' });
+        }
+      }
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({ title: convertError(e.response?.data.messgae) });
+      }
+    }
+  }, [setOpen, props.bookId]);
 
   return (
     <Wrap>
@@ -40,34 +86,35 @@ export const SearchDetail = (props: TProps) => {
           imgStyle={imgStyle}
         />
         <Spacing height={15} />
-        <h2>{title}</h2>
-        <Spacing height={15} />
-        <FlexBox>
+        <div className="scroll-area">
+          <h2>{title}</h2>
+          <Spacing height={15} />
+          <FlexBox>
+            <div className="info-wrap">
+              <h3>글쓴이</h3>
+              <span>{author}</span>
+            </div>
+            <div className="info-wrap">
+              <h3>출판사</h3>
+              <span>{publisher}</span>
+            </div>
+            <div className="info-wrap">
+              <h3>총 쪽 수</h3>
+              <span>{totalPage.toLocaleString()}쪽</span>
+            </div>
+          </FlexBox>
+          <Spacing height={20} />
           <div className="info-wrap">
-            <h3>글쓴이</h3>
-            <span>{author}</span>
+            <h3>ISBM</h3>
+            <span>{isbn}</span>
           </div>
+          <Spacing height={20} />
           <div className="info-wrap">
-            <h3>출판사</h3>
-            <span>{publisher}</span>
+            <h3>책 소개</h3>
+            <p>{description}</p>
           </div>
-          <div className="info-wrap">
-            <h3>총 쪽 수</h3>
-            <span>{totalPage.toLocaleString()}쪽</span>
-          </div>
-        </FlexBox>
-        <Spacing height={20} />
-        <div className="info-wrap">
-          <h3>ISBM</h3>
-          <span>{isbn}</span>
+          <Spacing height={15} />
         </div>
-        <Spacing height={20} />
-        <div className="info-wrap">
-          <h3>책 소개</h3>
-        </div>
-        <Spacing height={16} />
-        <p className="last-wrap">{description}</p>
-        <Spacing height={16} />
       </Inner>
       <ButtonWrap>
         <button type="button" className="btn-buy">
@@ -80,7 +127,9 @@ export const SearchDetail = (props: TProps) => {
           플랜등록
         </button>
       </ButtonWrap>
-      <PlanModalTemplate isOpen={isOpen} setIsOpen={setOpen} modalIndex={1} />
+      <FormProvider {...methods}>
+        <PlanModalTemplate isOpen={isOpen} setIsOpen={setOpen} modalIndex={1} />
+      </FormProvider>
     </Wrap>
   );
 };

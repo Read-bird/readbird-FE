@@ -3,7 +3,7 @@ import { authFetch } from '@api/axios';
 import { TLoginResType } from '@api/types';
 import { BtnKakaoLogin } from '@assets/images/BtnKakaoLogin';
 import { Alert } from '@utils/Alert';
-import { errors } from '@utils/errors';
+import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +40,7 @@ export const LoginBtn = (props: TProps) => {
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.error({
-          title: errors(e.message),
+          title: convertError(e.response?.data.message),
           action: () => {
             navigate('/login');
           }

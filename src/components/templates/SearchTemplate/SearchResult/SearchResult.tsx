@@ -4,26 +4,45 @@ import { IconDayBird } from '@assets/icons';
 import { Book } from '@components/templates/SearchTemplate/Book';
 import { TFormValue } from '@components/templates/SearchTemplate/SearchTemplate';
 import { useGetSearchList } from '@components/templates/SearchTemplate/hooks';
+import { Alert } from '@utils/Alert';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
+const CheckBoxType = {
+  전체: 'all' as const,
+  '책 이름': 'title' as const,
+  글쓴이: 'author' as const,
+  출판사: 'publisher' as const
+};
+
 export const SearchResult = memo(() => {
   const checkboxes = useMemo(() => ['전체', '책 이름', '글쓴이', '출판사'], []);
   const dispatch = useDispatch();
   const { bookList, totalPage } = useSelector((state: TRootState) => state.bookSearchStore);
-  const getSearchBookList = useGetSearchList();
+  const { searchList } = useGetSearchList();
   const { watch, setValue, getValues, reset } = useFormContext<TFormValue>();
-  const searchItem = watch('searchItem');
+  const searchType = watch('searchType');
   const currentPage = watch('page');
 
   const handleClick = useCallback(
-    (checkbox: string) => () => {
-      setValue('searchItem', checkbox);
+    (checkbox: string) => async () => {
+      const props = getValues();
+
+      if (!props.searchText) {
+        Alert.warning({ title: '검색어를 입력해주세요.' });
+        return;
+      }
+
+      // 타입 변경
+      setValue('searchType', CheckBoxType[checkbox as keyof typeof CheckBoxType]);
+      setValue('page', 1);
+
+      await searchList(props);
     },
-    [setValue]
+    [setValue, searchList, getValues]
   );
 
   const listHeight = useMemo(() => {
@@ -34,14 +53,14 @@ export const SearchResult = memo(() => {
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
   }, []);
 
-  const getBookList = useCallback(async () => {
+  const getNextPage = useCallback(async () => {
     const values = getValues();
-    const result = await getSearchBookList(values);
+    const result = await searchList(values);
 
     if (result) {
       setValue('page', values.page + 1);
     }
-  }, [getValues, setValue, getSearchBookList]);
+  }, [getValues, setValue, searchList]);
 
   const itemData = useMemo(
     () => ({
@@ -49,9 +68,9 @@ export const SearchResult = memo(() => {
       totalPage: totalPage,
       lastIndex: bookList.length - 1,
       currentPage: currentPage,
-      getBookList: getBookList
+      getNextPage: getNextPage
     }),
-    [bookList, totalPage, currentPage, getBookList]
+    [bookList, totalPage, currentPage, getNextPage]
   );
 
   useEffect(() => {
@@ -70,7 +89,7 @@ export const SearchResult = memo(() => {
               <input
                 type="checkbox"
                 id={`search_${checkbox}`}
-                checked={checkbox === searchItem}
+                checked={CheckBoxType[checkbox as keyof typeof CheckBoxType] === searchType}
                 readOnly
               />
               <IconWrap className="icon-wrap">

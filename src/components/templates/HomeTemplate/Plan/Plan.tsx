@@ -1,5 +1,5 @@
 import { TRootState } from '@/store/state';
-import { TPlan } from '@api/types';
+import { TPlan, TRegisterFormValue } from '@api/types';
 import { Images } from '@assets/images';
 import { ProgressBar } from '@components/common/ProgressBar';
 import { Spacing } from '@components/common/Spacing';
@@ -7,31 +7,56 @@ import { Dots } from '@components/templates/HomeTemplate/Plan/Dots';
 import { Stamp } from '@components/templates/HomeTemplate/Plan/Stamp';
 import { calculateDday } from '@utils/calendar';
 import { useMemo } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 type TProps = TPlan;
 
-export const Plan = ({
-  coverImage,
-  title,
-  target,
-  totalPage,
-  currentPage,
-  planId,
-  endDate,
-  recordStatus
-}: TProps) => {
+export const Plan = (props: TProps) => {
+  const {
+    coverImage,
+    title,
+    target,
+    totalPage,
+    currentPage,
+    planId,
+    endDate,
+    startDate,
+    recordStatus,
+    author,
+    publisher
+  } = props;
+
   const imgStyle = useMemo(() => ({ borderRadius: '10px' }), []);
   const { currentDate } = useSelector((state: TRootState) => state.planStore);
   const { userId } = useSelector((state: TRootState) => state.userStore);
+  const methods = useForm<TRegisterFormValue>({
+    mode: 'onSubmit',
+    defaultValues: {
+      bookId: null,
+      planId,
+      author,
+      currentPage,
+      startDate,
+      endDate,
+      publisher,
+      title,
+      totalPage,
+      searchData: {
+        bookList: [],
+        page: 1,
+        totalPage: 0
+      }
+    }
+  });
 
   return (
     <Wrap>
       <ImageWrap>
         <Images
           imgUrl={coverImage ?? undefined}
-          imgAlt={`${title} 책 표지 이미지`}
+          imgAlt={`${title.padEnd(10, '')} 책 표지 이미지`}
           imgWidth={55}
           imgHeight={78}
           imgStyle={imgStyle}
@@ -58,7 +83,9 @@ export const Plan = ({
         />
       </ProgressWrap>
       <StatusWrap>
-        <Dots planId={planId} userId={userId} selectDate={currentDate} />
+        <FormProvider {...methods}>
+          <Dots planId={planId} userId={userId} selectDate={currentDate} />
+        </FormProvider>
         <Stamp
           planId={planId}
           recordStatus={recordStatus}

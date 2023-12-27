@@ -13,7 +13,7 @@ export const Wrap = styled.form`
 export const Head = styled.section`
   position: relative;
   width: 100%;
-  flex: 0 0 90px;
+  flex: 0 0 95px;
 
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@ export const Body = styled.section`
   position: relative;
   flex: 1;
   width: 100%;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 165px);
   border-radius: 50px 50px 0 0%;
   background-color: ${({ theme }) => theme.colors.white};
 

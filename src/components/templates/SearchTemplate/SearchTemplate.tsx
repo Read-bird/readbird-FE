@@ -12,8 +12,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { Body, Head, Wrap } from './Styled';
 
 export type TFormValue = {
+  searchType: 'all' | 'title' | 'author' | 'publisher';
   searchText: string | null;
-  searchItem: string;
   page: number;
   scale: number;
 };
@@ -21,12 +21,12 @@ export type TFormValue = {
 export const SearchTemplate = () => {
   const bookDetail = useSelector((state: TRootState) => state.bookDetailStore);
   const dispatch = useDispatch();
-  const getSearchBookList = useGetSearchList();
+  const { searchList } = useGetSearchList();
 
   const methods = useForm<TFormValue>({
     defaultValues: {
-      searchText: null,
-      searchItem: '전체',
+      searchType: 'all',
+      searchText: '',
       page: 1,
       scale: 10
     }
@@ -34,13 +34,16 @@ export const SearchTemplate = () => {
 
   const navigate = useNavigate();
 
-  const handleClickSearch = async ({ searchText }: TFormValue) => {
+  const handleClickSearch = async (props: TFormValue) => {
+    const { searchText } = props;
+
     if (!searchText) {
       Alert.warning({ title: '검색어를 입력해주세요.' });
       return;
     }
 
-    const result = await getSearchBookList(methods.getValues());
+    const result = await searchList(props);
+
     if (result) {
       // 검색 화면으로 이동
       navigate('/search/result');
