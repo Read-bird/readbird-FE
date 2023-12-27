@@ -30,7 +30,7 @@ export const Plan = (props: TProps) => {
 
   const imgStyle = useMemo(() => ({ borderRadius: '10px' }), []);
   const { currentDate } = useSelector((state: TRootState) => state.planStore);
-  const { userId } = useSelector((state: TRootState) => state.userStore);
+  const { userInfo } = useSelector((state: TRootState) => state.userStore);
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
@@ -84,7 +84,7 @@ export const Plan = (props: TProps) => {
       </ProgressWrap>
       <StatusWrap>
         <FormProvider {...methods}>
-          <Dots planId={planId} userId={userId} selectDate={currentDate} />
+          <Dots planId={planId} userId={userInfo?.id ?? null} selectDate={currentDate} />
         </FormProvider>
         <Stamp
           planId={planId}

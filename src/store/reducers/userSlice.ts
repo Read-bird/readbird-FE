@@ -1,15 +1,19 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+export interface IUser {
+  id: number;
+  email: string;
+  nickname: string;
+  profile: string | null;
+}
 interface IUserState {
   accessToken: string;
-  userName: string;
-  userId: number | null;
+  userInfo: IUser | null;
 }
 
 const initialState: IUserState = {
   accessToken: localStorage.getItem('rb-access-token') ?? '',
-  userName: '',
-  userId: null
+  userInfo: null
 };
 
 const userSlice = createSlice({
@@ -19,15 +23,12 @@ const userSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
-    setUserName: (state, action) => {
-      state.userName = action.payload;
-    },
-    setUserId: (state, action: PayloadAction<number>) => {
-      state.userId = action.payload;
+    setUserInfo: (state, action: PayloadAction<IUser>) => {
+      state.userInfo = action.payload;
     }
   }
 });
 
-export const { setAccessToken, setUserName, setUserId } = userSlice.actions;
+export const { setAccessToken, setUserInfo } = userSlice.actions;
 
 export const userStore = userSlice.reducer;
