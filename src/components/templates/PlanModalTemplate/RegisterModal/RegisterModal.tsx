@@ -16,9 +16,9 @@ import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { InputLabel } from './InputLabel';
-import { SearchList } from './SearchList';
-import { SelectLabel } from './SelectLabel';
+import { InputLabel } from '../InputLabel';
+import { SearchList } from '../SearchList';
+import { SelectLabel } from '../SelectLabel';
 
 type TRegisterProps = {
   bookId?: number;

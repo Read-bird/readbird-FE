@@ -7,14 +7,16 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 type TPops = {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  handleClose?: () => void;
 };
 
-export const CharacterModal = ({ setIsOpen }: TPops) => {
+export const CharacterModal = ({ setIsOpen, handleClose }: TPops) => {
   const { selectCollection } = useSelector((state: TRootState) => state.collectionStore);
 
   const handleConfirm = () => {
-    setIsOpen(false);
+    setIsOpen?.(false);
+    handleClose?.();
   };
 
   return (
