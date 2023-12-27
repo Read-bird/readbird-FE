@@ -1,11 +1,9 @@
 import { Modal } from '@components/common/Modal';
 import { SimpleModal } from '@components/templates/PlanModalTemplate/PlanModal';
+import { CharacterModal } from '@components/templates/PlanModalTemplate/Register/CharacterModal';
 import { RegisterModal } from '@components/templates/PlanModalTemplate/Register/RegisterModal';
 import { Dispatch, SetStateAction } from 'react';
-import {
-  CharacterModal,
-  ReadLessModal
-} from 'src/components/templates/PlanModalTemplate/PlanModal';
+import { ReadLessModal } from 'src/components/templates/PlanModalTemplate/PlanModal';
 
 type TProps = {
   isOpen: boolean;

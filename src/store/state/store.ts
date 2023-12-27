@@ -1,6 +1,7 @@
 import {
   bookDetailStore,
   bookSearchStore,
+  collectionStore,
   loadingStore,
   planStore,
   userStore
@@ -13,7 +14,8 @@ export const store = configureStore({
     planStore: planStore,
     bookSearchStore: bookSearchStore,
     bookDetailStore: bookDetailStore,
-    loadingStore: loadingStore
+    loadingStore: loadingStore,
+    collectionStore: collectionStore
   }
 });
 

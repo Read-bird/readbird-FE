@@ -1,3 +1,4 @@
+import { Spacing } from '@components/common/Spacing';
 import { Body, Head, Wrap } from '@components/templates/HomeTemplate/Styled';
 import { BackTitle } from '@components/templates/MyPage/BackTitle';
 import { EncyclopediaList } from '@components/templates/MyPage/MyEncyclopediaTemplate/EncyclopediaList';
@@ -5,8 +6,9 @@ import { EncyclopediaList } from '@components/templates/MyPage/MyEncyclopediaTem
 export const MyEncyclopediaTemplate = () => {
   return (
     <Wrap>
-      <Head style={{ paddingBottom: '10px', flex: '0 0 95px' }}>
+      <Head>
         <BackTitle title="나의 도감" />
+        <Spacing height={10} />
       </Head>
       <Body>
         <EncyclopediaList />

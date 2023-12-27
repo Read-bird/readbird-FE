@@ -1,34 +1,42 @@
-import styled from "styled-components";
-import {IconArrLeftWhite} from "@/assets";
-import {useNavigate} from "react-router-dom";
+import { IconArrLeftWhite } from '@/assets';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 type TProps = {
-    title: string;
-}
+  title: string;
+};
 
-export const BackTitle = ({title}: TProps) => {
+export const BackTitle = ({ title }: TProps) => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  // 뒤로가기
+  const goBack = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
 
-    return(
-        <StyledTitle>
-            <span onClick={() => navigate(-1)}><IconArrLeftWhite /></span>
-            <h2>{title}</h2>
-        </StyledTitle>
-    )
-}
+  return (
+    <StyledTitle>
+      <span onClick={goBack}>
+        <IconArrLeftWhite />
+      </span>
+      <h2>{title}</h2>
+    </StyledTitle>
+  );
+};
 
 const StyledTitle = styled.div`
-    position: relative;
+  position: relative;
   width: 100%;
   text-align: center;
-  span{
+  span {
     position: absolute;
-    left: 22px; top: 0;
+    left: 22px;
+    top: 0;
     cursor: pointer;
   }
-  h2{
-    color: #FFF;
+  h2 {
+    color: #fff;
     text-align: center;
     font-size: 22px;
     font-style: normal;
@@ -36,4 +44,4 @@ const StyledTitle = styled.div`
     line-height: 24px;
     letter-spacing: 0.16px;
   }
-`
+`;
