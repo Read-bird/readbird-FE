@@ -193,7 +193,10 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
                 title: props.title,
                 author: props.author,
                 publisher: props.publisher,
-                coverImage: null,
+                startDate: props.startDate,
+                endDate: props.endDate,
+                totalPage: props.totalPage,
+                currentPage: props.currentPage,
                 planStatus: ERecordStatus.inProgress,
                 recordStatus: ERecordStatus.inProgress
               };
