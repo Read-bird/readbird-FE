@@ -24,6 +24,24 @@ export const GlobalStyle = createGlobalStyle`
       transform: scale(1.1);
     }
   }
+
+  .slick-dots {
+    bottom: 0px;
+  }
+
+  .slick-dots li {
+    margin: 0;
+  }
+
+  .slick-dots li button:before {
+    transform: scale(1.5);
+  }
+
+  .slick-prev, .slick-next {
+    width: 25px;
+    height: 25px;
+  }
+
 `;
 
 export const colors = {

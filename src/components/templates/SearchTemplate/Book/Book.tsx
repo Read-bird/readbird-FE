@@ -1,5 +1,6 @@
-import { TBook, setBookDetail } from '@/store/reducers';
+import { setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
+import { TBookDetail } from '@api/types';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
 import { cls } from '@utils/classname';
@@ -10,7 +11,7 @@ import styled, { CSSObject, CSSProperties } from 'styled-components';
 
 type TProps = {
   data: {
-    list: TBook[];
+    list: TBookDetail[];
     totalPage: number;
     lastIndex: number;
     currentPage: number;
@@ -29,7 +30,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const handleClickItem = useCallback(
-    (props: TBook) => () => {
+    (props: TBookDetail) => () => {
       if (data.disabled) return;
       dispatch(setBookDetail(props));
     },

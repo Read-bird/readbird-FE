@@ -1,11 +1,16 @@
+import { axiosFetch } from '@api/axios';
+import { TBookDetail } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
 import { Book } from '@components/templates/SearchTemplate/Book';
-import { bookDummy } from '@mocks/index';
-import { useMemo } from 'react';
+import { Alert } from '@utils/Alert';
+import { convertError } from '@utils/errors';
+import { AxiosError } from 'axios';
+import { useEffect, useMemo, useState } from 'react';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
 export const SearchMain = () => {
+  const [topBookList, setTopBookList] = useState<TBookDetail[]>([]);
   const listHeight = useMemo(() => {
     const scrollHeight = document.body.scrollHeight;
     const headerHeight = 95;
@@ -16,13 +21,38 @@ export const SearchMain = () => {
 
   const itemData = useMemo(
     () => ({
-      list: bookDummy.books.bookList,
-      totalPage: bookDummy.books.totalPage,
-      lastIndex: bookDummy.books.bookList.length - 1,
+      list: topBookList,
+      totalPage: 1,
+      lastIndex: topBookList.length - 1,
       currentPage: 1
     }),
-    [bookDummy.books]
+    [topBookList]
   );
+
+  // 인기 있는 책 호출
+  const getTopBooks = async () => {
+    try {
+      const response = await axiosFetch<any, { bList: TBookDetail[] }>({
+        url: '/api/aladin/popular',
+        method: 'get'
+      });
+
+      if (response.status === 200) {
+        setTopBookList(response.data.bList);
+      } else {
+        Alert.error({ title: '데이터를 불러오지 못했습니다.' });
+      }
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        Alert.error({ title: convertError(e.response?.data.message) });
+      }
+    }
+  };
+
+  // 인기 있는 책 호출
+  useEffect(() => {
+    getTopBooks();
+  }, []);
 
   return (
     <Wrap>
@@ -35,7 +65,7 @@ export const SearchMain = () => {
         itemSize={142}
         width="100%"
         height={listHeight}
-        itemCount={bookDummy.books.bookList.length}
+        itemCount={topBookList.length}
         itemData={itemData}
       >
         {Book}
@@ -51,6 +81,10 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  div::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const BannerWrap = styled.section`

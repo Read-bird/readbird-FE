@@ -1,7 +1,7 @@
-import { TBook, setBookDetail } from '@/store/reducers';
+import { setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { axiosFetch } from '@api/axios';
-import { TRegisterFormValue } from '@api/types';
+import { TBookDetail, TRegisterFormValue } from '@api/types';
 import { IconReact, IconReady } from '@assets/icons';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
@@ -15,7 +15,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { ButtonWrap, FlexBox, IconWrap, Inner, Wrap, imgStyle } from './Styled';
 
-type TProps = TBook;
+type TProps = TBookDetail;
 
 export const SearchDetail = (props: TProps) => {
   const methods = useForm<TRegisterFormValue>({

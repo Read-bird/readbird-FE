@@ -1,3 +1,4 @@
+import noImage from '@assets/images/noImage.jpeg';
 import { SyntheticEvent, memo, useCallback } from 'react';
 import styled, { CSSObject } from 'styled-components';
 
@@ -11,13 +12,13 @@ type TProps = {
 
 export const Images = memo(({ imgUrl, imgAlt, imgWidth, imgHeight, imgStyle }: TProps) => {
   const handleError = useCallback((e: SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = require('/src/assets/images/noImage.jpeg');
+    e.currentTarget.src = noImage;
   }, []);
 
   return (
     <ImageStyle
       $imgStyle={imgStyle}
-      src={imgUrl ?? ''}
+      src={imgUrl ?? noImage}
       alt={imgAlt}
       width={imgWidth}
       height={imgHeight}

@@ -28,12 +28,7 @@ export const CharacterModal = ({ setIsOpen, handleClose }: TPops) => {
         </Fragment>
       )}
       <div className="img-wrap">
-        <Images
-          imgUrl={selectCollection?.imageUrl}
-          imgAlt={selectCollection?.name}
-          imgWidth={160}
-          imgHeight={155}
-        />
+        <Images imgUrl={selectCollection?.imageUrl} imgAlt={selectCollection?.name} />
       </div>
       <Spacing height={15} />
       <div className="info-wrap">
@@ -95,6 +90,10 @@ const StyledModal = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    img {
+      max-width: 220px;
+    }
   }
 
   .info-wrap {

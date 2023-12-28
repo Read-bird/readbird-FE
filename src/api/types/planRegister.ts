@@ -1,4 +1,4 @@
-import { TBook } from '@/store/reducers';
+import { TBookDetail } from '@api/types/book';
 
 export interface IRegisterForm {
   planId: number | null;
@@ -22,7 +22,7 @@ export type TRegisterFormValue = {
   endDate: string;
   bookId: number | null;
   searchData: {
-    bookList: TBook[];
+    bookList: TBookDetail[];
     page: number;
     totalPage: number;
   };

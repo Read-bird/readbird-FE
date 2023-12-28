@@ -1,6 +1,5 @@
-import { TBook } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
-import { TSearchBooksResult } from '@api/types';
+import { TBookDetail, TSearchBooksResult } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
 import { Book } from '@components/templates/SearchTemplate/Book';
 import { Alert } from '@utils/Alert';
@@ -11,7 +10,7 @@ import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
 export const LibraryList = () => {
-  const [bookList, setBookList] = useState<TBook[]>([]);
+  const [bookList, setBookList] = useState<TBookDetail[]>([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 

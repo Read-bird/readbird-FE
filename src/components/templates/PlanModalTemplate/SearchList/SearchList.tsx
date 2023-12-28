@@ -1,17 +1,17 @@
-import { TBook } from '@/store/reducers';
+import { TBookDetail } from '@api/types';
 import { Images } from '@assets/images';
 import { CSSProperties, useEffect, useMemo, useRef } from 'react';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
 type TProps = {
-  bookList: TBook[];
+  bookList: TBookDetail[];
   currentPage: number;
   totalPage: number;
   searchWord: string | null;
   handleNextPage: () => void;
   handleClose: () => void;
-  handleClick: (book: TBook) => void;
+  handleClick: (book: TBookDetail) => void;
 };
 
 type TSearchItemProps = {

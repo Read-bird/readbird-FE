@@ -52,6 +52,9 @@ const planSlice = createSlice({
     addPlanData: (state, action: PayloadAction<TPlan>) => {
       state.planData.push(action.payload);
     },
+    addPlanList: (state, action: PayloadAction<TPlan[]>) => {
+      state.planData.push(...action.payload);
+    },
     deletePlanData: (state, action: PayloadAction<number>) => {
       state.planData = state.planData.filter((plan) => plan.planId !== action.payload);
     },
@@ -64,17 +67,24 @@ const planSlice = createSlice({
     },
     setRecordStatus: (
       state,
-      action: PayloadAction<{ planId: number; recordStatus: ERecordStatus }>
+      action: PayloadAction<{ planId: number; recordStatus: ERecordStatus; currentPage: number }>
     ) => {
       state.planData = state.planData.map((plan) => {
         if (plan.planId === action.payload.planId) {
-          return { ...plan, recordStatus: action.payload.recordStatus };
+          return {
+            ...plan,
+            recordStatus: action.payload.recordStatus,
+            currentPage: action.payload.currentPage
+          };
         }
         return plan;
       });
     },
     addFailedPlan: (state, action: PayloadAction<TPreviouslyFailedPlan>) => {
       state.previouslyFailedPlan.push(action.payload);
+    },
+    clearFailedPlan: (state) => {
+      state.previouslyFailedPlan = [];
     }
   }
 });
@@ -89,7 +99,9 @@ export const {
   setMonthRecord,
   setTrophy,
   setRecordStatus,
-  addFailedPlan
+  addFailedPlan,
+  clearFailedPlan,
+  addPlanList
 } = planSlice.actions;
 
 export const planStore = planSlice.reducer;

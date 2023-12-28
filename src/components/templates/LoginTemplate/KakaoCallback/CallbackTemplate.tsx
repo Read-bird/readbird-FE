@@ -1,4 +1,10 @@
-import { setAccessToken, setOpen, setSelectCollection, setUserInfo } from '@/store/reducers';
+import {
+  setAccessToken,
+  setOpen,
+  setOpenType,
+  setSelectCollection,
+  setUserInfo
+} from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { Alert } from '@/utils';
 import { TLoginResType } from '@api/types';
@@ -67,6 +73,7 @@ export const CallbackTemplate = () => {
               })
             );
             dispatch(setOpen(true));
+            dispatch(setOpenType('character'));
           }
           navigate('/');
         } else {

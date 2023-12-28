@@ -1,10 +1,11 @@
-import { TBook, addPlanData, setPlanEndData } from '@/store/reducers';
+import { addPlanData, setPlanEndData } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { Alert, convertError, go, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
   EAchievementStatus,
   ERecordStatus,
+  TBookDetail,
   TRegisterFormValue,
   TSearchBooksResult
 } from '@api/types';
@@ -135,11 +136,12 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
         Alert.confirm({
           title: '이미 읽은 책은 새가 부화하지 않습니다.',
           text: '그래도 플랜을 등록하시겠어요?',
-          action: () => {
-            handleSubmitValue(props);
-          },
-          failed: () => {
-            setIsOpen(false);
+          action: (result) => {
+            if (result.isConfirmed) {
+              handleSubmitValue(props);
+            } else {
+              setIsOpen(false);
+            }
           }
         });
         return;
@@ -236,7 +238,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
   };
 
   // 도서 선택
-  const handleClickBook = (book: TBook) => {
+  const handleClickBook = (book: TBookDetail) => {
     setValue('bookId', book.bookId);
     setValue('title', book.title);
     setValue('author', book.author);
@@ -255,6 +257,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
         if (!value) return;
 
         const requestData = {
+          type: 'title',
           value,
           page: '' + (page ?? searchData.page),
           scale: '' + 10

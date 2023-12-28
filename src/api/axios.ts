@@ -22,6 +22,10 @@ export const axiosFetch = async <REQ_DATA = any, RES_DATA = any>({
   url,
   options
 }: TAxiosFetch<REQ_DATA>): Promise<AxiosResponse<RES_DATA>> => {
-  const response = await authFetch({ url, method, ...options });
-  return response;
+  try {
+    const response = await authFetch({ url, method, ...options });
+    return response;
+  } catch (e) {
+    throw e;
+  }
 };

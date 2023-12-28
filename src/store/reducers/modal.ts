@@ -2,12 +2,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export type TState = {
   isOpen: boolean;
-  openType: number;
+  openType: 'character' | 'failedPlan' | null;
 };
 
 const initialState: TState = {
   isOpen: false,
-  openType: 4
+  openType: null
 };
 
 const modalSlice = createSlice({
@@ -17,7 +17,7 @@ const modalSlice = createSlice({
     setOpen: (state, action: PayloadAction<boolean>) => {
       state.isOpen = action.payload;
     },
-    setOpenType: (state, action: PayloadAction<number>) => {
+    setOpenType: (state, action: PayloadAction<'character' | 'failedPlan' | null>) => {
       state.openType = action.payload;
     }
   }

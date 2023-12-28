@@ -19,6 +19,7 @@ type TProps = {
   recordStatus: ERecordStatus;
   selectDate: string;
   maxPage: number;
+  currentPage: number;
   dday: boolean;
   openSuccess: () => void;
   openFailed: () => void;
@@ -29,6 +30,7 @@ export const Stamp = ({
   recordStatus,
   selectDate,
   maxPage,
+  currentPage,
   dday,
   openSuccess,
   openFailed
@@ -60,8 +62,10 @@ export const Stamp = ({
         text: '책을 끝까지 읽으셨군요.',
         confirmButtonText: '네!',
         cancelButtonText: '잘못 눌렀어요',
-        action: () => {
-          handleClickSuccess();
+        action: (result) => {
+          if (result.isConfirmed) {
+            handleClickSuccess();
+          }
         }
       });
     } else {
@@ -97,7 +101,13 @@ export const Stamp = ({
           openSuccess();
         } else {
           // 플랜의 recordStatus 수정
-          dispatch(setRecordStatus({ planId, recordStatus: ERecordStatus.success }));
+          dispatch(
+            setRecordStatus({
+              planId,
+              recordStatus: ERecordStatus.success,
+              currentPage: maxPage
+            })
+          );
         }
       }
     } catch (e) {
@@ -118,7 +128,7 @@ export const Stamp = ({
         autocapitalize: 'off'
       },
       inputValidator: (value) => {
-        if (Number(value) >= maxPage) {
+        if (Number(value) >= maxPage || Number(value) < currentPage) {
           return '* 읽은 쪽을 다시 확인해주세요.';
         }
       },
@@ -142,7 +152,13 @@ export const Stamp = ({
               openFailed();
             } else {
               // 플랜의 recordStatus 수정
-              dispatch(setRecordStatus({ planId, recordStatus: ERecordStatus.failed }));
+              dispatch(
+                setRecordStatus({
+                  planId,
+                  recordStatus: ERecordStatus.failed,
+                  currentPage: page
+                })
+              );
             }
           }
         } catch (e: any) {

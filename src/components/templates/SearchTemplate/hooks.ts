@@ -1,6 +1,7 @@
-import { TBookData, addBookList, setBookList, setTotalPage } from '@/store/reducers';
+import { addBookList, setBookList, setTotalPage } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { axiosFetch } from '@api/axios';
+import { TSearchBooksResult } from '@api/types';
 import { TFormValue } from '@components/templates/SearchTemplate/SearchTemplate';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
@@ -14,7 +15,7 @@ export const useGetSearchList = () => {
   const searchList = useCallback(
     async ({ searchType, searchText, page, scale }: TFormValue) => {
       try {
-        const result = await axiosFetch<any, TBookData>({
+        const result = await axiosFetch<any, TSearchBooksResult>({
           method: 'get',
           url: `/api/book?${
             searchType !== 'all' ? `type=${searchType}&` : ''

@@ -1,11 +1,11 @@
-import { TBook } from '@/store/reducers/bookSearch';
+import { TBookDetail } from '@api/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const bookDetailSlice = createSlice({
   name: 'bookDetail',
-  initialState: null as TBook | null,
+  initialState: null as TBookDetail | null,
   reducers: {
-    setBookDetail: (state: TBook | null, action: PayloadAction<TBook | null>) => {
+    setBookDetail: (_, action: PayloadAction<TBookDetail | null>) => {
       return action.payload;
     }
   }

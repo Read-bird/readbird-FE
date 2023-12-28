@@ -61,12 +61,7 @@ export const EncyclopediaList = () => {
               </div>
             ) : (
               <div className="wrap image-wrap">
-                <Images
-                  imgUrl={collection.imageUrl}
-                  imgAlt={collection.name}
-                  imgWidth={65}
-                  imgHeight={65}
-                />
+                <Images imgUrl={collection.imageUrl} imgAlt={collection.name} imgWidth={65} />
               </div>
             )}
             <Spacing height={10} />
