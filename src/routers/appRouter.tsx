@@ -46,6 +46,9 @@ const MyEncyclopedia = Loadable(
 const MyRestore = Loadable(
   lazy(() => import('@pages/MyPage/MyRestore').then((data) => ({ default: data.MyRestore })))
 );
+const AppEvent = Loadable(
+  lazy(() => import('@pages/AppEvent').then((data) => ({ default: data.AppEvent })))
+);
 const AppNotFound = Loadable(
   lazy(() => import('@pages/AppNotFound').then((data) => ({ default: data.AppNotFound })))
 );
@@ -119,6 +122,10 @@ export const appRouter = createBrowserRouter([
             errorElement: <AppError />
           }
         ]
+      },
+      {
+        path: '/event',
+        element: <AppEvent />
       }
     ]
   },
