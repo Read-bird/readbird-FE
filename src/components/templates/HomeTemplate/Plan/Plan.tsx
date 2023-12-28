@@ -105,7 +105,7 @@ export const Plan = (props: TProps) => {
           planId={planId}
           recordStatus={recordStatus}
           selectDate={currentDate}
-          maxPage={currentPage + target}
+          maxPage={Number(currentPage) + Number(target)}
           currentPage={currentPage}
           dday={dayjs(endDate).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')}
           openSuccess={openSuccess}
