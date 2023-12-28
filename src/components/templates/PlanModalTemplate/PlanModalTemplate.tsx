@@ -12,8 +12,8 @@ type TProps = {
   modalSubText?: string;
   buttonType?: number;
   onConfirm?: any;
-  isEdit?: any;
   planId?: number;
+  isRestore?: boolean;
 };
 
 // modalIndex
@@ -29,7 +29,8 @@ export const PlanModalTemplate = ({
   modalSubText,
   buttonType,
   onConfirm,
-  planId
+  planId,
+  isRestore = false
 }: TProps) => {
   return (
     <Modal
@@ -39,7 +40,9 @@ export const PlanModalTemplate = ({
         width: '368px'
       }}
     >
-      {modalIndex === 1 && <RegisterModal setIsOpen={setIsOpen} planId={planId} />}
+      {modalIndex === 1 && (
+        <RegisterModal setIsOpen={setIsOpen} planId={planId} isRestore={isRestore} />
+      )}
       {modalIndex === 4 && <CharacterModal setIsOpen={setIsOpen} />}
       {modalIndex === 9 && (
         <SimpleModal
