@@ -1,4 +1,4 @@
-import { TCollection, setCollections, setSelectCollection } from '@/store/reducers';
+import { TCollection, setCollections, setSelectCollections } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { axiosFetch } from '@api/axios';
 import { TResponseCollection } from '@api/types/collection';
@@ -41,7 +41,7 @@ export const EncyclopediaList = () => {
       return;
     }
 
-    dispatch(setSelectCollection(collection as TResponseCollection));
+    dispatch(setSelectCollections([collection] as TResponseCollection[]));
     setIsOpen(true);
   };
 

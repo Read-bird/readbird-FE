@@ -1,4 +1,4 @@
-import { setOpen, setOpenType, setSelectCollection } from '@/store/reducers';
+import { setOpen, setOpenType, setSelectCollections } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
 import { TResponseCollection } from '@api/types';
 import { Alert } from '@utils/Alert';
@@ -15,17 +15,19 @@ export const AppEvent = () => {
 
   const callEvent = async () => {
     try {
-      const response = await axiosFetch<any, TResponseCollection>({
+      const response = await axiosFetch<any, TResponseCollection[]>({
         url: '/api/collection/event',
         method: 'get'
       });
 
       if (response.status === 200) {
         dispatch(
-          setSelectCollection({
-            ...response.data,
-            title: '축하해요! 용용이를 획득하셨어요!'
-          })
+          setSelectCollections(
+            response.data.map((data) => ({
+              ...data,
+              title: `축하해요! ${data.name}를 획득하셨어요!`
+            }))
+          )
         );
         dispatch(setOpen(true));
         dispatch(setOpenType('character'));

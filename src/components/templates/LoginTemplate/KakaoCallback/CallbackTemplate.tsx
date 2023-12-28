@@ -2,7 +2,7 @@ import {
   setAccessToken,
   setOpen,
   setOpenType,
-  setSelectCollection,
+  setSelectCollections,
   setUserInfo
 } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
@@ -66,11 +66,13 @@ export const CallbackTemplate = () => {
           dispatch(setAccessToken(extractedToken));
           if (resData.data?.character) {
             dispatch(
-              setSelectCollection({
-                ...resData.data.character,
-                title: `회원가입을 축하해요!\n새가 부화했어요!`,
-                description: `읽어보새와 함께 책을 읽고\n더 많은 새를 만나보세요!`
-              })
+              setSelectCollections([
+                {
+                  ...resData.data.character,
+                  title: `회원가입을 축하해요!\n새가 부화했어요!`,
+                  description: `읽어보새와 함께 책을 읽고\n더 많은 새를 만나보세요!`
+                }
+              ])
             );
             dispatch(setOpen(true));
             dispatch(setOpenType('character'));

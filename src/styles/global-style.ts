@@ -41,7 +41,6 @@ export const GlobalStyle = createGlobalStyle`
     width: 25px;
     height: 25px;
   }
-
 `;
 
 export const colors = {

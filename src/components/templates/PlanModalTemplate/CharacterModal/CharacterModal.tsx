@@ -1,5 +1,6 @@
 import { TRootState } from '@/store/state';
 import { Images } from '@assets/images';
+import { ReactSlider } from '@components/common/Slider';
 import { Spacing } from '@components/common/Spacing';
 import dayjs from 'dayjs';
 import { Dispatch, Fragment, SetStateAction } from 'react';
@@ -12,7 +13,7 @@ type TPops = {
 };
 
 export const CharacterModal = ({ setIsOpen, handleClose }: TPops) => {
-  const { selectCollection } = useSelector((state: TRootState) => state.collectionStore);
+  const { selectCollections } = useSelector((state: TRootState) => state.collectionStore);
 
   const handleConfirm = () => {
     setIsOpen?.(false);
@@ -21,28 +22,34 @@ export const CharacterModal = ({ setIsOpen, handleClose }: TPops) => {
 
   return (
     <StyledModal>
-      {selectCollection?.title && (
-        <Fragment>
-          <h2>{selectCollection.title}</h2>
-          <Spacing height={20} />
-        </Fragment>
-      )}
-      <div className="img-wrap">
-        <Images imgUrl={selectCollection?.imageUrl} imgAlt={selectCollection?.name} />
-      </div>
-      <Spacing height={15} />
-      <div className="info-wrap">
-        <h4>{selectCollection?.name}</h4>
-        <p>{selectCollection?.content}</p>
-        <span>획득일 : {dayjs(selectCollection?.getDate).format('YYYY / MM / DD')}</span>
-        {selectCollection?.title && <i>* 부화한 새는 마이 페이지에서 확인 가능해요.</i>}
-      </div>
-      {selectCollection?.description && (
-        <Fragment>
-          <Spacing height={20} />
-          <p className="description">{selectCollection.description}</p>
-        </Fragment>
-      )}
+      <ReactSlider width="100%">
+        {selectCollections?.map((data) => (
+          <div className="encyclopediaList">
+            {data.title && (
+              <Fragment>
+                <h2>{data.title}</h2>
+                <Spacing height={20} />
+              </Fragment>
+            )}
+            <div className="img-wrap">
+              <Images imgUrl={data.imageUrl} imgAlt={data.name} />
+            </div>
+            <Spacing height={15} />
+            <div className="info-wrap">
+              <h4>{data.name}</h4>
+              <p>{data.content}</p>
+              <span>획득일 : {dayjs(data.getDate).format('YYYY / MM / DD')}</span>
+              {data.title && <i>* 부화한 새는 마이 페이지에서 확인 가능해요.</i>}
+            </div>
+            {data.description && (
+              <Fragment>
+                <Spacing height={20} />
+                <p className="description">{data.description}</p>
+              </Fragment>
+            )}
+          </div>
+        ))}
+      </ReactSlider>
       <Spacing height={20} />
       <div className="flex">
         <button className="btn-2 btn" onClick={handleConfirm}>
@@ -60,6 +67,17 @@ const StyledModal = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .slick-dots {
+    bottom: -20px;
+  }
+
+  .encyclopediaList {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   h2 {
     font-size: 22px;
@@ -90,6 +108,7 @@ const StyledModal = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0 auto;
 
     img {
       max-width: 220px;

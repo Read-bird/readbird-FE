@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 type TProps = {
-  children: ReactNode[];
+  children: ReactNode[] | ReactNode;
   width?: string;
   height?: string;
 } & Settings;
