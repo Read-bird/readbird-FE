@@ -1,5 +1,4 @@
-import { addPlanData, setPlanEndData } from '@/store/reducers';
-import { TRootState } from '@/store/state';
+import { addPlanData, setPlanData } from '@/store/reducers';
 import { Alert, convertError, go, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
@@ -14,7 +13,7 @@ import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { InputLabel } from '../InputLabel';
@@ -60,10 +59,10 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
     getValues,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
+    clearErrors,
+    setError
   } = useFormContext<TRegisterFormValue>();
-
-  const { planData } = useSelector((state: TRootState) => state.planStore);
 
   const title = watch('title');
   const { bookList, page, totalPage: bookTotalPage } = watch('searchData');
@@ -106,6 +105,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
 
   // 날짜 수정
   const handleChangeDate = (type: 'Y' | 'M' | 'D', isStart: boolean) => (value: string) => {
+    clearErrors();
     const name: 'startDate' | 'endDate' = isStart ? 'startDate' : 'endDate';
     const prev = getValues();
     const date = new Date(prev[name]);
@@ -123,6 +123,35 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
 
   // 등록/수정 전 check
   const handleSubmitCheck = async (props: TRegisterFormValue) => {
+    if (!planId) {
+      // 시작일이 오늘보다 이전날짜
+      if (dayjs(props.startDate).format('YYYY-MM-DD') < dayjs().format('YYYY-MM-DD')) {
+        setError('startDate', {
+          message: '* 오늘보다 이전 날짜를 설정할 수 없습니다.'
+        });
+        return;
+      }
+    }
+
+    // 종료일이 시작일보다 이전날짜
+    if (dayjs(props.endDate).format('YYYY-MM-DD') < dayjs(props.startDate).format('YYYY-MM-DD')) {
+      setError('endDate', {
+        message: '* 시작일보다 이전 날짜를 설정할 수 없습니다.'
+      });
+      return;
+    }
+
+    // 종료일이 1년초과
+    if (
+      dayjs(props.startDate).add(1, 'year').format('YYYY-MM-DD') <
+      dayjs(props.endDate).format('YYYY-MM-DD')
+    ) {
+      setError('endDate', {
+        message: '* 시작일에서 1년이 초과하는 날짜를 설정할 수 없습니다.'
+      });
+      return;
+    }
+
     // 플랜 유효성 검사
     if (!planId) {
       const result = await planValidation();
@@ -190,7 +219,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
           text: !planId ? '플랜이 성공적으로 등록되었습니다.' : '플랜이 성공적으로 수정되었습니다.',
           action: () => {
             if (props.planId) {
-              dispatch(setPlanEndData({ planId: props.planId, endDate: props.endDate }));
+              dispatch(setPlanData(res.data));
             } else {
               const addPlan = {
                 ...res.data,
@@ -404,6 +433,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
           />
           <span>일 부터</span>
         </div>
+        <GuideSpan>{errors.startDate?.message}</GuideSpan>
         <div className="cont select">
           <SelectLabel
             id={'endDate-y'}
@@ -427,6 +457,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
           />
           <span>일 까지</span>
         </div>
+        <GuideSpan>{errors.endDate?.message}</GuideSpan>
       </div>
 
       <div className="cont flex" style={{ marginTop: '10px' }}>
@@ -446,7 +477,6 @@ const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 17px;
     position: relative;
 
     &.flex {
@@ -520,6 +550,7 @@ const StyledForm = styled.form`
   }
   small[role='alert'] {
     font-size: 12px;
+    height: 12px;
     color: #ff7c7c;
     font-style: normal;
     font-weight: 400;
@@ -578,4 +609,12 @@ const StyledForm = styled.form`
   .btn-2 {
     background: #b780db;
   }
+`;
+
+const GuideSpan = styled.span`
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #ff7676;
+  height: 20px;
 `;

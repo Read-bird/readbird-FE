@@ -1,4 +1,4 @@
-import { setRecordStatus, setSelectCollection } from '@/store/reducers';
+import { setRecordStatus, setSelectCollections } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
 import { ERecordStatus, TResponseCollection } from '@api/types';
 import { IconFailed, IconProgress, IconSuccess } from '@assets/icons';
@@ -93,10 +93,12 @@ export const Stamp = ({
         if (result.data.message.includes('success')) {
           // 플랜달성 모달을 띄워주며 캐릭터 획득
           dispatch(
-            setSelectCollection({
-              ...result.data.newCharacter,
-              title: '축하해요! 새가 부화했어요!'
-            })
+            setSelectCollections([
+              {
+                ...result.data.newCharacter,
+                title: '축하해요! 새가 부화했어요!'
+              }
+            ])
           );
           openSuccess();
         } else {

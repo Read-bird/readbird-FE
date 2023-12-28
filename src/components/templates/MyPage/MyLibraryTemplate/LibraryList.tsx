@@ -1,7 +1,7 @@
 import { axiosFetch } from '@api/axios';
-import { TBookDetail, TSearchBooksResult } from '@api/types';
+import { TSearchBooksResult } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
-import { Book } from '@components/templates/SearchTemplate/Book';
+import { Book } from '@components/templates/MyPage/MyLibraryTemplate/Book';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -9,8 +9,23 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
+export type TResponseData = Omit<TSearchBooksResult, 'bookList'> & { bookList: TResponseLibrary[] };
+
+export type TResponseLibrary = {
+  planId: number;
+  startDate: string;
+  endDate: string;
+  bookId: number;
+  title: string;
+  author: string;
+  description: string;
+  coverImage: string;
+  isbn: string;
+  publisher: string;
+};
+
 export const LibraryList = () => {
-  const [bookList, setBookList] = useState<TBookDetail[]>([]);
+  const [bookList, setBookList] = useState<TResponseLibrary[]>([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -24,7 +39,7 @@ export const LibraryList = () => {
 
   const getPlanList = async (page?: number) => {
     try {
-      const res = await axiosFetch<any, TSearchBooksResult>({
+      const res = await axiosFetch<any, TResponseData>({
         url: '/api/user/plan/success',
         method: 'get'
       });

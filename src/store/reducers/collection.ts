@@ -12,7 +12,7 @@ export type TSelectCollection = TResponseCollection & {
 
 type TState = {
   collections: TCollection[];
-  selectCollection: TSelectCollection | null;
+  selectCollections: TSelectCollection[] | null;
 };
 
 const COLLECT_SIZE = 18;
@@ -21,7 +21,7 @@ const initialState: TState = {
   collections: new Array(COLLECT_SIZE)
     .fill(null)
     .map(() => ({ characterId: null, name: '???', content: '', imageUrl: '', getDate: '' })),
-  selectCollection: null
+  selectCollections: null
 };
 
 const collectionSlice = createSlice({
@@ -33,12 +33,12 @@ const collectionSlice = createSlice({
         state.collections[i] = action.payload[i];
       }
     },
-    setSelectCollection: (state, action: PayloadAction<TSelectCollection>) => {
-      state.selectCollection = action.payload;
+    setSelectCollections: (state, action: PayloadAction<TSelectCollection[]>) => {
+      state.selectCollections = action.payload;
     }
   }
 });
 
-export const { setCollections, setSelectCollection } = collectionSlice.actions;
+export const { setCollections, setSelectCollections } = collectionSlice.actions;
 
 export const collectionStore = collectionSlice.reducer;

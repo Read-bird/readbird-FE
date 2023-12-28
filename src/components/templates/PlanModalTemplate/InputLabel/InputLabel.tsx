@@ -25,7 +25,7 @@ export const InputLabel = <T extends string>({
         aria-invalid={errors ? 'true' : 'false'}
         style={{ borderColor: errors ? '#FF7C7C' : '#ABABAB' }}
       />
-      {errors && <small role="alert">* {errors.message}</small>}
+      <small role="alert">{errors && `* ${errors.message}`}</small>
       {isViewSearchIcon && (
         <div className="search-icon">
           <IconSearch />

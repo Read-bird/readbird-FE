@@ -41,10 +41,13 @@ const planSlice = createSlice({
     setMonthCurrentDate: (state, action: PayloadAction<string>) => {
       state.monthCurrentDate = action.payload;
     },
-    setPlanEndData: (state, action: PayloadAction<{ planId: number; endDate: string }>) => {
+    setPlanData: (state, action: PayloadAction<TPlan>) => {
       state.planData = state.planData.map((plan) => {
         if (plan.planId === action.payload.planId) {
-          return { ...plan, endDate: action.payload.endDate };
+          return {
+            ...plan,
+            ...action.payload
+          };
         }
         return plan;
       });
@@ -93,7 +96,6 @@ export const {
   setPlan,
   setCurrentDate,
   setMonthCurrentDate,
-  setPlanEndData,
   addPlanData,
   deletePlanData,
   setMonthRecord,
@@ -101,7 +103,8 @@ export const {
   setRecordStatus,
   addFailedPlan,
   clearFailedPlan,
-  addPlanList
+  addPlanList,
+  setPlanData
 } = planSlice.actions;
 
 export const planStore = planSlice.reducer;
