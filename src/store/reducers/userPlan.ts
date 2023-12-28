@@ -58,6 +58,19 @@ const planSlice = createSlice({
     addPlanList: (state, action: PayloadAction<TPlan[]>) => {
       state.planData.push(...action.payload);
     },
+    successPlan: (state, action: PayloadAction<number>) => {
+      state.planData = state.planData.map((data) => {
+        if (data.planId === action.payload) {
+          return {
+            ...data,
+            currentPage: data.totalPage,
+            target: 0,
+            recordStatus: ERecordStatus.success
+          };
+        }
+        return data;
+      });
+    },
     deletePlanData: (state, action: PayloadAction<number>) => {
       state.planData = state.planData.filter((plan) => plan.planId !== action.payload);
     },
@@ -104,7 +117,8 @@ export const {
   addFailedPlan,
   clearFailedPlan,
   addPlanList,
-  setPlanData
+  setPlanData,
+  successPlan
 } = planSlice.actions;
 
 export const planStore = planSlice.reducer;
