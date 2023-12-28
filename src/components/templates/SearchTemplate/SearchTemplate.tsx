@@ -42,6 +42,9 @@ export const SearchTemplate = () => {
       return;
     }
 
+    // 페이지 변경
+    methods.setValue('page', 1);
+
     const result = await searchList(props);
 
     if (result) {
