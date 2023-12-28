@@ -20,6 +20,8 @@ const Wrap = styled.div`
   position: relative;
   width: 100%;
   height: 24px;
+  overflow: hidden;
+  border-radius: 20px;
 `;
 
 const StyledProgress = styled.progress`
