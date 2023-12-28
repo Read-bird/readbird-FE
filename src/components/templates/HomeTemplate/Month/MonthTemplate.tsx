@@ -92,7 +92,7 @@ export const MonthTemplate = () => {
           <FlexBox>
             <IconSuccess fillColor="#E3CCF2" />
             <Spacing width={10} />
-            <span>100% 달성한 플랜</span>
+            <span>달성에 성공한 플랜</span>
           </FlexBox>
           <strong>{recordTrophy.toLocaleString()}개</strong>
         </FlexBox>
