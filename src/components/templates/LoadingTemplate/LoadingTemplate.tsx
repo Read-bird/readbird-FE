@@ -10,7 +10,7 @@ export const LoadingTemplate = () => {
   const height = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     return { height: `${doc.scrollHeight}px` };
-  }, []);
+  }, [loading]);
 
   return (
     <Fragment>

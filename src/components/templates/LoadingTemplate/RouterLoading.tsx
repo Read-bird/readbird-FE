@@ -1,15 +1,14 @@
 import { Loading } from '@components/common/Loading';
-import { useMemo } from 'react';
 import styled from 'styled-components';
 
 export const RouterLoading = () => {
-  const height = useMemo(() => {
+  const height = () => {
     const doc = document.querySelector('#root') as HTMLElement;
     return { height: `${doc.scrollHeight}px` };
-  }, []);
+  };
 
   return (
-    <Wrap style={height}>
+    <Wrap style={height()}>
       <Loading />
     </Wrap>
   );
