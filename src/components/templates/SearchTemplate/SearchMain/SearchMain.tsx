@@ -12,7 +12,8 @@ import styled from 'styled-components';
 export const SearchMain = () => {
   const [topBookList, setTopBookList] = useState<TBookDetail[]>([]);
   const listHeight = useMemo(() => {
-    const scrollHeight = document.body.scrollHeight;
+    const doc = document.querySelector('#root') as HTMLElement;
+    const scrollHeight = doc.scrollHeight;
     const headerHeight = 95;
     const footerHeight = 70;
     const bodyHeight = 20 + 66 + 18 + 23 + 18;

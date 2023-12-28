@@ -56,7 +56,8 @@ export const MyRestoreList = () => {
   };
 
   const listHeight = useMemo(() => {
-    const scrollHeight = document.body.scrollHeight;
+    const doc = document.querySelector('#root') as HTMLElement;
+    const scrollHeight = doc.scrollHeight;
     const headerHeight = 95;
     const footerHeight = 70;
     const bodyHeight = 30;

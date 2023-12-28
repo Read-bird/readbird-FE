@@ -1,16 +1,21 @@
 import { TRootState } from '@/store/state';
 import { Loading } from '@components/common/Loading';
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 export const LoadingTemplate = () => {
   const { loading } = useSelector((state: TRootState) => state.loadingStore);
 
+  const height = useMemo(() => {
+    const doc = document.querySelector('#root') as HTMLElement;
+    return { height: `${doc.scrollHeight}px` };
+  }, [loading]);
+
   return (
     <Fragment>
       {loading && (
-        <Wrap>
+        <Wrap style={height}>
           <Loading />
         </Wrap>
       )}
@@ -24,7 +29,7 @@ const Wrap = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 100;
+  z-index: 999;
 
   display: flex;
   flex-direction: column;

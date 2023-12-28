@@ -39,7 +39,8 @@ export const Modal = ({
           right: 'auto',
           bottom: 'auto',
           transform: 'translate(-50%, -50%)',
-          borderRadius: '20px'
+          borderRadius: '20px',
+          overflow: 'hidden'
         },
         content
       )

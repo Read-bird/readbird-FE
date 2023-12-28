@@ -46,7 +46,8 @@ export const SearchResult = memo(() => {
   );
 
   const listHeight = useMemo(() => {
-    const scrollHeight = document.body.scrollHeight;
+    const doc = document.querySelector('#root') as HTMLElement;
+    const scrollHeight = doc.scrollHeight;
     const headerHeight = 95;
     const footerHeight = 70;
     const bodyHeight = 20 + 30 + 20;

@@ -24,7 +24,7 @@ export const CharacterModal = ({ setIsOpen, handleClose }: TPops) => {
     <StyledModal>
       <ReactSlider width="100%">
         {selectCollections?.map((data) => (
-          <div className="encyclopediaList">
+          <div className="encyclopediaList" key={data.name}>
             {data.title && (
               <Fragment>
                 <h2>{data.title}</h2>
@@ -62,7 +62,6 @@ export const CharacterModal = ({ setIsOpen, handleClose }: TPops) => {
 
 const StyledModal = styled.div`
   width: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
