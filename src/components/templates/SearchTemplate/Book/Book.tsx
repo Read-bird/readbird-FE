@@ -75,7 +75,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
             <Spacing height={5} />
             <TextSpan>{publisher}</TextSpan>
           </div>
-          <TextSpan className="dark">총 {totalPage.toLocaleString()}쪽</TextSpan>
+          <TextSpan className="dark">총 {props.totalPage.toLocaleString()}쪽</TextSpan>
         </Inner>
       </ListItem>
       {data.lastIndex === index && <div className="last-item" />}
