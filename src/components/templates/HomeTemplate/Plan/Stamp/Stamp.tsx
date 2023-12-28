@@ -1,4 +1,4 @@
-import { deletePlanData, setRecordStatus, setSelectCollections } from '@/store/reducers';
+import { setRecordStatus, setSelectCollections, successPlan } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
 import { ERecordStatus, TResponseCollection } from '@api/types';
 import { IconFailed, IconProgress, IconSuccess } from '@assets/icons';
@@ -92,7 +92,7 @@ export const Stamp = ({
       if (result.status === 200) {
         if (result.data.message.includes('success')) {
           // 플랜달성 모달을 띄워주며 캐릭터 획득
-          dispatch(deletePlanData(planId));
+          dispatch(successPlan(planId));
           dispatch(
             setSelectCollections([
               {
@@ -152,8 +152,15 @@ export const Stamp = ({
           if (result.status === 200) {
             if (result.data.message.includes('failed')) {
               // 실패 모달 띄우기
-              dispatch(deletePlanData(planId));
               openFailed();
+              // 플랜의 recordStatus 수정
+              dispatch(
+                setRecordStatus({
+                  planId,
+                  recordStatus: ERecordStatus.failed,
+                  currentPage: page
+                })
+              );
             } else {
               // 플랜의 recordStatus 수정
               dispatch(
