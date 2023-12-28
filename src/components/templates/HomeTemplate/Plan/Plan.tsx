@@ -54,13 +54,11 @@ export const Plan = (props: TProps) => {
 
   const openSuccess = useCallback(() => {
     dispatch(setOpen(true));
-    dispatch(setOpenType(4));
+    dispatch(setOpenType('character'));
   }, [dispatch]);
 
   const openFailed = useCallback(() => {
     dispatch(addFailedPlan(props));
-    dispatch(setOpen(true));
-    dispatch(setOpenType(3));
   }, [dispatch, props]);
 
   return (
@@ -82,10 +80,9 @@ export const Plan = (props: TProps) => {
           </FlexBox>
           <FlexBox $justifyContent="flex-start">
             <span className="book-page">
-              {currentPage}쪽 ~ {totalPage}쪽
+              {currentPage}쪽 ~ {Number(currentPage) + Number(target)}쪽
             </span>
             <Spacing width={5} />
-            <span className="book-target">(목표: {target})</span>
           </FlexBox>
         </div>
         <ProgressBar
@@ -178,14 +175,8 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
   }
 
   .book-page {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
-    color: #747474;
-  }
-
-  .book-target {
-    font-size: 12px;
-    font-weight: 400;
     color: #747474;
   }
 `;

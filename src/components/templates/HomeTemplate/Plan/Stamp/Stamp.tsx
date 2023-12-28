@@ -62,8 +62,10 @@ export const Stamp = ({
         text: '책을 끝까지 읽으셨군요.',
         confirmButtonText: '네!',
         cancelButtonText: '잘못 눌렀어요',
-        action: () => {
-          handleClickSuccess();
+        action: (result) => {
+          if (result.isConfirmed) {
+            handleClickSuccess();
+          }
         }
       });
     } else {
