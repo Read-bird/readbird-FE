@@ -4,9 +4,9 @@ import { ERecordStatus, TPlan, TRegisterFormValue } from '@api/types';
 import { Images } from '@assets/images';
 import { ProgressBar } from '@components/common/ProgressBar';
 import { Spacing } from '@components/common/Spacing';
+import { Dday } from '@components/templates/HomeTemplate/Plan/Dday';
 import { Dots } from '@components/templates/HomeTemplate/Plan/Dots';
 import { Stamp } from '@components/templates/HomeTemplate/Plan/Stamp';
-import { calculateDday } from '@utils/calendar';
 import dayjs from 'dayjs';
 import { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -76,7 +76,7 @@ export const Plan = (props: TProps) => {
         <div>
           <FlexBox>
             <span className="book-name">{title}</span>
-            <DDayLabel>D-{calculateDday(new Date(endDate))}</DDayLabel>
+            <Dday endDate={endDate} />
           </FlexBox>
           <FlexBox $justifyContent="flex-start">
             <span className="book-page">
