@@ -1,16 +1,14 @@
-import { setBookDetail } from '@/store/reducers';
-import { TAppDispatch } from '@/store/state';
-import { TBookDetail } from '@api/types';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
-import { memo, useCallback, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
+import { memo, useEffect, useRef } from 'react';
 import { areEqual } from 'react-window';
 import styled, { CSSObject, CSSProperties } from 'styled-components';
+import { TResponseLibrary } from '../LibraryList';
 
 type TProps = {
   data: {
-    list: TBookDetail[];
+    list: TResponseLibrary[];
     totalPage: number;
     lastIndex: number;
     currentPage: number;
@@ -21,18 +19,9 @@ type TProps = {
 };
 
 export const Book = memo(({ data, index, style }: TProps) => {
-  const totalPage = data.totalPage;
   const props = data.list[index];
   const { coverImage, title, author, publisher } = props;
-  const dispatch = useDispatch<TAppDispatch>();
   const observer = useRef<IntersectionObserver | null>(null);
-
-  const handleClickItem = useCallback(
-    (props: TBookDetail) => () => {
-      dispatch(setBookDetail(props));
-    },
-    [dispatch]
-  );
 
   useEffect(() => {
     if (data.lastIndex === index) {
@@ -58,7 +47,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
   }, [data, index]);
 
   return (
-    <div style={style} onClick={handleClickItem(props)}>
+    <div style={style}>
       <ListItem>
         <Images
           imgUrl={coverImage}
@@ -75,7 +64,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
             <Spacing height={5} />
             <TextSpan>{publisher}</TextSpan>
           </div>
-          <TextSpan className="dark">총 {totalPage.toLocaleString()}쪽</TextSpan>
+          <TextSpan className="dark">{dayjs(props.endDate).format('YYYY / MM / DD 완독')}</TextSpan>
         </Inner>
       </ListItem>
       {data.lastIndex === index && <div className="last-item" />}
@@ -89,7 +78,7 @@ const imgStyle: CSSObject = {
 };
 
 const ListItem = styled.div`
-  cursor: pointer;
+  cursor: default;
 
   width: 100%;
   height: 122px;
