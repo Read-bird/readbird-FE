@@ -20,15 +20,15 @@ export const MyBanner = () => {
 
 const StyledBanner = styled.div`
   border-radius: 25px;
-  border: 2px solid #ababab;
   background: #efeff0;
   width: 100%;
+  max-width: 360px;
   height: 70px;
   cursor: pointer;
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
