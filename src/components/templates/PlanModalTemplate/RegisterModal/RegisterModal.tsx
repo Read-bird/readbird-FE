@@ -1,4 +1,4 @@
-import { addPlanData, setPlanEndData } from '@/store/reducers';
+import { addPlanData, setPlanData } from '@/store/reducers';
 import { Alert, convertError, go, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
@@ -187,7 +187,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
           text: !planId ? '플랜이 성공적으로 등록되었습니다.' : '플랜이 성공적으로 수정되었습니다.',
           action: () => {
             if (props.planId) {
-              dispatch(setPlanEndData({ planId: props.planId, endDate: props.endDate }));
+              dispatch(setPlanData(res.data));
             } else {
               const addPlan = {
                 ...res.data,
