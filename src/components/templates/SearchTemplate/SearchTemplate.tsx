@@ -45,7 +45,7 @@ export const SearchTemplate = () => {
     // 페이지 변경
     methods.setValue('page', 1);
 
-    const result = await searchList(props);
+    const result = await searchList({ ...props, page: 1 });
 
     if (result) {
       // 검색 화면으로 이동
