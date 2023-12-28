@@ -1,10 +1,11 @@
-import { TBook, addPlanData, setPlanEndData } from '@/store/reducers';
+import { addPlanData, setPlanEndData } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { Alert, convertError, go, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
   EAchievementStatus,
   ERecordStatus,
+  TBookDetail,
   TRegisterFormValue,
   TSearchBooksResult
 } from '@api/types';
@@ -236,7 +237,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
   };
 
   // 도서 선택
-  const handleClickBook = (book: TBook) => {
+  const handleClickBook = (book: TBookDetail) => {
     setValue('bookId', book.bookId);
     setValue('title', book.title);
     setValue('author', book.author);

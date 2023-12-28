@@ -1,12 +1,8 @@
-import { TBookDetail, TSearchBooksResult } from '@api/types';
+import { TBookDetail } from '@api/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export type TBook = Omit<TBookDetail, 'totalPage'> & { totalPage: number };
-
-export type TBookData = Omit<TSearchBooksResult, 'bookList'> & { bookList: TBook[] };
-
 type TState = {
-  bookList: TBook[];
+  bookList: TBookDetail[];
   totalPage: number;
 };
 
@@ -19,10 +15,10 @@ const boolSearchSlice = createSlice({
   name: 'bookSearch',
   initialState,
   reducers: {
-    addBookList(state, action: PayloadAction<TBook[]>) {
+    addBookList(state, action: PayloadAction<TBookDetail[]>) {
       state.bookList.push(...action.payload);
     },
-    setBookList(state, action: PayloadAction<TBook[]>) {
+    setBookList(state, action: PayloadAction<TBookDetail[]>) {
       state.bookList = action.payload;
     },
     setTotalPage(state, action: PayloadAction<number>) {
