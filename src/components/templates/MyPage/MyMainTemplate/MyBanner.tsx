@@ -13,11 +13,8 @@ export const MyBanner = () => {
 };
 
 const StyledBanner = styled.div`
-  border-radius: 25px;
-  background: #efeff0;
   width: 100%;
   max-width: 360px;
-  height: 70px;
   cursor: pointer;
 
   img {
