@@ -215,7 +215,7 @@ export const ReadLessModal = ({ handleClose }: TProps) => {
           {previouslyFailedPlan.map((plan, index) => (
             <Fragment key={plan.planId}>
               <Spacing height={20} />
-              <h2>이런, 플랜 달성에 실패했어요</h2>
+              <h2>이런, 플랜 완주에 실패했어요</h2>
               <Spacing height={25} />
               <div className="book-wrap">
                 <CheckBox index={index} />
