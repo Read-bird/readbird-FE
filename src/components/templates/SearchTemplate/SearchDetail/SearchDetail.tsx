@@ -105,7 +105,7 @@ export const SearchDetail = (props: TProps) => {
           </FlexBox>
           <Spacing height={20} />
           <div className="info-wrap">
-            <h3>ISBM</h3>
+            <h3>ISBN</h3>
             <span>{isbn}</span>
           </div>
           <Spacing height={20} />
