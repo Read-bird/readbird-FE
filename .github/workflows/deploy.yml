@@ -34,6 +34,10 @@ jobs:
                   secret: REACT_APP_SERVER_PATH
                 - name: REACT_APP_REDIRECT_URL
                   secret: REACT_APP_REDIRECT_URL
+                - name: REACT_APP_EVENT_URL
+                  secret: REACT_APP_EVENT_URL
+                - name: REACT_APP_EVENT_BANNER
+                  secret: REACT_APP_EVENT_BANNER
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git
