@@ -5,3 +5,5 @@ export * from './IconEggThreePlan';
 export * from './IconEggTwoPlan';
 export * from './Images';
 export * from './LoadingBird';
+export * from './LoginMainBird';
+export * from './MainLogo';
