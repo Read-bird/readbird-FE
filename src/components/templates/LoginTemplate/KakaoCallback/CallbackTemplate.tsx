@@ -1,5 +1,6 @@
 import {
   setAccessToken,
+  setLoading,
   setOpen,
   setOpenType,
   setSelectCollections,
@@ -29,6 +30,7 @@ export const CallbackTemplate = () => {
 
   const handleKakaoLogin = async () => {
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=${grantType}&client_id=${REST_API_KEY}&redirect_uri=${redirectUri}&code=${code}`,
         {},
@@ -98,6 +100,8 @@ export const CallbackTemplate = () => {
         text: `로그인 에러가 발생했습니다.`
       });
       navigate('/login');
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
