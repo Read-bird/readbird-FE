@@ -13,6 +13,7 @@ export const GlobalStyle = createGlobalStyle`
     position: relative;
     max-width: 390px;
     height: 100%;
+    min-height: 750px;
     margin: 0 auto;
     background: white;
   }
