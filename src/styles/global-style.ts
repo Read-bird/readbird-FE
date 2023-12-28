@@ -7,15 +7,16 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     background: #f5f5f5;
+    overflow: hidden;
   }
   
   #root {
     position: relative;
     max-width: 390px;
     height: 100%;
-    min-height: 750px;
     margin: 0 auto;
     background: white;
+    overflow-y: auto;
   }
 
   .active {
