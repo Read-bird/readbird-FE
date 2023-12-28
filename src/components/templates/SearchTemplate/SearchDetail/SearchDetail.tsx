@@ -1,11 +1,11 @@
 import { setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
-import { axiosFetch } from '@api/axios';
 import { TBookDetail, TRegisterFormValue } from '@api/types';
 import { IconReact, IconReady } from '@assets/icons';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
+import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -38,6 +38,8 @@ export const SearchDetail = (props: TProps) => {
     }
   });
 
+  // 플랜 등록 유효성 검사
+  const { planValidation, checkReadBook } = usePlanValidation();
   const { coverImage, title, author, publisher, description, isbn, totalPage } = props;
   const dispatch = useDispatch<TAppDispatch>();
   const [isOpen, setOpen] = useState(false);
@@ -50,24 +52,16 @@ export const SearchDetail = (props: TProps) => {
   // 도서 등록하기
   const handleClickOpenModal = useCallback(async () => {
     try {
-      const result = await axiosFetch({
-        url: `/api/user/${props.bookId}`,
-        method: 'get'
-      });
+      const validation = await planValidation();
+      if (!validation) return;
 
-      if (result.status === 200) {
-        if (!result.data.readStatus) {
-          setOpen(true);
-        } else {
-          Alert.warning({ title: '플랜으로 등록된 책입니다.' });
-        }
-      }
+      setOpen(true);
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.error({ title: convertError(e.response?.data.messgae) });
       }
     }
-  }, [setOpen, props.bookId]);
+  }, [setOpen, planValidation]);
 
   return (
     <Wrap>

@@ -1,5 +1,4 @@
 import { addPlanData, setPlanEndData } from '@/store/reducers';
-import { TRootState } from '@/store/state';
 import { Alert, convertError, go, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
@@ -14,7 +13,7 @@ import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { InputLabel } from '../InputLabel';
@@ -62,8 +61,6 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
     reset,
     formState: { errors }
   } = useFormContext<TRegisterFormValue>();
-
-  const { planData } = useSelector((state: TRootState) => state.planStore);
 
   const title = watch('title');
   const { bookList, page, totalPage: bookTotalPage } = watch('searchData');

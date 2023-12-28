@@ -9,6 +9,7 @@ import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { MAX_CREATION_COUNT } from '@constants/plan';
+import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -39,12 +40,18 @@ export const WeekTemplate = () => {
     }
   });
 
+  // 플랜 등록 유효성 검사
+  const { planValidation } = usePlanValidation();
   const { currentDate, planData, weedRecord } = useSelector((state: TRootState) => state.planStore);
   const dispatch = useDispatch();
   const date = useMemo(() => new Date(currentDate), [currentDate]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClickAdd = () => {
+  // 등록하기 모달 띄우기
+  const handleClickAdd = async () => {
+    const result = await planValidation();
+    if (!result) return;
+
     // 모달 띄움
     setIsModalOpen(true);
   };
