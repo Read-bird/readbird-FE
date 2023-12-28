@@ -136,11 +136,12 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
         Alert.confirm({
           title: '이미 읽은 책은 새가 부화하지 않습니다.',
           text: '그래도 플랜을 등록하시겠어요?',
-          action: () => {
-            handleSubmitValue(props);
-          },
-          failed: () => {
-            setIsOpen(false);
+          action: (result) => {
+            if (result.isConfirmed) {
+              handleSubmitValue(props);
+            } else {
+              setIsOpen(false);
+            }
           }
         });
         return;
@@ -256,6 +257,7 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
         if (!value) return;
 
         const requestData = {
+          type: 'title',
           value,
           page: '' + (page ?? searchData.page),
           scale: '' + 10
