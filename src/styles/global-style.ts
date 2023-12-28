@@ -41,6 +41,19 @@ export const GlobalStyle = createGlobalStyle`
     width: 25px;
     height: 25px;
   }
+
+  div::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: transparent; 
+  }
+    
+  div::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 5px; 
+    background-color: #00000080; 
+    border-radius: 2px;
+  }
 `;
 
 export const colors = {
