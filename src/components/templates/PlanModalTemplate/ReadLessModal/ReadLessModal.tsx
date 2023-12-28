@@ -106,7 +106,6 @@ export const ReadLessModal = ({ handleClose }: TProps) => {
         return data;
       });
 
-      methods.clearErrors();
       methods.setValue('requestData', changeData);
     };
 
