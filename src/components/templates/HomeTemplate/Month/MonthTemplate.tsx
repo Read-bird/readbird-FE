@@ -94,7 +94,7 @@ export const MonthTemplate = () => {
             <Spacing width={10} />
             <span>100% 달성한 플랜</span>
           </FlexBox>
-          <strong>{planTrophy.toLocaleString()}개</strong>
+          <strong>{recordTrophy.toLocaleString()}개</strong>
         </FlexBox>
         <Spacing height={14} />
         <FlexBox $justify="space-between">
@@ -103,7 +103,7 @@ export const MonthTemplate = () => {
             <Spacing width={10} />
             <span>완독에 성공한 책</span>
           </FlexBox>
-          <strong>{recordTrophy.toLocaleString()}권</strong>
+          <strong>{planTrophy.toLocaleString()}권</strong>
         </FlexBox>
       </Section>
     </Wrap>
