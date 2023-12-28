@@ -1,14 +1,21 @@
-import { Alert } from '@/utils';
 import styled from 'styled-components';
 
 export const MyBanner = () => {
   const handleClick = () => {
-    Alert.warning({
-      title: '아직 준비중이에요.'
-    });
+    window.open(
+      'https://docs.google.com/forms/d/e/1FAIpQLSemXs84Y7kMJ8eRB7qLrcJdFKeHobaGYFgup3MQruE_PVnJDg/viewform',
+      '_blank'
+    );
   };
 
-  return <StyledBanner onClick={handleClick}></StyledBanner>;
+  return (
+    <StyledBanner onClick={handleClick}>
+      <img
+        src={'https://readbird2.s3.ap-northeast-2.amazonaws.com/readbird/google_form_banner.png'}
+        alt="배너"
+      />
+    </StyledBanner>
+  );
 };
 
 const StyledBanner = styled.div`
@@ -18,4 +25,10 @@ const StyledBanner = styled.div`
   width: 100%;
   height: 70px;
   cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;

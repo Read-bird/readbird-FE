@@ -29,12 +29,13 @@ export const AppEvent = () => {
         );
         dispatch(setOpen(true));
         dispatch(setOpenType('character'));
-        navigate('/mypage');
       }
     } catch (e) {
       if (e instanceof AxiosError) {
         Alert.error({ title: convertError(e.response?.data.message) });
       }
+    } finally {
+      navigate('/mypage');
     }
   };
 

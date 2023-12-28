@@ -68,7 +68,7 @@ export const MyMenu = () => {
       }
     } catch (e) {
       if (e instanceof AxiosError) {
-        Alert.error({ title: convertError(e.response?.data.message) });
+        Alert.error({ title: convertError(e.response?.data) });
       }
     }
   };
