@@ -44,9 +44,10 @@ type TResponseProps = {
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   planId?: number;
+  isRestore: boolean;
 };
 
-export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
+export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSearch, setSearch] = useState(false);
@@ -184,14 +185,14 @@ export const RegisterModal = ({ setIsOpen, planId }: TProps) => {
   const handleSubmitValue = async (props: TRegisterFormValue) => {
     try {
       const registerData = {
-        planId: undefined,
+        planId: isRestore ? props.planId : undefined,
         title: props.title,
         author: props.author,
         totalPage: props.totalPage,
         currentPage: props.currentPage,
         publisher: props.publisher,
-        startDate: props.startDate,
-        endDate: props.endDate,
+        startDate: dayjs(props.startDate).format('YYYY-MM-DD'),
+        endDate: dayjs(props.endDate).format('YYYY-MM-DD'),
         bookId: props.bookId ?? undefined
       };
 

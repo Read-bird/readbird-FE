@@ -10,4 +10,5 @@ export type TResponseMyRestore = {
   endDate: string;
   currentPage: number;
   totalPage: number;
+  publisher: string;
 };

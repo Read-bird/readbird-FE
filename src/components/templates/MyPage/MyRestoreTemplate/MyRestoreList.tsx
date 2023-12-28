@@ -3,6 +3,7 @@ import { TRegisterFormValue, TResponseMyRestore } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
 import { RestoreBook } from '@components/templates/MyPage/MyRestoreTemplate/RestoreBook';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
+import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -15,6 +16,7 @@ import styled from 'styled-components';
 export const MyRestoreList = () => {
   const [restoreList, setRestoreList] = useState<TResponseMyRestore[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { planValidation } = usePlanValidation();
 
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
@@ -44,7 +46,6 @@ export const MyRestoreList = () => {
       });
 
       if (res.status === 200) {
-        console.log(res.data);
         setRestoreList(res?.data);
       }
     } catch (err) {
@@ -63,18 +64,23 @@ export const MyRestoreList = () => {
   }, []);
 
   const handleOpenModal = useCallback(
-    (restoreData: TResponseMyRestore) => {
-      Alert.warning({ title: '준비중입니다.' });
-      return;
-      // methods.setValue('bookId', restoreData.bookId);
-      // methods.setValue('author', restoreData.author);
-      // methods.setValue('title', restoreData.title);
-      // methods.setValue('endDate', restoreData.endDate);
-      // methods.setValue('startDate', restoreData.startDate);
-      // methods.setValue('totalPage', restoreData.totalPage);
-      // setIsOpenModal(true);
+    async (restoreData: TResponseMyRestore) => {
+      const validation = await planValidation();
+      if (!validation) return;
+
+      methods.setValue('planId', restoreData.planId);
+      methods.setValue('author', restoreData.author);
+      methods.setValue('bookId', restoreData.bookId);
+      methods.setValue('startDate', restoreData.startDate);
+      methods.setValue('endDate', restoreData.endDate);
+      methods.setValue('publisher', restoreData.publisher);
+      methods.setValue('title', restoreData.title);
+      methods.setValue('endDate', restoreData.endDate);
+      methods.setValue('startDate', restoreData.startDate);
+      methods.setValue('totalPage', restoreData.totalPage);
+      setIsOpenModal(true);
     },
-    [setIsOpenModal, methods]
+    [setIsOpenModal, methods, planValidation]
   );
 
   const itemData = useMemo(
@@ -106,7 +112,12 @@ export const MyRestoreList = () => {
         <Empty>삭제한 플랜이 없어요.</Empty>
       )}
       <FormProvider {...methods}>
-        <PlanModalTemplate isOpen={isOpenModal} setIsOpen={setIsOpenModal} modalIndex={1} />
+        <PlanModalTemplate
+          isOpen={isOpenModal}
+          setIsOpen={setIsOpenModal}
+          modalIndex={1}
+          isRestore={true}
+        />
       </FormProvider>
     </Wrap>
   );
