@@ -1,6 +1,7 @@
 import { IconSearch } from '@/assets';
-import { InputHTMLAttributes } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { TRegisterFormValue } from '@api/types';
+import { InputHTMLAttributes, useCallback } from 'react';
+import { UseFormRegisterReturn, useFormContext } from 'react-hook-form';
 
 type TProps<T extends string> = {
   label: string;
@@ -16,6 +17,16 @@ export const InputLabel = <T extends string>({
   isViewSearchIcon = false,
   ...props
 }: TProps<T>) => {
+  const { setValue } = useFormContext<TRegisterFormValue>();
+
+  const handleClickSearch = useCallback(() => {
+    setValue('isbn', null);
+    setValue('author', null);
+    setValue('totalPage', 0);
+    setValue('title', null);
+    setValue('publisher', null);
+  }, [setValue]);
+
   return (
     <div className="cont">
       <label htmlFor={props.id}>{label}</label>
@@ -27,7 +38,7 @@ export const InputLabel = <T extends string>({
       />
       <small role="alert">{errors && `* ${errors.message}`}</small>
       {isViewSearchIcon && (
-        <div className="search-icon">
+        <div className="search-icon" onClick={handleClickSearch}>
           <IconSearch />
         </div>
       )}
