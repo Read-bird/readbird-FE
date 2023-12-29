@@ -12,7 +12,7 @@ export const BackTitle = ({ title }: TProps) => {
 
   // 뒤로가기
   const goBack = useCallback(() => {
-    navigate(-1);
+    navigate('/mypage');
   }, [navigate]);
 
   return (
