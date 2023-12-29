@@ -13,7 +13,7 @@ export const SearchInput = () => {
         placeholder="원하는 책을 찾아 서재에 넣어보세요"
         {...register('searchText')}
       />
-      <button type="submit">
+      <button type="submit" title="검색">
         <IconSearch />
       </button>
     </Wrap>
