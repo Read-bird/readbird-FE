@@ -215,9 +215,15 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           });
 
       if (!planId ? res.status === 201 : res.status === 200) {
+        const text = isRestore
+          ? '플랜이 성공적으로 복구되었습니다.'
+          : !planId
+            ? '플랜이 성공적으로 등록되었습니다.'
+            : '플랜이 성공적으로 수정되었습니다.';
+
         Alert.success({
           title: '성공!',
-          text: !planId ? '플랜이 성공적으로 등록되었습니다.' : '플랜이 성공적으로 수정되었습니다.',
+          text,
           action: () => {
             if (props.planId) {
               dispatch(setPlanData(res.data));
@@ -238,8 +244,6 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
               dispatch(addPlanData({ ...addPlan }));
             }
-            setIsOpen(false);
-            navigate('/');
           }
         });
       } else {
@@ -254,12 +258,14 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           title: convertError(err.response?.data.message)
         });
       }
+    } finally {
+      setIsOpen(false);
+      navigate('/');
     }
   };
 
   // 등록/수정 취소
   const handleCloseModal = () => {
-    reset();
     setIsOpen(false);
   };
 
@@ -333,10 +339,10 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
   // 도서 검색 리스트 열기
   useEffect(() => {
-    if (title && !isbn && !planId) {
+    if (title && !isbn && !planId && !isRestore) {
       setSearch(true);
     }
-  }, [title, isbn, planId]);
+  }, [title, isbn, planId, isRestore]);
 
   useEffect(() => {
     return () => reset();
@@ -352,8 +358,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         register={titleRegister}
         errors={errors.title}
         defaultValue={title ?? undefined}
-        disabled={!!planId || !!isbn}
-        isViewSearchIcon={true}
+        disabled={!!planId || !!isbn || isRestore}
+        isViewSearchIcon={!planId}
       />
       {!planId && isSearch && (
         <SearchList
@@ -373,7 +379,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           id={'author'}
           placeholder={'헤르만 헤세'}
           register={register('author')}
-          disabled={!!planId || !!isbn}
+          disabled={!!planId || !!isbn || isRestore}
         />
         <InputLabel
           label={'출판사'}
@@ -381,7 +387,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           id={'publisher'}
           placeholder={'민음사'}
           register={register('publisher')}
-          disabled={!!planId || !!isbn}
+          disabled={!!planId || !!isbn || isRestore}
         />
       </div>
       <div className="cont flex">
@@ -392,11 +398,11 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           register={register('totalPage', {
             required: '전체 페이지를 입력하세요.',
             min: {
-              value: 1,
+              value: 2,
               message: '총 쪽 수를 다시 확인해주세요.'
             }
           })}
-          disabled={!!planId || !!isbn}
+          disabled={!!planId || !!isbn || isRestore}
           errors={errors.totalPage}
         />
         <InputLabel
