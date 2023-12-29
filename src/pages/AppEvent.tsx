@@ -1,6 +1,7 @@
 import { setOpen, setOpenType, setSelectCollections } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
 import { TResponseCollection } from '@api/types';
+import { Loading } from '@components/common/Loading';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -45,7 +46,11 @@ export const AppEvent = () => {
     callEvent();
   }, []);
 
-  return <Wrap>이벤트 참여중...</Wrap>;
+  return (
+    <Wrap>
+      <Loading />
+    </Wrap>
+  );
 };
 
 const Wrap = styled.div`
