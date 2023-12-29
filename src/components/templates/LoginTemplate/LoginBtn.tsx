@@ -1,5 +1,5 @@
 import { setAccessToken, setUserInfo } from '@/store/reducers';
-import { authFetch } from '@api/axios';
+import { axiosFetch } from '@api/axios';
 import { TLoginResType } from '@api/types';
 import { BtnKakaoLogin } from '@assets/images/BtnKakaoLogin';
 import { Alert } from '@utils/Alert';
@@ -26,7 +26,11 @@ export const LoginBtn = (props: TProps) => {
 
   const handleClickGuest = async () => {
     try {
-      const res = await authFetch.post<TLoginResType>(`/api/user/login-guest`);
+      const res = await axiosFetch<any, TLoginResType>({
+        url: `/api/user/login-guest`,
+        method: 'post'
+      });
+
       if (res.status === 200) {
         const extractedToken = res.headers?.authorization;
         const refreshToken = res.headers?.refreshtoken;
@@ -42,6 +46,13 @@ export const LoginBtn = (props: TProps) => {
         );
         dispatch(setAccessToken(extractedToken));
         navigate('/');
+      } else {
+        Alert.error({
+          title: '로그인 오류가 발생했습니다.',
+          action: () => {
+            navigate('/login');
+          }
+        });
       }
     } catch (e) {
       if (e instanceof AxiosError) {

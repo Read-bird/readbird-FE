@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 
 export const useAxiosInterceptor = () => {
   const dispatch = useDispatch<TAppDispatch>();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     authFetch.interceptors.request.use(
@@ -36,11 +37,10 @@ export const useAxiosInterceptor = () => {
             action: () => {
               dispatch(setAccessToken(''));
               localStorage.clear();
-              window.location.replace('/login');
+              // navigate('/');
             }
           });
-
-          return Promise.reject(error);
+          throw new Error('서버와 연결이 원활하지 않습니다.');
         }
 
         const config = error.config;
@@ -75,7 +75,7 @@ export const useAxiosInterceptor = () => {
               action: () => {
                 dispatch(setAccessToken(''));
                 localStorage.clear();
-                window.location.replace('/login');
+                // navigate('/');
               }
             });
           }
@@ -87,7 +87,7 @@ export const useAxiosInterceptor = () => {
             action: () => {
               dispatch(setAccessToken(''));
               localStorage.clear();
-              window.location.replace('/login');
+              // navigate('/');
             }
           });
         } else {

@@ -1,5 +1,5 @@
-import {MyRestoreTemplate} from "@components/templates/MyPage/MyRestoreTemplate";
+import { MyRestoreTemplate } from '@components/templates/MyPageTemplate/MyRestoreTemplate';
 
 export const MyRestore = () => {
-    return <MyRestoreTemplate />
-}
+  return <MyRestoreTemplate />;
+};

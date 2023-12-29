@@ -1,7 +1,7 @@
 import { axiosFetch } from '@api/axios';
 import { TSearchBooksResult } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
-import { Book } from '@components/templates/MyPage/MyLibraryTemplate/Book';
+import { Book } from '@components/templates/MyPageTemplate/MyLibraryTemplate/Book';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';

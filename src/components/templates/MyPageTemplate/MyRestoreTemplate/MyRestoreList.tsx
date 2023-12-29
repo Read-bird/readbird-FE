@@ -1,7 +1,7 @@
 import { axiosFetch } from '@api/axios';
 import { TRegisterFormValue, TResponseMyRestore } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
-import { RestoreBook } from '@components/templates/MyPage/MyRestoreTemplate/RestoreBook';
+import { RestoreBook } from '@components/templates/MyPageTemplate/MyRestoreTemplate/RestoreBook';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
@@ -72,13 +72,14 @@ export const MyRestoreList = () => {
       methods.setValue('planId', restoreData.planId);
       methods.setValue('author', restoreData.author);
       methods.setValue('bookId', restoreData.bookId);
-      methods.setValue('startDate', restoreData.startDate);
-      methods.setValue('endDate', restoreData.endDate);
+      methods.setValue('startDate', dayjs().format('YYYY-MM-DD'));
+      methods.setValue('endDate', dayjs().format('YYYY-MM-DD'));
       methods.setValue('publisher', restoreData.publisher);
       methods.setValue('title', restoreData.title);
       methods.setValue('endDate', restoreData.endDate);
       methods.setValue('startDate', restoreData.startDate);
       methods.setValue('totalPage', restoreData.totalPage);
+      methods.setValue('currentPage', restoreData.currentPage);
       setIsOpenModal(true);
     },
     [setIsOpenModal, methods, planValidation]
