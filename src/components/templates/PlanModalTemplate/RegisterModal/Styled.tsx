@@ -57,7 +57,7 @@ export const StyledForm = styled.form`
       color: #cfcfcf;
     }
 
-    &[name='title'] {
+    &.view-search-icon {
       padding: 8px 35px 8px 15px;
     }
 
