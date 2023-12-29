@@ -6,7 +6,7 @@ import styled from 'styled-components';
 export const LoginTemplate = () => {
   return (
     <StyledWrapper>
-      <Spacing height={80} />
+      <Spacing height={50} />
       <div className="login-logo">
         <LoginMainBird />
       </div>
@@ -22,7 +22,6 @@ export const LoginTemplate = () => {
       </div>
       <Spacing height={80} />
       <LoginBtn className={'kakao-btn'} />
-      <Spacing height={80} />
     </StyledWrapper>
   );
 };
@@ -34,7 +33,7 @@ const StyledWrapper = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 
   .login-logo {

@@ -40,7 +40,6 @@
   ├─common      // 공통 컴포넌트
   ├─connection  // 첫 로딩시 서버 통신을 통해 처리할 항목 정리
   ├─templates   // page별 template
-├─constants   // 공통으로 사용되는 상수
 ├─hooks       // 커스텀 훅
 ├─pages       // 페이지
 ├─routers     // 라우터를 따로 관리하기 위한 폴더
