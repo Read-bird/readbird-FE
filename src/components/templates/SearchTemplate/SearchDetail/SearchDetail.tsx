@@ -18,10 +18,11 @@ import { ButtonWrap, FlexBox, IconWrap, Inner, Wrap, imgStyle } from './Styled';
 type TProps = TBookDetail;
 
 export const SearchDetail = (props: TProps) => {
+  // 플랜 등록에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
-      bookId: props.bookId,
+      isbn: props.isbn,
       planId: null,
       title: props.title,
       author: props.author,

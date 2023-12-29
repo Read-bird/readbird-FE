@@ -18,23 +18,15 @@ export const MyRestoreTemplate = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { planValidation } = usePlanValidation();
 
+  // 플랜 복구에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
-      author: null,
-      planId: null,
-      bookId: null,
-      currentPage: 1,
-      startDate: dayjs().format('YYYY-MM-DD'),
-      endDate: dayjs().format('YYYY-MM-DD'),
-      publisher: null,
       searchData: {
         bookList: [],
         page: 1,
         totalPage: 1
-      },
-      title: null,
-      totalPage: 1
+      }
     }
   });
 
@@ -64,6 +56,7 @@ export const MyRestoreTemplate = () => {
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
   }, []);
 
+  // 플랜 복구 시
   const handleOpenModal = useCallback(
     async (restoreData: TResponseMyRestore) => {
       const validation = await planValidation();
@@ -71,7 +64,7 @@ export const MyRestoreTemplate = () => {
 
       methods.setValue('planId', restoreData.planId);
       methods.setValue('author', restoreData.author);
-      methods.setValue('bookId', restoreData.bookId);
+      methods.setValue('isbn', restoreData.isbn);
       methods.setValue('startDate', dayjs().format('YYYY-MM-DD'));
       methods.setValue('endDate', dayjs().format('YYYY-MM-DD'));
       methods.setValue('publisher', restoreData.publisher);

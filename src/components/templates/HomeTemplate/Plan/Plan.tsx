@@ -32,10 +32,10 @@ export const Plan = (props: TProps) => {
   const dispatch = useDispatch();
   const { currentDate } = useSelector((state: TRootState) => state.planStore);
   const { userInfo } = useSelector((state: TRootState) => state.userStore);
+  // 플랜 수정에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
-      bookId: null,
       planId,
       author,
       currentPage,

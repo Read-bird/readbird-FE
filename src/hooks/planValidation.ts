@@ -33,10 +33,10 @@ export const usePlanValidation = () => {
   }, []);
 
   // 도서 등록 유효성 검사
-  const checkReadBook = useCallback(async (bookId: number) => {
+  const checkReadBook = useCallback(async (isbn: string) => {
     try {
       const result = await axiosFetch({
-        url: `/api/user/${bookId}`,
+        url: `/api/user/${isbn}`,
         method: 'get'
       });
 

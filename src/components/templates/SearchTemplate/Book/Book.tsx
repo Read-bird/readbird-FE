@@ -21,7 +21,6 @@ type TProps = {
 };
 
 export const Book = memo(({ data, index, style }: TProps) => {
-  const totalPage = data.totalPage;
   const props = data.list[index];
   const { coverImage, title, author, publisher } = props;
   const dispatch = useDispatch<TAppDispatch>();

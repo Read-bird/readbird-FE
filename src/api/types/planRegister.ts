@@ -20,7 +20,7 @@ export type TRegisterFormValue = {
   currentPage: number;
   startDate: string;
   endDate: string;
-  bookId: number | null;
+  isbn: string;
   searchData: {
     bookList: TBookDetail[];
     page: number;
