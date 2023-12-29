@@ -14,6 +14,7 @@ export const Head = styled.section`
   position: relative;
   width: 100%;
   flex: 0 0 95px;
+  padding: 0 13px;
 
   display: flex;
   flex-direction: column;

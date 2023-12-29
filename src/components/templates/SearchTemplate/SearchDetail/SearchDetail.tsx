@@ -18,10 +18,11 @@ import { ButtonWrap, FlexBox, IconWrap, Inner, Wrap, imgStyle } from './Styled';
 type TProps = TBookDetail;
 
 export const SearchDetail = (props: TProps) => {
+  // 플랜 등록에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
-      bookId: props.bookId,
+      isbn: props.isbn,
       planId: null,
       title: props.title,
       author: props.author,
@@ -29,7 +30,7 @@ export const SearchDetail = (props: TProps) => {
       currentPage: 0,
       totalPage: props.totalPage,
       startDate: dayjs().format('YYYY-MM-DD'),
-      endDate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+      endDate: dayjs().format('YYYY-MM-DD'),
       searchData: {
         bookList: [],
         page: 1,

@@ -21,7 +21,6 @@ type TProps = {
 };
 
 export const Book = memo(({ data, index, style }: TProps) => {
-  const totalPage = data.totalPage;
   const props = data.list[index];
   const { coverImage, title, author, publisher } = props;
   const dispatch = useDispatch<TAppDispatch>();
@@ -134,6 +133,12 @@ const TextSpan = styled.span`
   font-size: 12px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.darkGray};
+
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 
   &.dark {
     color: #747474;

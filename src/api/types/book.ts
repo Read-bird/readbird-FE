@@ -15,13 +15,12 @@ export type TSearchBooksResult = {
 
 // 도서 검색 결과 상세
 export type TBookDetail = {
+  title: string;
   author: string;
-  bookId: number;
-  coverImage: string;
+  pubDate: string;
   description: string;
   isbn: string;
-  pubDate: string;
   publisher: string;
-  title: string;
   totalPage: number;
+  coverImage: string;
 };

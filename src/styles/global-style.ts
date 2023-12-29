@@ -12,11 +12,29 @@ export const GlobalStyle = createGlobalStyle`
   
   #root {
     position: relative;
+    min-width: 360px;
     max-width: 390px;
     height: 100%;
     margin: 0 auto;
     background: white;
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  div::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: transparent; 
+  }
+    
+  div::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 5px; 
+    background-color: #00000080; 
+    border-radius: 2px;
   }
 
   .active {
@@ -42,19 +60,6 @@ export const GlobalStyle = createGlobalStyle`
   .slick-prev, .slick-next {
     width: 25px;
     height: 25px;
-  }
-
-  div::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-    background-color: transparent; 
-  }
-    
-  div::-webkit-scrollbar-thumb {
-    width: 5px;
-    height: 5px; 
-    background-color: #00000080; 
-    border-radius: 2px;
   }
 `;
 

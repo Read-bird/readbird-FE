@@ -20,10 +20,10 @@ import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap 
 
 export const WeekTemplate = () => {
   const MAX_CREATION_COUNT = 3;
+  // 플랜 등록에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
-      bookId: null,
       planId: null,
       title: null,
       author: null,
@@ -31,7 +31,7 @@ export const WeekTemplate = () => {
       currentPage: 0,
       totalPage: 0,
       startDate: dayjs().format('YYYY-MM-DD'),
-      endDate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+      endDate: dayjs().format('YYYY-MM-DD'),
       searchData: {
         bookList: [],
         page: 1,

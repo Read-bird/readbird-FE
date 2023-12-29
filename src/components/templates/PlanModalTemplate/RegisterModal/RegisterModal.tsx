@@ -1,5 +1,5 @@
 import { addPlanData, setPlanData } from '@/store/reducers';
-import { Alert, convertError, go, lastDayMonth } from '@/utils';
+import { Alert, convertError, debounce, go, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
   EAchievementStatus,
@@ -15,13 +15,12 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } f
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { InputLabel } from '../InputLabel';
 import { SearchList } from '../SearchList';
 import { SelectLabel } from '../SelectLabel';
+import { GuideSpan, StyledForm } from './Styled';
 
 type TRegisterProps = {
-  bookId?: number;
   title: string | null;
   author: string | null;
   totalPage: number;
@@ -29,6 +28,7 @@ type TRegisterProps = {
   publisher: string | null;
   startDate: string;
   endDate: string;
+  isbn: string;
 };
 
 type TResponseProps = {
@@ -66,8 +66,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   } = useFormContext<TRegisterFormValue>();
 
   const title = watch('title');
+  const isbn = watch('isbn');
   const { bookList, page, totalPage: bookTotalPage } = watch('searchData');
-  const bookId = watch('bookId');
   const startDate = watch('startDate');
   const endDate = watch('endDate');
   const totalPage = watch('totalPage');
@@ -160,8 +160,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     }
 
     // 도서 등록 유효성 검사
-    if (props.bookId) {
-      const result = await checkReadBook(props.bookId);
+    if (props.isbn) {
+      const result = await checkReadBook(props.isbn);
       if (result) {
         Alert.confirm({
           title: '이미 읽은 책은 새가 부화하지 않습니다.',
@@ -193,7 +193,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         publisher: props.publisher,
         startDate: dayjs(props.startDate).format('YYYY-MM-DD'),
         endDate: dayjs(props.endDate).format('YYYY-MM-DD'),
-        bookId: props.bookId ?? undefined
+        isbn: props.isbn
       };
 
       const res = !planId
@@ -209,7 +209,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
             method: 'put',
             options: {
               data: {
-                endDate: props.endDate
+                endDate: dayjs(props.endDate).format('YYYY-MM-DD')
               }
             }
           });
@@ -224,6 +224,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
             } else {
               const addPlan = {
                 ...res.data,
+                isbn: props.isbn,
                 title: props.title,
                 author: props.author,
                 publisher: props.publisher,
@@ -269,16 +270,16 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
   // 도서 선택
   const handleClickBook = (book: TBookDetail) => {
-    setValue('bookId', book.bookId);
     setValue('title', book.title);
     setValue('author', book.author);
     setValue('publisher', book.publisher);
     setValue('totalPage', book.totalPage);
+    setValue('isbn', book.isbn);
   };
 
   // 도서 검색
   const searchBookInfo = useCallback(
-    async (bookTitle?: string, page?: number) => {
+    debounce(async (bookTitle?: string, page?: number) => {
       try {
         const { searchData, title } = getValues();
 
@@ -308,7 +309,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           Alert.error({ title: convertError(err.response?.data.messgae) });
         }
       }
-    },
+    }, 200),
     [getValues, setValue]
   );
 
@@ -330,11 +331,12 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     [register, searchBookInfo]
   );
 
+  // 도서 검색 리스트 열기
   useEffect(() => {
-    if (title && !bookId) {
+    if (title && !isbn) {
       setSearch(true);
     }
-  }, [title, bookId]);
+  }, [title, isbn]);
 
   useEffect(() => {
     return () => reset();
@@ -350,7 +352,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         register={titleRegister}
         errors={errors.title}
         defaultValue={title ?? undefined}
-        disabled={!!planId || !!bookId}
+        disabled={!!planId || !!isbn}
         isViewSearchIcon={true}
       />
       {!planId && isSearch && (
@@ -371,7 +373,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           id={'author'}
           placeholder={'헤르만 헤세'}
           register={register('author')}
-          disabled={!!planId || !!bookId}
+          disabled={!!planId || !!isbn}
         />
         <InputLabel
           label={'출판사'}
@@ -379,7 +381,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           id={'publisher'}
           placeholder={'민음사'}
           register={register('publisher')}
-          disabled={!!planId || !!bookId}
+          disabled={!!planId || !!isbn}
         />
       </div>
       <div className="cont flex">
@@ -388,7 +390,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           type={'number'}
           id={'totalPage'}
           register={register('totalPage')}
-          disabled={!!planId || !!bookId}
+          disabled={!!planId || !!isbn}
         />
         <InputLabel
           label={'시작하는 쪽'}
@@ -472,150 +474,3 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     </StyledForm>
   );
 };
-
-const StyledForm = styled.form`
-  div.cont {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
-
-    &.flex {
-      flex-direction: row;
-      gap: 15px;
-      margin-bottom: 0;
-    }
-
-    &.select {
-      gap: 5px;
-      flex-direction: row;
-      align-items: center;
-
-      span {
-        color: #ababab;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 24px;
-        letter-spacing: 0.16px;
-      }
-    }
-  }
-
-  label {
-    color: #b780db;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: 0.16px;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  input {
-    display: block;
-    width: 100%;
-    border-radius: 10px;
-    border: 1px solid #ababab;
-    background: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 8px 15px;
-    &:invalid {
-      border: 1px solid #f00;
-    }
-
-    &::placeholder {
-      color: #cfcfcf;
-    }
-
-    &[name='title'] {
-      padding: 8px 35px 8px 15px;
-    }
-
-    &:disabled {
-      background-color: #cfcfcf;
-    }
-  }
-
-  .search-icon {
-    position: absolute;
-    right: 8px;
-    top: 34px;
-    cursor: pointer;
-
-    svg {
-      width: 22px;
-    }
-  }
-  small[role='alert'] {
-    font-size: 12px;
-    height: 12px;
-    color: #ff7c7c;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.2px;
-  }
-
-  select {
-    display: block;
-    width: 100%;
-    border-radius: 10px;
-    border: 1px solid #ababab;
-    background: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 8px;
-
-    &::placeholder {
-      color: #cfcfcf;
-    }
-
-    &:disabled {
-      background-color: #cfcfcf;
-    }
-
-    &:nth-of-type(1) {
-      width: 98px;
-    }
-
-    &:nth-of-type(2) {
-      width: 60px;
-    }
-
-    &:nth-of-type(3) {
-      width: 60px;
-    }
-  }
-
-  .btn {
-    border-radius: 10px;
-    padding: 12px 0;
-    width: 100%;
-    color: #fff;
-    text-align: center;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    cursor: pointer;
-  }
-
-  .btn-1 {
-    background: #cfcfcf;
-  }
-
-  .btn-2 {
-    background: #b780db;
-  }
-`;
-
-const GuideSpan = styled.span`
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 400;
-  color: #ff7676;
-  height: 20px;
-`;
