@@ -30,7 +30,7 @@ export const SearchDetail = (props: TProps) => {
       currentPage: 0,
       totalPage: props.totalPage,
       startDate: dayjs().format('YYYY-MM-DD'),
-      endDate: dayjs().add(1, 'days').format('YYYY-MM-DD'),
+      endDate: dayjs().format('YYYY-MM-DD'),
       searchData: {
         bookList: [],
         page: 1,
