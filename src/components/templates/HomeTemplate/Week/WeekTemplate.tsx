@@ -3,7 +3,6 @@ import { TRootState } from '@/store/state';
 import { axiosFetch } from '@api/axios';
 import { TRegisterFormValue } from '@api/types';
 import { IconPlus } from '@assets/icons';
-import { IconEggNoPlan, IconEggOnePlan, IconEggThreePlan, IconEggTwoPlan } from '@assets/images';
 import { WeekCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
@@ -13,10 +12,24 @@ import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
+
+// 사용하지 않는 이미지의 경우 코드 스플리팅을 통해 다운로드 방지
+const IconEggNoPlan = lazy(() =>
+  import('@assets/images/IconEggNoPlan').then((data) => ({ default: data.IconEggNoPlan }))
+);
+const IconEggOnePlan = lazy(() =>
+  import('@assets/images/IconEggOnePlan').then((data) => ({ default: data.IconEggOnePlan }))
+);
+const IconEggThreePlan = lazy(() =>
+  import('@assets/images/IconEggThreePlan').then((data) => ({ default: data.IconEggThreePlan }))
+);
+const IconEggTwoPlan = lazy(() =>
+  import('@assets/images/IconEggTwoPlan').then((data) => ({ default: data.IconEggTwoPlan }))
+);
 
 export const WeekTemplate = () => {
   const MAX_CREATION_COUNT = 3;
