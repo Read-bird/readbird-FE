@@ -1,10 +1,10 @@
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
+import { TResponseLibrary } from '@components/templates/MyPageTemplate/MyLibraryTemplate/MyLibraryTemplate';
 import dayjs from 'dayjs';
 import { memo, useEffect, useRef } from 'react';
 import { areEqual } from 'react-window';
 import styled, { CSSObject, CSSProperties } from 'styled-components';
-import { TResponseLibrary } from '../LibraryList';
 
 type TProps = {
   data: {

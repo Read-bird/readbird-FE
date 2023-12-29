@@ -1,6 +1,5 @@
 import { Loadable } from '@components/common/Loadable';
 import { ProtectedLogin } from '@components/connections';
-import { MyMain } from '@pages/MyPage/MyMain';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -35,16 +34,19 @@ const AppSearchResult = Loadable(
 const AppMyPage = Loadable(
   lazy(() => import('@pages/AppMyPage').then((data) => ({ default: data.AppMyPage })))
 );
-const MyLibrary = Loadable(
-  lazy(() => import('@pages/MyPage/MyLibrary').then((data) => ({ default: data.MyLibrary })))
+const AppMyMain = Loadable(
+  lazy(() => import('@pages/AppMyMain').then((data) => ({ default: data.AppMyMain })))
 );
-const MyEncyclopedia = Loadable(
+const AppMyLibrary = Loadable(
+  lazy(() => import('@pages/AppMyLibrary').then((data) => ({ default: data.AppMyLibrary })))
+);
+const AppMyEncyclopedia = Loadable(
   lazy(() =>
-    import('@pages/MyPage/MyEncyclopedia').then((data) => ({ default: data.MyEncyclopedia }))
+    import('@pages/AppMyEncyclopedia').then((data) => ({ default: data.AppMyEncyclopedia }))
   )
 );
-const MyRestore = Loadable(
-  lazy(() => import('@pages/MyPage/MyRestore').then((data) => ({ default: data.MyRestore })))
+const AppMyRestore = Loadable(
+  lazy(() => import('@pages/AppMyRestore').then((data) => ({ default: data.AppMyRestore })))
 );
 const AppEvent = Loadable(
   lazy(() => import('@pages/AppEvent').then((data) => ({ default: data.AppEvent })))
@@ -103,22 +105,22 @@ export const appRouter = createBrowserRouter([
         children: [
           {
             path: '',
-            element: <MyMain />,
+            element: <AppMyMain />,
             errorElement: <AppError />
           },
           {
             path: 'library',
-            element: <MyLibrary />,
+            element: <AppMyLibrary />,
             errorElement: <AppError />
           },
           {
             path: 'encyclopedia',
-            element: <MyEncyclopedia />,
+            element: <AppMyEncyclopedia />,
             errorElement: <AppError />
           },
           {
             path: 'restore',
-            element: <MyRestore />,
+            element: <AppMyRestore />,
             errorElement: <AppError />
           }
         ]

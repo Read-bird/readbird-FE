@@ -19,10 +19,11 @@
 - react-modal : 모달 open, close
 - sweet-alert : alert, confirm 인터렉션
 - dayjs : 날짜 format
-- react-dropdown : 드롭다운 기능
 - react-icons/all-file : icons 생성
 - react-calendar: 캘린더 생성
 - react-window : 가상스크롤 적용
+- react-slick : 슬라이더 적용
+- slick-carousel : 슬라이더 스타일 적용
 - styled-components : 스타일링
 - craco : cra config 설정 (path alias 등)
 - tsconfig-paths-webpack-plugin: craco 설정에 적용할 plugin
@@ -37,6 +38,7 @@
 ├─assets      // 이미지 or 폰트
 ├─components  // 컴포넌트
   ├─common      // 공통 컴포넌트
+  ├─connection  // 첫 로딩시 서버 통신을 통해 처리할 항목 정리
   ├─templates   // page별 template
 ├─constants   // 공통으로 사용되는 상수
 ├─hooks       // 커스텀 훅
