@@ -26,7 +26,6 @@ const Wrap = styled.div`
   border: 1px solid black;
   border-radius: 10px;
   width: 100%;
-  max-width: 364px;
   height: 40px;
   background: white;
 
