@@ -1,5 +1,5 @@
 import { MyLibraryTemplate } from '@components/templates/MyPageTemplate/MyLibraryTemplate';
 
-export const MyLibrary = () => {
+export const AppMyLibrary = () => {
   return <MyLibraryTemplate />;
 };

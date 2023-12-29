@@ -1,5 +1,5 @@
 import { MyEncyclopediaTemplate } from '@components/templates/MyPageTemplate/MyEncyclopediaTemplate';
 
-export const MyEncyclopedia = () => {
+export const AppMyEncyclopedia = () => {
   return <MyEncyclopediaTemplate />;
 };
