@@ -40,3 +40,25 @@ export const convertObject = <T>(list: T[], key: keyof T): Record<string, T> => 
 
   return object;
 };
+
+// debounce 함수 - 함수 실행시 time 밀리세컨드 지나면 함수 실행
+// 단 time 밀리세컨드가 진행 중인 상황에 다시 한번 발생하면 취소 후 타임 지난 후 실행
+export const debounce = (callback: (...args: any[]) => void, time: number) => {
+  let timeoutId: NodeJS.Timeout | null = null;
+
+  return (...args: any[]): void => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+
+    timeoutId = setTimeout(() => {
+      callback(...args);
+
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    }, time);
+  };
+};
