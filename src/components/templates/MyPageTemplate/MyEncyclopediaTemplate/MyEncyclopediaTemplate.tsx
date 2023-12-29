@@ -61,7 +61,13 @@ export const MyEncyclopediaTemplate = () => {
               </div>
             ) : (
               <div className="wrap image-wrap">
-                <Images imgUrl={collection.imageUrl} imgAlt={collection.name} imgWidth={65} />
+                <Images
+                  imgUrl={collection.imageUrl}
+                  imgAlt={
+                    collection.name === '???' ? `오픈되지 않은 캐릭터${index}번` : collection.name
+                  }
+                  imgWidth={65}
+                />
               </div>
             )}
             <Spacing height={10} />
