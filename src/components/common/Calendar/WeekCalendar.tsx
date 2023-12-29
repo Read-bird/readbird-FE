@@ -1,6 +1,5 @@
 import { TPlanRecord } from '@api/types';
 import { DayBird } from '@components/common/DayBird';
-import { DAY_OF_WEEK } from '@constants/plan';
 import { makeWeekArr } from '@utils/calendar';
 import { cls, getClassByStatus } from '@utils/classname';
 import dayjs from 'dayjs';
@@ -13,6 +12,7 @@ type TProps = {
 };
 
 export const WeekCalendar = ({ record, currentDate }: TProps) => {
+  const DAY_OF_WEEK = useMemo(() => ['일', '월', '화', '수', '목', '금', '토'], []);
   const weeks = useMemo(() => makeWeekArr(currentDate), [currentDate]);
 
   return (

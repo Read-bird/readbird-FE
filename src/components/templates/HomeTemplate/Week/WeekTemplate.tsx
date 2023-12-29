@@ -8,7 +8,6 @@ import { WeekCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
 import { Plan } from '@components/templates/HomeTemplate/Plan';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
-import { MAX_CREATION_COUNT } from '@constants/plan';
 import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
@@ -20,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
 
 export const WeekTemplate = () => {
+  const MAX_CREATION_COUNT = 3;
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
