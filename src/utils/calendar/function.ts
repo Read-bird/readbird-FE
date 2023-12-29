@@ -32,7 +32,7 @@ export const calculateDday = (targetDate: Date) => {
 
   // 디데이 계산
   const timeDiff = targetTimestamp - currentTimestamp;
-  const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
   return daysDiff ? daysDiff : 'DAY';
 };
