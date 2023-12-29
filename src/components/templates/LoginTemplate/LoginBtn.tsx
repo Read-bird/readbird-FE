@@ -68,7 +68,7 @@ export const LoginBtn = (props: TProps) => {
 
   return (
     <StyledBtn className={props.className}>
-      <button type="button" onClick={handleClick}>
+      <button type="button" title="카카오 로그인" onClick={handleClick}>
         <BtnKakaoLogin />
       </button>
       <button type="button" className="guest-btn" onClick={handleClickGuest}>
