@@ -389,8 +389,15 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           label={'총 쪽 수'}
           type={'number'}
           id={'totalPage'}
-          register={register('totalPage')}
+          register={register('totalPage', {
+            required: '전체 페이지를 입력하세요.',
+            min: {
+              value: 1,
+              message: '총 쪽 수를 다시 확인해주세요.'
+            }
+          })}
           disabled={!!planId || !!isbn}
+          errors={errors.totalPage}
         />
         <InputLabel
           label={'시작하는 쪽'}
@@ -401,7 +408,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           register={register('currentPage', {
             required: '시작 페이지를 입력해주세요.',
             max: {
-              value: totalPage,
+              value: totalPage - 1,
               message: '총 쪽 수보다 낮아야 합니다.'
             }
           })}
