@@ -359,7 +359,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         errors={errors.title}
         defaultValue={title ?? undefined}
         disabled={!!planId || !!isbn || isRestore}
-        isViewSearchIcon={!planId}
+        isViewSearchIcon={!planId && !isRestore}
       />
       {!planId && isSearch && (
         <SearchList

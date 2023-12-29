@@ -1,5 +1,6 @@
 import { IconSearch } from '@/assets';
 import { TRegisterFormValue } from '@api/types';
+import { cls } from '@utils/classname';
 import { InputHTMLAttributes, useCallback } from 'react';
 import { UseFormRegisterReturn, useFormContext } from 'react-hook-form';
 
@@ -35,6 +36,7 @@ export const InputLabel = <T extends string>({
         {...register}
         aria-invalid={errors ? 'true' : 'false'}
         style={{ borderColor: errors ? '#FF7C7C' : '#ABABAB' }}
+        className={cls({ 'view-search-icon': isViewSearchIcon })}
       />
       <small role="alert">{errors && `* ${errors.message}`}</small>
       {isViewSearchIcon && (
