@@ -3,7 +3,7 @@ import { Images } from '@assets/images';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-export const MyUser = () => {
+export const MyUserInfo = () => {
   const { userInfo } = useSelector((state: TRootState) => state.userStore);
 
   return (

@@ -1,7 +1,7 @@
 import { axiosFetch } from '@api/axios';
 import { TRegisterFormValue, TResponseMyRestore } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
-import { RestoreBook } from '@components/templates/MyPage/MyRestoreTemplate/RestoreBook';
+import { RestoreBook } from '@components/templates/MyPageTemplate/MyRestoreTemplate/RestoreBook';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
