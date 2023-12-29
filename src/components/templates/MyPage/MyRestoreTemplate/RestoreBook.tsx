@@ -35,7 +35,7 @@ export const RestoreBook = ({ data, index, style }: TProps) => {
           />
         </ImageWrap>
         <ProgressWrap>
-          <div>
+          <div className="book-wrap">
             <FlexBox>
               <span className="book-name">{title}</span>
             </FlexBox>
@@ -99,12 +99,14 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
   align-items: center;
 
   .book-name {
+    display: inline-block;
     font-size: 16px;
     font-weight: 700;
     color: #000000;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 100%;
     max-width: 250px;
   }
 
