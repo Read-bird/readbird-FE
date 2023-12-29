@@ -37,6 +37,7 @@ export const WeekTemplate = () => {
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
     defaultValues: {
+      isbn: null,
       planId: null,
       title: null,
       author: null,

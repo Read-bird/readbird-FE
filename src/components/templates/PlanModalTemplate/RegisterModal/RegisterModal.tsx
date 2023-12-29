@@ -28,7 +28,7 @@ type TRegisterProps = {
   publisher: string | null;
   startDate: string;
   endDate: string;
-  isbn: string;
+  isbn: string | null;
 };
 
 type TResponseProps = {
@@ -185,6 +185,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   const handleSubmitValue = async (props: TRegisterFormValue) => {
     try {
       const registerData = {
+        isbn: props.isbn,
         planId: isRestore ? props.planId : undefined,
         title: props.title,
         author: props.author,
@@ -192,8 +193,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         currentPage: props.currentPage,
         publisher: props.publisher,
         startDate: dayjs(props.startDate).format('YYYY-MM-DD'),
-        endDate: dayjs(props.endDate).format('YYYY-MM-DD'),
-        isbn: props.isbn
+        endDate: dayjs(props.endDate).format('YYYY-MM-DD')
       };
 
       const res = !planId
@@ -333,10 +333,10 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
   // 도서 검색 리스트 열기
   useEffect(() => {
-    if (title && !isbn) {
+    if (title && !isbn && !planId) {
       setSearch(true);
     }
-  }, [title, isbn]);
+  }, [title, isbn, planId]);
 
   useEffect(() => {
     return () => reset();
