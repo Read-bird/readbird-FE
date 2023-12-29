@@ -134,6 +134,12 @@ const TextSpan = styled.span`
   font-weight: 400;
   color: ${({ theme }) => theme.colors.darkGray};
 
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-word;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+
   &.dark {
     color: #747474;
   }
