@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export type TState = {
+type TState = {
   isOpen: boolean;
   openType: 'character' | 'failedPlan' | null;
 };
