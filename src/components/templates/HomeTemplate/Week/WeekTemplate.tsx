@@ -1,7 +1,7 @@
 import { setPlan } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { axiosFetch } from '@api/axios';
-import { TRegisterFormValue } from '@api/types';
+import { ERecordStatus, TRegisterFormValue } from '@api/types';
 import { IconPlus } from '@assets/icons';
 import { WeekCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
@@ -64,6 +64,8 @@ export const WeekTemplate = () => {
   const date = useMemo(() => new Date(currentDate), [currentDate]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const iconSize = planData.filter((plan) => plan.planStatus === ERecordStatus.inProgress).length;
+
   // 등록하기 모달 띄우기
   const handleClickAdd = async () => {
     const result = await planValidation();
@@ -112,7 +114,7 @@ export const WeekTemplate = () => {
             1: <IconEggOnePlan />,
             2: <IconEggTwoPlan />,
             3: <IconEggThreePlan />
-          }[planData?.length ?? 0]
+          }[iconSize]
         }
       </PlanVisualBox>
       <Spacing height={20} />
