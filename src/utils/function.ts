@@ -62,3 +62,23 @@ export const debounce = (callback: (...args: any[]) => void, time: number) => {
     }, time);
   };
 };
+
+// 날짜가 동일한지 확인
+export const isSameDate = (currentDate: string, compareDate: string) => {
+  const current = new Date(currentDate);
+  const compare = new Date(compareDate);
+
+  if (current.getFullYear() !== compare.getFullYear()) {
+    return false;
+  }
+
+  if (current.getMonth() !== compare.getMonth()) {
+    return false;
+  }
+
+  if (current.getDate() !== compare.getDate()) {
+    return false;
+  }
+
+  return true;
+};
