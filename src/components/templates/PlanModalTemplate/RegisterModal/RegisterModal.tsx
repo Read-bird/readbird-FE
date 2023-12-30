@@ -191,6 +191,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         author: props.author,
         totalPage: props.totalPage,
         currentPage: props.currentPage,
+        coverImage: props.coverImage,
         publisher: props.publisher,
         startDate: dayjs(props.startDate).format('YYYY-MM-DD'),
         endDate: dayjs(props.endDate).format('YYYY-MM-DD')
@@ -238,6 +239,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
                 endDate: props.endDate,
                 totalPage: props.totalPage,
                 currentPage: props.currentPage,
+                coverImage: props.coverImage,
                 planStatus: ERecordStatus.inProgress,
                 recordStatus: ERecordStatus.inProgress
               };
@@ -281,6 +283,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     setValue('publisher', book.publisher);
     setValue('totalPage', book.totalPage);
     setValue('isbn', book.isbn);
+    setValue('coverImage', book.coverImage);
   };
 
   // 도서 검색
@@ -295,7 +298,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
         const requestData = {
           type: 'title',
-          value,
+          value: `"${value}"`,
           page: '' + (page ?? searchData.page),
           scale: '' + 10
         };
