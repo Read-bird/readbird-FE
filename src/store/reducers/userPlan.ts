@@ -53,7 +53,9 @@ const planSlice = createSlice({
       });
     },
     addPlanData: (state, action: PayloadAction<TPlan>) => {
-      state.planData.push(action.payload);
+      if (state.currentDate === dayjs().format('YYYY-MM-DD')) {
+        state.planData.push(action.payload);
+      }
     },
     addPlanList: (state, action: PayloadAction<TPlan[]>) => {
       state.planData.push(...action.payload);
