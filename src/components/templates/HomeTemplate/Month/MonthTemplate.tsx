@@ -9,7 +9,7 @@ import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DefinitionList, FlexBox, GuideLabel, GuideText, Section, SubTitle, Wrap } from './Styled';
@@ -21,7 +21,7 @@ const data = {
   [EAchievementStatus.success]: '모든 플랜을 달성했어요!'
 };
 
-export const MonthTemplate = () => {
+export const MonthTemplate = memo(() => {
   const { monthCurrentDate, monthRecord, recordTrophy, planTrophy } = useSelector(
     (state: TRootState) => state.planStore
   );
@@ -108,4 +108,4 @@ export const MonthTemplate = () => {
       </Section>
     </Wrap>
   );
-};
+});
