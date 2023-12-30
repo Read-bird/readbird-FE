@@ -33,13 +33,13 @@ export const SearchMain = () => {
   // 인기 있는 책 호출
   const getTopBooks = async () => {
     try {
-      const response = await axiosFetch<any, { bList: TBookDetail[] }>({
+      const response = await axiosFetch<any, TBookDetail[]>({
         url: '/api/aladin/popular',
         method: 'get'
       });
 
       if (response.status === 200) {
-        setTopBookList(response.data.bList);
+        setTopBookList(response.data);
       } else {
         Alert.error({ title: '데이터를 불러오지 못했습니다.' });
       }
