@@ -174,7 +174,7 @@ export const Stamp = ({
           }
         } catch (e: any) {
           if (e instanceof AxiosError) {
-            Swal.showValidationMessage(e.response?.data.message);
+            Swal.showValidationMessage(e.response?.data.message.replace(/^.*?:\s/g, ''));
           }
         } finally {
           setOpenModal(null);
