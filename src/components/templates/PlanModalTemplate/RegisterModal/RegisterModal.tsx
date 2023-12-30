@@ -279,16 +279,19 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   };
 
   // 도서 선택
-  const handleClickBook = (book: TBookDetail) => {
-    setValue('title', book.title);
-    setValue('author', book.author);
-    setValue('publisher', book.publisher);
-    setValue('totalPage', book.totalPage);
-    setValue('isbn', book.isbn);
-    setValue('coverImage', book.coverImage);
-    setValue('pubDate', book.pubDate);
-    setValue('description', book.description);
-  };
+  const handleClickBook = useCallback(
+    (book: TBookDetail) => {
+      setValue('title', book.title);
+      setValue('author', book.author);
+      setValue('publisher', book.publisher);
+      setValue('totalPage', book.totalPage);
+      setValue('isbn', book.isbn);
+      setValue('coverImage', book.coverImage);
+      setValue('pubDate', book.pubDate);
+      setValue('description', book.description);
+    },
+    [setValue]
+  );
 
   // 도서 검색
   const searchBookInfo = useCallback(

@@ -1,6 +1,6 @@
 import { ERecordStatus, TPlan, TPlanData, TPlanRecord, TPreviouslyFailedPlan } from '@api/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { convertObject } from '@utils/function';
+import { convertObject, isSameDate } from '@utils/function';
 import dayjs from 'dayjs';
 
 type TState = {
@@ -53,7 +53,7 @@ const planSlice = createSlice({
       });
     },
     addPlanData: (state, action: PayloadAction<TPlan>) => {
-      if (state.currentDate === dayjs().format('YYYY-MM-DD')) {
+      if (isSameDate(state.currentDate, dayjs().format('YYYY-MM-DD'))) {
         state.planData.push(action.payload);
       }
     },

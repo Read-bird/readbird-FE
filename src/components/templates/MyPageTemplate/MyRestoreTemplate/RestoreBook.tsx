@@ -2,7 +2,8 @@ import { TResponseMyRestore } from '@api/types';
 import { Images } from '@assets/images';
 import { ProgressBar } from '@components/common/ProgressBar';
 import { Spacing } from '@components/common/Spacing';
-import { CSSProperties } from 'react';
+import { CSSProperties, memo } from 'react';
+import { areEqual } from 'react-window';
 import styled from 'styled-components';
 
 type TProps = {
@@ -14,7 +15,7 @@ type TProps = {
   style: CSSProperties;
 };
 
-export const RestoreBook = ({ data, index, style }: TProps) => {
+export const RestoreBook = memo(({ data, index, style }: TProps) => {
   const props = data.list[index];
   const { coverImage, title, planId, currentPage, totalPage } = props;
 
@@ -61,7 +62,7 @@ export const RestoreBook = ({ data, index, style }: TProps) => {
       </Wrap>
     </div>
   );
-};
+}, areEqual);
 
 const Wrap = styled.div`
   width: 100%;
