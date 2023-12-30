@@ -38,10 +38,11 @@ export const HomeTemplate = () => {
     dispatch(setMonthCurrentDate(dayjs(monthCurrentDate).add(1, 'month').format()));
   };
 
-  // 홈화면 접속시 오늘 날짜로 초기화
   useEffect(() => {
-    dispatch(setCurrentDate(dayjs().format('YYYY-MM-DD')));
-    dispatch(setMonthCurrentDate(dayjs().format('YYYY-MM-DD')));
+    return () => {
+      dispatch(setCurrentDate(dayjs().format('YYYY-MM-DD')));
+      dispatch(setMonthCurrentDate(dayjs().format('YYYY-MM-DD')));
+    };
   }, []);
 
   return (

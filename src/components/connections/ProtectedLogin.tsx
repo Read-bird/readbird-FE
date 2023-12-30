@@ -1,4 +1,4 @@
-import { setAccessToken, setCurrentDate } from '@/store/reducers';
+import { setAccessToken, setCurrentDate, setMonthCurrentDate } from '@/store/reducers';
 import { TAppDispatch, TRootState } from '@/store/state';
 import dayjs from 'dayjs';
 import { Fragment, ReactNode, useEffect, useMemo } from 'react';
@@ -19,7 +19,8 @@ export const ProtectedLogin = ({ loginNode, appNode }: TProps) => {
 
   useEffect(() => {
     // 첫 접속시 당일 날짜 등록
-    dispatch(setCurrentDate(dayjs().format()));
+    dispatch(setCurrentDate(dayjs().format('YYYY-MM-DD')));
+    dispatch(setMonthCurrentDate(dayjs().format('YYYY-MM-DD')));
     // 토큰 등록
     dispatch(setAccessToken(localStorage.getItem('rb-access-token') ?? ''));
   }, []);

@@ -12,7 +12,7 @@ import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { lazy, useEffect, useMemo, useState } from 'react';
+import { lazy, memo, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
@@ -31,7 +31,7 @@ const IconEggTwoPlan = lazy(() =>
   import('@assets/images/IconEggTwoPlan').then((data) => ({ default: data.IconEggTwoPlan }))
 );
 
-export const WeekTemplate = () => {
+export const WeekTemplate = memo(() => {
   const MAX_CREATION_COUNT = 3;
   // 플랜 등록에 대한 정보
   const methods = useForm<TRegisterFormValue>({
@@ -147,4 +147,4 @@ export const WeekTemplate = () => {
       </FormProvider>
     </Wrap>
   );
-};
+});
