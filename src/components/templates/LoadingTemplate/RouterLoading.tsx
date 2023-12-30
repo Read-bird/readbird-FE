@@ -26,5 +26,5 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f580;
+  background-color: #f5f5f5aa;
 `;
