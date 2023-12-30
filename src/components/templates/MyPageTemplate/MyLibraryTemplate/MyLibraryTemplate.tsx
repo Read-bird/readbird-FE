@@ -67,8 +67,7 @@ export const MyLibraryTemplate = () => {
       totalPage: totalPage,
       lastIndex: bookList.length - 1,
       currentPage: page.current,
-      getNextPage: getNextPage,
-      disabled: true
+      getNextPage: getNextPage
     }),
     [bookList, totalPage, page, getNextPage]
   );
