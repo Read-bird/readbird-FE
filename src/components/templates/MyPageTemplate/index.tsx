@@ -1,0 +1,1 @@
+export {MyPageTemplate} from "./MyPageTemplate"

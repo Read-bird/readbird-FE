@@ -1,0 +1,1 @@
+export {MyEncyclopediaTemplate} from "./MyEncyclopediaTemplate"

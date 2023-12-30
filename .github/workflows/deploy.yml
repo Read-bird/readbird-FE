@@ -1,0 +1,44 @@
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: hyu630115/touchwave-server
+          stage: main
+          yaml: |
+            name: readbird-fe
+            app: web
+            options:
+              nodeversion: "16"
+              build: ""
+              spa: true
+              buildenv:
+                - name: REACT_APP_KAKAO_API_KEY
+                  secret: REACT_APP_KAKAO_API_KEY
+                - name: REACT_APP_SERVER_PATH
+                  secret: REACT_APP_SERVER_PATH
+                - name: REACT_APP_REDIRECT_URL
+                  secret: REACT_APP_REDIRECT_URL
+                - name: REACT_APP_EVENT_URL
+                  secret: REACT_APP_EVENT_URL
+                - name: REACT_APP_EVENT_BANNER
+                  secret: REACT_APP_EVENT_BANNER
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}

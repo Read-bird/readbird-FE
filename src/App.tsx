@@ -1,26 +1,19 @@
-import {useDispatch, useSelector} from "react-redux";
-import { RootState, AppDispatch } from "./store/store"
-import {useEffect} from "react";
-import {setUserName} from "./store/reducers/userSlice";
+import { LoadingTemplate, RouterLoading } from '@components/templates/LoadingTemplate';
+import { useAxiosInterceptor } from '@hooks/axiosInterceptor';
+import { appRouter } from '@routers/appRouter';
+import { GlobalStyle, theme } from '@style/global-style';
+import { RouterProvider } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 
-const App = () => {
-
-  // redux 저장 세팅
-  const dispatch = useDispatch<AppDispatch>();
-  // redux 가져오기
-  const testStore = useSelector((state: RootState) => state.userStore);
-  console.log(testStore);
-
-  useEffect(() => {
-    // redux 저장
-    dispatch(setUserName("Dongwoo"));
-  }, []);
+export const App = () => {
+  // axios interceptor
+  useAxiosInterceptor();
 
   return (
-    <div className="App">
-      안녕하세요. 제 이름은 {testStore?.userName}입니다.
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <LoadingTemplate />
+      <RouterProvider router={appRouter} fallbackElement={<RouterLoading />} />
+    </ThemeProvider>
   );
-}
-
-export default App;
+};

@@ -1,0 +1,1 @@
+export { ReactSlider } from './Slider';

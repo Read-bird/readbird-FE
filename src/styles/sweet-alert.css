@@ -1,0 +1,93 @@
+div.swal2-popup {
+  position: relative;
+  padding: 30px 10px 12px;
+  width: 340px;
+  min-height: 190px;
+  background-color: #ffffff;
+}
+
+div.swal2-html-container#swal2-html-container {
+  font-size: 13px;
+  font-weight: 400;
+  color: #ababab;
+  text-align: center;
+  margin: 0;
+}
+
+div.swal2-icon {
+  margin: 0 auto;
+}
+
+label.swal2-input-label {
+  position: absolute;
+  top: 72px;
+  left: 150px;
+}
+
+input.swal2-input {
+  width: 72px;
+  height: 36px;
+  border-radius: 8px;
+  margin-left: 60px;
+}
+
+input.swal2-input[type='number']::-webkit-inner-spin-button,
+input.swal2-input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+h2.swal2-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+strong.alert-input-title {
+  color: #b780db;
+}
+
+div.swal2-validation-message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 190px;
+  font-size: 13px;
+  word-break: break-word;
+  background: transparent;
+  margin: 0 auto;
+  padding: 0;
+  color: #ff7676;
+  font-weight: 400;
+}
+
+div.swal2-validation-message::before {
+  content: '';
+  display: none;
+}
+
+div.swal2-actions {
+  width: 100%;
+}
+
+button.swal2-styled {
+  width: 130px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+button.swal2-styled.swal2-confirm {
+  background-color: #b780db;
+}
+
+button.swal2-styled.swal2-confirm:focus {
+  box-shadow: 0 0 0 3px #b780db40;
+}
+
+button.swal2-styled.swal2-cancel {
+  background-color: #cfcfcf;
+}
+
+button.swal2-styled.swal2-cancel:focus {
+  box-shadow: 0 0 0 3px #cfcfcf40;
+}

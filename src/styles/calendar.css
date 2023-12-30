@@ -1,0 +1,52 @@
+/* 캘린더 root */
+.react-calendar {
+  width: 100%;
+  max-width: 330px;
+  background: #ffff;
+  line-height: 1.125em;
+  border-radius: 10px;
+}
+
+/* 달력 날짜 전체 wrap */
+.react-calendar__month-view__days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 0px;
+}
+
+/* 달력 요일 wrap */
+.react-calendar__month-view__weekdays {
+  font-size: 14px;
+  color: #ababab;
+}
+
+/* 달력 요일 개별 */
+.react-calendar__month-view__weekdays__weekday {
+  flex: 1 !important;
+  min-width: 30px;
+  min-height: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+abbr {
+  text-decoration: none;
+}
+
+/* 달력 날짜 개별 */
+.react-calendar__month-view__days__day abbr {
+  display: none;
+}
+
+.react-calendar__month-view__days__day {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* 달력 날짜 개별 custom child */
+.react-calendar__month-view__days__day div {
+  flex: 0 0 30px !important;
+}

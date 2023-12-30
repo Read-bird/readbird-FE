@@ -1,31 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface userState {
-    accessToken: string,
-    userName: string
+interface IUser {
+  id: number;
+  email: string;
+  nickname: string;
+  profile: string | null;
+}
+interface IUserState {
+  accessToken: string;
+  userInfo: IUser | null;
 }
 
-const initialState: userState = {
-    accessToken: "",
-    userName: ""
-}
+const initialState: IUserState = {
+  accessToken: localStorage.getItem('rb-access-token') ?? '',
+  userInfo: null
+};
 
 const userSlice = createSlice({
-    name: 'userInfo',
-    initialState,
-    reducers: {
-        setAccessToken: (state, action) => {
-            state.accessToken = action.payload
-        },
-        setUserName: (state, action) => {
-            state.userName = action.payload
-        },
+  name: 'userInfo',
+  initialState,
+  reducers: {
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
     },
-})
+    setUserInfo: (state, action: PayloadAction<IUser>) => {
+      state.userInfo = action.payload;
+    }
+  }
+});
 
-export const {
-    setAccessToken,
-    setUserName
-} = userSlice.actions
+export const { setAccessToken, setUserInfo } = userSlice.actions;
 
-export default userSlice.reducer;
+export const userStore = userSlice.reducer;
