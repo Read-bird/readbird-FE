@@ -19,7 +19,7 @@ export const useGetSearchList = () => {
           method: 'get',
           url: `/api/book?${
             searchType !== 'all' ? `type=${searchType}&` : ''
-          }value="${searchText}"&page=${page}&scale=${scale}`
+          }value=${searchText}&page=${page}&scale=${scale}`
         });
 
         const call = page === 1 ? setBookList : addBookList;
