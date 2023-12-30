@@ -23,4 +23,5 @@ export type TBookDetail = {
   publisher: string;
   totalPage: number;
   coverImage: string;
+  link: string;
 };

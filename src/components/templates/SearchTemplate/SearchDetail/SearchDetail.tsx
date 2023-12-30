@@ -1,7 +1,7 @@
 import { setBookDetail } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { TBookDetail, TRegisterFormValue } from '@api/types';
-import { IconReact, IconReady } from '@assets/icons';
+import { IconReact } from '@assets/icons';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
@@ -43,7 +43,7 @@ export const SearchDetail = (props: TProps) => {
   });
 
   // 플랜 등록 유효성 검사
-  const { planValidation, checkReadBook } = usePlanValidation();
+  const { planValidation } = usePlanValidation();
   const { coverImage, title, author, publisher, description, isbn, totalPage } = props;
   const dispatch = useDispatch<TAppDispatch>();
   const [isOpen, setOpen] = useState(false);
@@ -66,6 +66,17 @@ export const SearchDetail = (props: TProps) => {
       }
     }
   }, [setOpen, planValidation]);
+
+  const handleClickOpenLink = useCallback(
+    (link: string | null) => () => {
+      if (!link) {
+        Alert.warning({ title: '페이지를 찾을 수 없습니다.' });
+        return;
+      }
+      window.open(link, '_blank');
+    },
+    []
+  );
 
   return (
     <Wrap>
@@ -115,11 +126,13 @@ export const SearchDetail = (props: TProps) => {
         </div>
       </Inner>
       <ButtonWrap>
-        <button type="button" className="btn-buy">
+        <button
+          type="button"
+          role="link"
+          className="btn-buy"
+          onClick={handleClickOpenLink(props.link)}
+        >
           구매하기
-          <div className="icon-wrap">
-            <IconReady />
-          </div>
         </button>
         <button type="button" className="btn-plan" onClick={handleClickOpenModal}>
           플랜등록
