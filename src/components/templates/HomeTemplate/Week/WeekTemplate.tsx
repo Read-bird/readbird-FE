@@ -127,7 +127,7 @@ export const WeekTemplate = memo(() => {
           ))}
           <li className="last">
             <PageProgress>
-              {planData.length}/{MAX_CREATION_COUNT}
+              {iconSize}/{MAX_CREATION_COUNT}
             </PageProgress>
           </li>
         </PlanListBox>
