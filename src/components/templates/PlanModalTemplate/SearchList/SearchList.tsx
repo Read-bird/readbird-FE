@@ -1,7 +1,7 @@
 import { TBookDetail } from '@api/types';
 import { Images } from '@assets/images';
-import { CSSProperties, useEffect, useMemo, useRef } from 'react';
-import { FixedSizeList } from 'react-window';
+import { CSSProperties, memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { FixedSizeList, areEqual } from 'react-window';
 import styled from 'styled-components';
 
 type TProps = {
@@ -53,14 +53,17 @@ export const SearchList = (props: TProps) => {
   );
 };
 
-const SearchItem = ({ data, index, style }: TSearchItemProps) => {
+const SearchItem = memo(({ data, index, style }: TSearchItemProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
   const book = data.bookList[index];
 
-  const handleClick = () => {
-    data.handleClick(book);
-    data.handleClose();
-  };
+  const handleClick = useCallback(
+    (book: TBookDetail) => () => {
+      data.handleClick(book);
+      data.handleClose();
+    },
+    [data]
+  );
 
   useEffect(() => {
     if (data.lastIndex === index) {
@@ -86,7 +89,7 @@ const SearchItem = ({ data, index, style }: TSearchItemProps) => {
   }, [data, index]);
 
   return (
-    <ResultItem style={style} onClick={handleClick}>
+    <ResultItem style={style} onClick={handleClick(book)}>
       <div className="img-wrap">
         <Images imgUrl={book.coverImage} imgAlt="cover-img" imgWidth={40} imgHeight={60} />
         <img src={book.coverImage} alt="cover-img" />
@@ -101,7 +104,7 @@ const SearchItem = ({ data, index, style }: TSearchItemProps) => {
       {data.lastIndex === index && <div className="last-item" />}
     </ResultItem>
   );
-};
+}, areEqual);
 
 const ResultWrap = styled.div`
   border-radius: 10px;
