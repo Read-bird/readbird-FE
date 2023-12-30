@@ -302,7 +302,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
         const requestData = {
           type: 'title',
-          value: `"${value}"`,
+          value,
           page: '' + (page ?? searchData.page),
           scale: '' + 10
         };
