@@ -21,6 +21,9 @@ export type TRegisterFormValue = {
   startDate: string;
   endDate: string;
   isbn: string | null;
+  coverImage: string | null;
+  description: string | null;
+  pubDate: string | null;
   searchData: {
     bookList: TBookDetail[];
     page: number;
