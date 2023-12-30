@@ -135,7 +135,7 @@ export const WeekTemplate = () => {
         <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
       )}
       {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
-      {(planData?.length ?? 0) < 3 && (
+      {iconSize < 3 && (
         <AddPlanWrap onClick={handleClickAdd}>
           <IconPlus />
         </AddPlanWrap>
