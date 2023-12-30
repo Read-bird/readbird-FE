@@ -181,7 +181,7 @@ export const Stamp = ({
         }
       }
     });
-  }, [setOpenModal, planId, maxPage, dispatch, openFailed]);
+  }, [setOpenModal, planId, maxPage, dispatch, openFailed, currentPage]);
 
   return (
     <Wrap>
