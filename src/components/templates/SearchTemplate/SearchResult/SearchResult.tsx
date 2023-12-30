@@ -2,12 +2,14 @@ import { initBookList } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { IconDayBird } from '@assets/icons';
 import { Book } from '@components/templates/SearchTemplate/Book';
+import { TBookData } from '@components/templates/SearchTemplate/Book/Book';
 import { TFormValue } from '@components/templates/SearchTemplate/SearchTemplate';
 import { useGetSearchList } from '@components/templates/SearchTemplate/hooks';
 import { Alert } from '@utils/Alert';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
@@ -19,6 +21,7 @@ const CheckBoxType = {
 };
 
 export const SearchResult = memo(() => {
+  const { listRef } = useOutletContext<{ listRef: React.RefObject<FixedSizeList<TBookData>> }>();
   const checkboxes = useMemo(() => ['전체', '책 이름', '글쓴이', '출판사'], []);
   const dispatch = useDispatch();
   const { bookList, totalPage } = useSelector((state: TRootState) => state.bookSearchStore);
@@ -39,6 +42,7 @@ export const SearchResult = memo(() => {
       // 타입 변경
       setValue('searchType', CheckBoxType[checkbox as keyof typeof CheckBoxType]);
       setValue('page', 1);
+      listRef.current?.scrollToItem(0, 'start');
 
       const result = await searchList({
         ...props,
@@ -50,7 +54,7 @@ export const SearchResult = memo(() => {
         setValue('page', 2);
       }
     },
-    [setValue, searchList, getValues]
+    [setValue, searchList, getValues, listRef]
   );
 
   const listHeight = useMemo(() => {
@@ -70,17 +74,6 @@ export const SearchResult = memo(() => {
       setValue('page', values.page + 1);
     }
   }, [getValues, setValue, searchList]);
-
-  const itemData = useMemo(
-    () => ({
-      list: bookList,
-      totalPage: totalPage,
-      lastIndex: bookList.length - 1,
-      currentPage: currentPage,
-      getNextPage: getNextPage
-    }),
-    [bookList, totalPage, currentPage, getNextPage]
-  );
 
   useEffect(() => {
     return () => {
@@ -111,11 +104,18 @@ export const SearchResult = memo(() => {
       </CheckList>
       {!!bookList.length ? (
         <FixedSizeList
+          ref={listRef}
           height={listHeight}
           itemSize={142}
           width="100%"
           itemCount={bookList.length}
-          itemData={itemData}
+          itemData={{
+            list: bookList,
+            totalPage: totalPage,
+            lastIndex: bookList.length - 1,
+            currentPage: currentPage,
+            getNextPage: getNextPage
+          }}
         >
           {Book}
         </FixedSizeList>

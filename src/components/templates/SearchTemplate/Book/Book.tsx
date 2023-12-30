@@ -8,19 +8,22 @@ import { useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
 import styled, { CSSObject } from 'styled-components';
 
+export type TBookData = {
+  list: TBookDetail[];
+  totalPage: number;
+  lastIndex: number;
+  currentPage: number;
+  getNextPage?: () => void;
+};
+
 type TProps = {
-  data: {
-    list: TBookDetail[];
-    totalPage: number;
-    lastIndex: number;
-    currentPage: number;
-    getNextPage?: () => void;
-  };
+  data: TBookData;
   index: number;
   style: CSSProperties;
 };
 
 export const Book = memo(({ data, index, style }: TProps) => {
+  const { totalPage, currentPage, lastIndex, getNextPage } = data;
   const props = data.list[index];
   const { coverImage, title, author, publisher } = props;
   const dispatch = useDispatch<TAppDispatch>();
@@ -34,12 +37,12 @@ export const Book = memo(({ data, index, style }: TProps) => {
   );
 
   useEffect(() => {
-    if (data.lastIndex === index) {
+    if (lastIndex === index) {
       const handleObserver = (entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (data.totalPage > data.currentPage) {
-              data.getNextPage?.();
+            if (totalPage > currentPage) {
+              getNextPage?.();
             }
           }
         });
@@ -54,7 +57,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
     return () => {
       observer.current?.disconnect();
     };
-  }, [data, index]);
+  }, [lastIndex, index, totalPage, currentPage, getNextPage]);
 
   return (
     <div style={style} onClick={handleClickItem(props)}>
