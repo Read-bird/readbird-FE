@@ -5,7 +5,7 @@ import { Book } from '@components/templates/MyPageTemplate/MyLibraryTemplate/Boo
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FixedSizeList } from 'react-window';
 import styled from 'styled-components';
 
@@ -26,7 +26,7 @@ export type TResponseLibrary = {
 
 export const MyLibraryTemplate = () => {
   const [bookList, setBookList] = useState<TResponseLibrary[]>([]);
-  const [page, setPage] = useState(1);
+  const page = useRef(1);
   const [totalPage, setTotalPage] = useState(1);
 
   const listHeight = useMemo(() => {
@@ -47,7 +47,6 @@ export const MyLibraryTemplate = () => {
 
       if (res.status === 200) {
         setBookList((prev) => (page === 1 ? res.data.bookList : prev.concat(res.data.bookList)));
-        setPage(res.data.page);
         setTotalPage(res.data.totalPage);
       }
     } catch (err) {
@@ -58,15 +57,15 @@ export const MyLibraryTemplate = () => {
   };
 
   const getNextPage = useCallback(() => {
-    setPage((prev) => prev + 1);
-  }, [setPage]);
+    getPlanList(page.current + 1);
+  }, []);
 
   const itemData = useMemo(
     () => ({
       list: bookList,
       totalPage: totalPage,
       lastIndex: bookList.length - 1,
-      currentPage: page,
+      currentPage: page.current,
       getNextPage: getNextPage,
       disabled: true
     }),
@@ -74,8 +73,8 @@ export const MyLibraryTemplate = () => {
   );
 
   useEffect(() => {
-    getPlanList(page);
-  }, [page]);
+    getPlanList();
+  }, []);
 
   return (
     <Wrap>
