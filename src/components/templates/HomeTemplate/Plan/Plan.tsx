@@ -44,6 +44,7 @@ export const Plan = (props: TProps) => {
       publisher,
       title,
       totalPage,
+      coverImage,
       searchData: {
         bookList: [],
         page: 1,

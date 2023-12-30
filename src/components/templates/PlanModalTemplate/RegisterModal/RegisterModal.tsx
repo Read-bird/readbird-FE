@@ -189,6 +189,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         planId: isRestore ? props.planId : undefined,
         title: props.title,
         author: props.author,
+        description: props.description,
+        pubDate: props.pubDate,
         totalPage: props.totalPage,
         currentPage: props.currentPage,
         coverImage: props.coverImage,
@@ -284,6 +286,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     setValue('totalPage', book.totalPage);
     setValue('isbn', book.isbn);
     setValue('coverImage', book.coverImage);
+    setValue('pubDate', book.pubDate);
+    setValue('description', book.description);
   };
 
   // 도서 검색

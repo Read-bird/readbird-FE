@@ -73,6 +73,8 @@ export const MyRestoreTemplate = () => {
       methods.setValue('startDate', restoreData.startDate);
       methods.setValue('totalPage', restoreData.totalPage);
       methods.setValue('currentPage', restoreData.currentPage);
+      methods.setValue('coverImage', restoreData.coverImage);
+      methods.setValue('description', restoreData.description);
       setIsOpenModal(true);
     },
     [setIsOpenModal, methods, planValidation]

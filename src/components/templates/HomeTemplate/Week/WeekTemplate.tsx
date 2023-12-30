@@ -44,6 +44,9 @@ export const WeekTemplate = () => {
       publisher: null,
       currentPage: 0,
       totalPage: 0,
+      coverImage: null,
+      description: null,
+      pubDate: null,
       startDate: dayjs().format('YYYY-MM-DD'),
       endDate: dayjs().format('YYYY-MM-DD'),
       searchData: {
