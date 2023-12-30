@@ -40,11 +40,15 @@ export const SearchResult = memo(() => {
       setValue('searchType', CheckBoxType[checkbox as keyof typeof CheckBoxType]);
       setValue('page', 1);
 
-      await searchList({
+      const result = await searchList({
         ...props,
         searchType: CheckBoxType[checkbox as keyof typeof CheckBoxType],
         page: 1
       });
+
+      if (result) {
+        setValue('page', 2);
+      }
     },
     [setValue, searchList, getValues]
   );

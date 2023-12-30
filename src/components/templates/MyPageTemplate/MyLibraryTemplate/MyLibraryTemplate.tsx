@@ -58,6 +58,7 @@ export const MyLibraryTemplate = () => {
 
   const getNextPage = useCallback(() => {
     getPlanList(page.current + 1);
+    page.current += 1;
   }, []);
 
   const itemData = useMemo(
