@@ -81,15 +81,19 @@ export const SearchMain = () => {
       <Spacing height={18} />
       <Title>지금 가장 인기 있는 책 TOP 10</Title>
       <Spacing height={18} />
-      <FixedSizeList
-        itemSize={142}
-        width="100%"
-        height={listHeight}
-        itemCount={topBookList.length}
-        itemData={itemData}
-      >
-        {Book}
-      </FixedSizeList>
+      {!!topBookList.length ? (
+        <FixedSizeList
+          itemSize={142}
+          width="100%"
+          height={listHeight}
+          itemCount={topBookList.length}
+          itemData={itemData}
+        >
+          {Book}
+        </FixedSizeList>
+      ) : (
+        <Empty>검색된 도서가 없어요</Empty>
+      )}
     </Wrap>
   );
 };
@@ -120,4 +124,17 @@ const Title = styled.h1`
   line-height: 23px;
   color: ${({ theme }) => theme.colors.basicDark};
   align-self: flex-start;
+`;
+
+const Empty = styled.p`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #747474;
 `;

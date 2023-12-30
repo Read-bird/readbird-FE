@@ -174,14 +174,14 @@ export const Stamp = ({
           }
         } catch (e: any) {
           if (e instanceof AxiosError) {
-            Swal.showValidationMessage(e.response?.data.message.replace(/^.*?:\s/g, ''));
+            Swal.showValidationMessage(e.response?.data.message.replace(/^.*?:\s*/g, ''));
           }
         } finally {
           setOpenModal(null);
         }
       }
     });
-  }, [setOpenModal, planId, maxPage, dispatch, openFailed]);
+  }, [setOpenModal, planId, maxPage, dispatch, openFailed, currentPage]);
 
   return (
     <Wrap>

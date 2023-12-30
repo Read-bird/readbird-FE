@@ -6,7 +6,7 @@ import { Spacing } from '@components/common/Spacing';
 import { colors } from '@style/global-style';
 import { lastDayMonth } from '@utils/calendar';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Body, CalendarWrap, FlexBox, Head, TodayText, Wrap } from './Styled';
@@ -37,6 +37,12 @@ export const HomeTemplate = () => {
   const handleClickArrowRight = () => {
     dispatch(setMonthCurrentDate(dayjs(monthCurrentDate).add(1, 'month').format()));
   };
+
+  // 홈화면 접속시 오늘 날짜로 초기화
+  useEffect(() => {
+    dispatch(setCurrentDate(dayjs().format('YYYY-MM-DD')));
+    dispatch(setMonthCurrentDate(dayjs().format('YYYY-MM-DD')));
+  }, []);
 
   return (
     <Wrap>

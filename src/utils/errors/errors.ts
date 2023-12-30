@@ -1,6 +1,6 @@
 export const convertError = (err: string) => {
-  if (err?.includes('Bad Request')) {
-    return err.replace('Bad Request', '');
+  if (err?.includes(':')) {
+    return err.replace(/^.*?:\s*/g, '');
   }
 
   switch (err) {
