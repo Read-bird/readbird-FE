@@ -25,7 +25,7 @@ jobs:
             app: web
             options:
               nodeversion: "16"
-              build: ""
+              build: "npm run build:test"
               spa: true
               buildenv:
                 - name: REACT_APP_KAKAO_API_KEY
