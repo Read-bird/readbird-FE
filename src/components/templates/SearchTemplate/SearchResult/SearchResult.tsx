@@ -39,9 +39,7 @@ export const SearchResult = memo(() => {
         return;
       }
 
-      // 타입 변경
-      setValue('searchType', CheckBoxType[checkbox as keyof typeof CheckBoxType]);
-      setValue('page', 1);
+      // 스크롤 초기화
       listRef.current?.scrollToItem(0, 'start');
 
       const result = await searchList({
@@ -52,6 +50,7 @@ export const SearchResult = memo(() => {
 
       if (result) {
         setValue('page', 2);
+        setValue('searchType', CheckBoxType[checkbox as keyof typeof CheckBoxType]);
       }
     },
     [setValue, searchList, getValues, listRef]

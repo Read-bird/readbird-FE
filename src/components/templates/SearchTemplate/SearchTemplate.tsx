@@ -45,14 +45,14 @@ export const SearchTemplate = () => {
       return;
     }
 
-    // 페이지 변경
-    methods.setValue('page', 2);
+    // 스크롤 초기화
     listRef.current?.scrollToItem(0, 'start');
 
     const result = await searchList({ ...props, page: 1 });
 
     if (result) {
-      // 검색 화면으로 이동
+      // 검색 화면으로 이동, 페이지 수정
+      methods.setValue('page', 2);
       navigate('/search/result');
     }
   };

@@ -5,6 +5,7 @@ import { FixedSizeList, areEqual } from 'react-window';
 import styled from 'styled-components';
 
 type TProps = {
+  listRef: React.RefObject<FixedSizeList<TSearchListData>>;
   bookList: TBookDetail[];
   currentPage: number;
   totalPage: number;
@@ -14,13 +15,15 @@ type TProps = {
   handleClick: (book: TBookDetail) => void;
 };
 
+export type TSearchListData = TProps & { lastIndex: number };
+
 type TSearchItemProps = {
-  data: TProps & { lastIndex: number };
+  data: TSearchListData;
   index: number;
   style: CSSProperties;
 };
 
-export const SearchList = (props: TProps) => {
+export const SearchList = memo((props: TProps) => {
   const { bookList, searchWord, handleClose } = props;
 
   const itemProps = useMemo(
@@ -35,6 +38,7 @@ export const SearchList = (props: TProps) => {
     <ResultWrap>
       {!!bookList?.length ? (
         <FixedSizeList
+          ref={props.listRef}
           width="100%"
           height={270}
           itemCount={bookList.length}
@@ -51,7 +55,7 @@ export const SearchList = (props: TProps) => {
       <span onClick={handleClose}>직접 입력하기</span>
     </ResultWrap>
   );
-};
+});
 
 const SearchItem = memo(({ data, index, style }: TSearchItemProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
