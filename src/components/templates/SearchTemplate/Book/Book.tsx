@@ -3,10 +3,10 @@ import { TAppDispatch } from '@/store/state';
 import { TBookDetail } from '@api/types';
 import { Images } from '@assets/images';
 import { Spacing } from '@components/common/Spacing';
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { CSSProperties, memo, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
-import styled, { CSSObject, CSSProperties } from 'styled-components';
+import styled, { CSSObject } from 'styled-components';
 
 type TProps = {
   data: {
