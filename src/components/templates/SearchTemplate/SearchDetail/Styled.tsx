@@ -133,41 +133,28 @@ export const ButtonWrap = styled.div`
   gap: 20px;
 
   button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 164px;
     height: 48px;
     border-radius: 10px;
     color: white;
     font-size: 16px;
     font-weight: 500;
+    transition: transform 0.2s;
+    cursor: pointer;
+
+    &:active {
+      transform: scale(1.1);
+    }
 
     &.btn-buy {
-      position: relative;
       background-color: #cfcfcf;
-      cursor: default;
-
-      .icon-wrap {
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      &:hover {
-        .icon-wrap {
-          display: block;
-        }
-      }
     }
 
     &.btn-plan {
-      cursor: pointer;
       background-color: ${({ theme }) => theme.colors.basicDark};
-      transition: transform 0.2s;
-
-      &:active {
-        transform: scale(1.1);
-      }
     }
   }
 `;
