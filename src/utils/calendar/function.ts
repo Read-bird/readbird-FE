@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 // 윤달 계산
 export const isLeapMonth = (year: number) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -22,7 +24,7 @@ export const lastDayMonth = (day: Date): Record<number, number> => ({
 // 특정 날짜까지의 디데이 계산 함수
 export const calculateDday = (targetDate: Date) => {
   // 현재 날짜 구하기
-  const currentDate = new Date();
+  const currentDate = new Date(dayjs().format('YYYY-MM-DD'));
 
   // 목표 날짜를 포함한 밀리초 단위의 타임스탬프 계산
   const targetTimestamp = targetDate.getTime();
