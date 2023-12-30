@@ -28,7 +28,7 @@ export const useGetSearchList = () => {
         return true;
       } catch (e) {
         if (e instanceof AxiosError) {
-          Alert.error({ title: convertError(e.response?.data.messgae) });
+          Alert.error({ title: convertError(e.response?.data.message) });
         }
         return false;
       }
