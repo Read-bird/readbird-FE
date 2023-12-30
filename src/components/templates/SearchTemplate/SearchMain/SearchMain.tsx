@@ -58,7 +58,26 @@ export const SearchMain = () => {
   return (
     <Wrap>
       <Spacing height={20} />
-      <BannerWrap></BannerWrap>
+      <BannerWrap
+        dangerouslySetInnerHTML={{
+          __html: `<script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
+        crossorigin="anonymous"
+      ></script>
+      <ins
+        class="adsbygoogle"
+        style="display: block"
+        data-ad-client="ca-pub-1919598055512436"
+        data-ad-slot="1197662171"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>`
+        }}
+      ></BannerWrap>
       <Spacing height={18} />
       <Title>지금 가장 인기 있는 책 TOP 10</Title>
       <Spacing height={18} />
