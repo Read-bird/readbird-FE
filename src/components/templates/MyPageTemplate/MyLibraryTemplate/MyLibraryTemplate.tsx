@@ -61,17 +61,6 @@ export const MyLibraryTemplate = () => {
     page.current += 1;
   }, []);
 
-  const itemData = useMemo(
-    () => ({
-      list: bookList,
-      totalPage: totalPage,
-      lastIndex: bookList.length - 1,
-      currentPage: page.current,
-      getNextPage: getNextPage
-    }),
-    [bookList, totalPage, page, getNextPage]
-  );
-
   useEffect(() => {
     getPlanList();
   }, []);
@@ -85,7 +74,13 @@ export const MyLibraryTemplate = () => {
           itemSize={142}
           width="100%"
           itemCount={bookList.length}
-          itemData={itemData}
+          itemData={{
+            list: bookList,
+            totalPage: totalPage,
+            lastIndex: bookList.length - 1,
+            currentPage: page.current,
+            getNextPage: getNextPage
+          }}
         >
           {Book}
         </FixedSizeList>

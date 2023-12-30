@@ -8,13 +8,15 @@ import {
   TRegisterFormValue,
   TSearchBooksResult
 } from '@api/types';
+import { TSearchListData } from '@components/templates/PlanModalTemplate/SearchList/SearchList';
 import { usePlanValidation } from '@hooks/planValidation';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { FixedSizeList } from 'react-window';
 import { InputLabel } from '../InputLabel';
 import { SearchList } from '../SearchList';
 import { SelectLabel } from '../SelectLabel';
@@ -52,6 +54,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   const dispatch = useDispatch();
   const [isSearch, setSearch] = useState(false);
   const { planValidation, checkReadBook } = usePlanValidation();
+  const listRef = useRef<FixedSizeList<TSearchListData>>(null);
 
   const {
     watch,
@@ -123,7 +126,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   };
 
   // 등록/수정 전 check
-  const handleSubmitCheck = async (props: TRegisterFormValue) => {
+  const handleSubmitCheck = async () => {
+    const props = getValues();
     if (!planId) {
       // 시작일이 오늘보다 이전날짜
       if (dayjs(props.startDate).format('YYYY-MM-DD') < dayjs().format('YYYY-MM-DD')) {
@@ -295,7 +299,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
 
   // 도서 검색
   const searchBookInfo = useCallback(
-    debounce(async (bookTitle?: string, page?: number) => {
+    async (bookTitle?: string, page?: number) => {
       try {
         const { searchData, title } = getValues();
 
@@ -315,17 +319,19 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           method: 'get'
         });
 
-        setValue('searchData', {
-          bookList: page ? searchData.bookList.concat(res.data.bookList) : res.data.bookList,
-          page: res.data.page,
-          totalPage: res.data.totalPage
-        });
+        if (res.status === 200) {
+          setValue('searchData', {
+            bookList: page ? searchData.bookList.concat(res.data.bookList) : res.data.bookList,
+            page: res.data.page,
+            totalPage: res.data.totalPage
+          });
+        }
       } catch (err) {
         if (err instanceof AxiosError) {
-          Alert.error({ title: convertError(err.response?.data.messgae) });
+          Alert.error({ title: convertError(err.response?.data.message) });
         }
       }
-    }, 200),
+    },
     [getValues, setValue]
   );
 
@@ -339,10 +345,11 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     () =>
       register('title', {
         required: '제목을 입력해주세요.',
-        onChange: (event) => {
+        onChange: debounce((event) => {
           const value = event.target.value;
+          listRef.current?.scrollToItem(0, 'start');
           searchBookInfo(value);
-        }
+        }, 400)
       }),
     [register, searchBookInfo]
   );
@@ -359,7 +366,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   }, []);
 
   return (
-    <StyledForm onSubmit={handleSubmit(handleSubmitCheck)}>
+    <StyledForm>
       <InputLabel
         label={'책 이름'}
         type="text"
@@ -373,6 +380,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
       />
       {!planId && isSearch && (
         <SearchList
+          listRef={listRef}
           searchWord={title}
           bookList={bookList}
           currentPage={page}
@@ -490,7 +498,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         <button type="button" className="btn-1 btn" onClick={handleCloseModal}>
           취소
         </button>
-        <button type="submit" className="btn-2 btn">
+        <button type="button" className="btn-2 btn" onClick={handleSubmitCheck}>
           {!!planId ? '수정' : '확인'}
         </button>
       </div>

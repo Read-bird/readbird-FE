@@ -28,7 +28,7 @@ export const Book = memo(({ data, index, style }: TProps) => {
       const handleObserver = (entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (data.totalPage > data.currentPage) {
+            if (data.totalPage >= data.currentPage) {
               data.getNextPage?.();
             }
           }
