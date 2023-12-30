@@ -107,6 +107,7 @@ const SearchItem = memo(({ data, index, style }: TSearchItemProps) => {
 }, areEqual);
 
 const ResultWrap = styled.div`
+  overflow: hidden;
   border-radius: 10px;
   border: 1px solid #afb1b6;
   background: #fff;
