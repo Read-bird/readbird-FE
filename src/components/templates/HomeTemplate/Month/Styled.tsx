@@ -11,9 +11,14 @@ export const Wrap = styled.div`
   align-items: center;
 `;
 
+export const Inner = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+`;
+
 export const Section = styled.section`
   width: 100%;
-
   display: flex;
   flex-direction: column;
 

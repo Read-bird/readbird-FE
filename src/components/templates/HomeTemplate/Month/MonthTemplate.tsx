@@ -12,7 +12,16 @@ import dayjs from 'dayjs';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { DefinitionList, FlexBox, GuideLabel, GuideText, Section, SubTitle, Wrap } from './Styled';
+import {
+  DefinitionList,
+  FlexBox,
+  GuideLabel,
+  GuideText,
+  Inner,
+  Section,
+  SubTitle,
+  Wrap
+} from './Styled';
 
 const data = {
   before: '이 날짜에 등록된 플랜이 없어요.',
@@ -67,45 +76,48 @@ export const MonthTemplate = memo(() => {
 
   return (
     <Wrap>
-      <Section>
-        <Calendar
-          record={monthRecord}
-          currentDate={nowDate}
-          changeCurrentDate={changeCurrentDate}
-        />
-        <Spacing height={14} />
-        <GuideLabel>날짜를 터치하면 해당 플랜으로 이동합니다.</GuideLabel>
-        <Spacing height={14} />
-        {Object.entries(data).map(([key, value]) => (
-          <DefinitionList key={key}>
-            <dt>
-              <IconDayBirdMini className={`${key}`} />
-            </dt>
-            <GuideText>{value}</GuideText>
-          </DefinitionList>
-        ))}
-      </Section>
-      <Section className="last">
-        <SubTitle>{nowDate.getMonth() + 1}월의 플랜 달성 기록</SubTitle>
-        <Spacing height={14} />
-        <FlexBox $justify="space-between">
-          <FlexBox>
-            <IconSuccess fillColor="#E3CCF2" />
-            <Spacing width={10} />
-            <span>달성에 성공한 플랜</span>
+      <Inner className="hidden-scroll">
+        <Section>
+          <Calendar
+            record={monthRecord}
+            currentDate={nowDate}
+            changeCurrentDate={changeCurrentDate}
+          />
+          <Spacing height={14} />
+          <GuideLabel>날짜를 터치하면 해당 플랜으로 이동합니다.</GuideLabel>
+          <Spacing height={14} />
+          {Object.entries(data).map(([key, value]) => (
+            <DefinitionList key={key}>
+              <dt>
+                <IconDayBirdMini className={`${key}`} />
+              </dt>
+              <GuideText>{value}</GuideText>
+            </DefinitionList>
+          ))}
+        </Section>
+        <Spacing height={20} />
+        <Section className="last">
+          <SubTitle>{nowDate.getMonth() + 1}월의 플랜 달성 기록</SubTitle>
+          <Spacing height={14} />
+          <FlexBox $justify="space-between">
+            <FlexBox>
+              <IconSuccess fillColor="#E3CCF2" />
+              <Spacing width={10} />
+              <span>달성에 성공한 플랜</span>
+            </FlexBox>
+            <strong>{recordTrophy.toLocaleString()}개</strong>
           </FlexBox>
-          <strong>{recordTrophy.toLocaleString()}개</strong>
-        </FlexBox>
-        <Spacing height={14} />
-        <FlexBox $justify="space-between">
-          <FlexBox>
-            <IconBook />
-            <Spacing width={10} />
-            <span>완독에 성공한 책</span>
+          <Spacing height={14} />
+          <FlexBox $justify="space-between">
+            <FlexBox>
+              <IconBook />
+              <Spacing width={10} />
+              <span>완독에 성공한 책</span>
+            </FlexBox>
+            <strong>{planTrophy.toLocaleString()}권</strong>
           </FlexBox>
-          <strong>{planTrophy.toLocaleString()}권</strong>
-        </FlexBox>
-      </Section>
+        </Section>
+      </Inner>
     </Wrap>
   );
 });
