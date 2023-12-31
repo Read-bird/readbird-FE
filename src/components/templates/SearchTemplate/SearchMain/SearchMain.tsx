@@ -58,26 +58,14 @@ export const SearchMain = () => {
   return (
     <Wrap>
       <Spacing height={20} />
-      <BannerWrap
-        dangerouslySetInnerHTML={{
-          __html: `<script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
-        crossorigin="anonymous"
-      ></script>
-      <ins
-        class="adsbygoogle"
-        style="display: block"
-        data-ad-client="ca-pub-1919598055512436"
-        data-ad-slot="1197662171"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>`
-        }}
-      ></BannerWrap>
+      <BannerWrap>
+        <ins
+          className="adsbygoogle"
+          style={{ display: 'inline-block', width: '360px', height: '66px' }}
+          data-ad-client="ca-pub-1919598055512436"
+          data-ad-slot="3745103035"
+        ></ins>
+      </BannerWrap>
       <Spacing height={18} />
       <Title>지금 가장 인기 있는 책 TOP 10</Title>
       <Spacing height={18} />
@@ -112,7 +100,7 @@ const Wrap = styled.div`
 `;
 
 const BannerWrap = styled.section`
-  width: 100%;
+  /* width: 100%; */
   height: 66px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
