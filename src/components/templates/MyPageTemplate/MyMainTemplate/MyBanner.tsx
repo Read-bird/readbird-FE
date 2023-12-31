@@ -19,7 +19,7 @@ const StyledBanner = styled.div`
 
   img {
     width: 100%;
-    height: 100%;
+    height: 65px;
     object-fit: contain;
   }
 `;
