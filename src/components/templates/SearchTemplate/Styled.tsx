@@ -26,7 +26,7 @@ export const Body = styled.section`
   position: relative;
   flex: 1;
   width: 100%;
-  height: calc(100vh - 165px);
+  height: 100%;
   border-radius: 50px 50px 0 0%;
   background-color: ${({ theme }) => theme.colors.white};
 

@@ -9,32 +9,44 @@ export const GlobalStyle = createGlobalStyle`
     background: #f5f5f5;
     overflow: hidden;
   }
+
+  :root {
+    --vh: 100%;
+  }
   
   #root {
     position: relative;
     min-width: 360px;
     max-width: 390px;
-    height: 100%;
     margin: 0 auto;
+    height: 100vh;
+    height: var(--vh);
     background: white;
     overflow-y: auto;
+
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
 
     &::-webkit-scrollbar {
       display: none;
     }
   }
 
-  div::-webkit-scrollbar {
+  *::-webkit-scrollbar {
     width: 5px;
     height: 5px;
     background-color: transparent; 
   }
     
-  div::-webkit-scrollbar-thumb {
+  *::-webkit-scrollbar-thumb {
     width: 5px;
     height: 5px; 
     background-color: #00000080; 
     border-radius: 2px;
+  }
+
+  .hidden-scroll::-webkit-scrollbar, .hidden-scroll  *::-webkit-scrollbar {
+    display: none;
   }
 
   .active {

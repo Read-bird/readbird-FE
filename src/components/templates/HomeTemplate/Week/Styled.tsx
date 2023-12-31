@@ -6,6 +6,7 @@ export const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 `;
 
 export const TodayText = styled.strong`
@@ -24,30 +25,6 @@ export const PlanVisualBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-export const PlanListBox = styled.ul`
-  flex: 1;
-  width: 100%;
-  max-width: 364px;
-  overflow-y: auto;
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  li {
-    flex: 0 0 95px;
-    width: 100%;
-
-    &.last {
-      flex: 0 0 24px;
-      width: 100%;
-
-      display: flex;
-      justify-content: center;
-    }
-  }
 `;
 
 export const EmptyPlan = styled.p`
@@ -82,13 +59,7 @@ export const AddPlanWrap = styled.div`
   }
 `;
 
-export const PageProgress = styled.span`
-  display: inline-block;
-  line-height: 24px;
-  padding: 0 8px;
-  font-size: 12px;
-  font-weight: 400;
-  color: white;
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-radius: 15px;
+export const ListWrap = styled.div`
+  width: 100%;
+  padding: 0 13px;
 `;

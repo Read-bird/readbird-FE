@@ -4,17 +4,17 @@ export const Wrap = styled.div`
   width: 100%;
   height: 100%;
   padding: 20px 30px 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 export const Inner = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Section = styled.section`

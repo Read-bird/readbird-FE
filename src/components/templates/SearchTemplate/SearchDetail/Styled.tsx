@@ -20,7 +20,7 @@ export const Wrap = styled.div`
     bottom: 0px;
 
     width: 100%;
-    height: calc(100% - 250px);
+    height: calc(100% - 180px);
     border-radius: 50px 50px 0 0%;
     background-color: ${({ theme }) => theme.colors.white};
   }
@@ -31,7 +31,6 @@ export const Inner = styled.div`
   z-index: 10;
   flex: 1;
   width: 100%;
-  height: calc(100% - 178px);
 
   display: flex;
   flex-direction: column;
