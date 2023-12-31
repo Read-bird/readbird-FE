@@ -25,15 +25,3 @@ const PlanWrap = styled.div`
   width: 100%;
   height: 110px;
 `;
-
-const PageProgress = styled.span`
-  margin: 10px 0;
-  display: inline-block;
-  line-height: 25px;
-  padding: 0 8px;
-  font-size: 12px;
-  font-weight: 400;
-  color: white;
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-radius: 15px;
-`;
