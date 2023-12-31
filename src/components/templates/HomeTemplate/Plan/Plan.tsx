@@ -169,10 +169,13 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
     font-size: 16px;
     font-weight: 700;
     color: #000000;
+    text-align: left;
+
+    display: -webkit-box;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 155px;
+    word-break: break-word;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   .book-page {
@@ -180,16 +183,4 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
     font-weight: 500;
     color: #747474;
   }
-`;
-
-const DDayLabel = styled.span`
-  display: inline-block;
-  width: 53px;
-  height: 24px;
-  line-height: 24px;
-  border-radius: 20px;
-  background-color: ${({ theme }) => theme.colors.basicDark};
-  font-size: 12px;
-  text-align: center;
-  color: white;
 `;

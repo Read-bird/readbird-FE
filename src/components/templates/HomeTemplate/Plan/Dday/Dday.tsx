@@ -23,7 +23,7 @@ export const Dday = memo(({ endDate }: TProps) => {
 
 const DDayLabel = styled.span`
   display: inline-block;
-  width: 53px;
+  min-width: 53px;
   height: 24px;
   line-height: 24px;
   border-radius: 20px;
