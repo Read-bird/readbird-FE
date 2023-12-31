@@ -198,13 +198,13 @@ export const Stamp = ({
         }
       </IconWrap>
       <MiniModal isOpen={isOpenModal === planId} handleClick={handleClose}>
-        <InnerIcon onClick={handleClickCheck}>
-          <IconSuccess fillColor={colors.subBlue} />
-          <p>완독 성공</p>
-        </InnerIcon>
         <InnerIcon onClick={handleClickFailed}>
           <IconFailed fillColor={colors.subRed} />
           <p>완독 실패</p>
+        </InnerIcon>
+        <InnerIcon onClick={handleClickCheck}>
+          <IconSuccess fillColor={colors.subBlue} />
+          <p>완독 성공</p>
         </InnerIcon>
       </MiniModal>
     </Wrap>
