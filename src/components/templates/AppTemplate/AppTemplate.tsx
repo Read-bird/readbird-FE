@@ -23,5 +23,5 @@ const AppWrap = styled.div`
 const MainWrap = styled.main`
   width: 100%;
   height: calc(100vh - 70px);
-  min-height: 680px;
+  min-height: 530px;
 `;

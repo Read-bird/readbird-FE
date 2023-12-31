@@ -29,7 +29,7 @@ export const LoginTemplate = () => {
 const StyledWrapper = styled.div`
   width: 100%;
   height: 100vh;
-  min-height: 750px;
+  min-height: 600px;
   background-color: white;
   display: flex;
   flex-direction: column;
