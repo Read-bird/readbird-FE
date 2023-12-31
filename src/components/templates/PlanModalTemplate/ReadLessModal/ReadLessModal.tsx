@@ -1,4 +1,4 @@
-import { addPlanList, clearFailedPlan } from '@/store/reducers';
+import { addPlanList, clearFailedPlan, deletePlanData } from '@/store/reducers';
 import { TRootState } from '@/store/state';
 import { axiosFetch } from '@api/axios';
 import { TPlan } from '@api/types';
@@ -135,6 +135,9 @@ export const ReadLessModal = ({ handleClose }: TProps) => {
           Alert.warning({
             title: '일부 플랜 연장에 실패했어요!',
             action: () => {
+              extendData.forEach((data) => {
+                dispatch(deletePlanData(data.planId));
+              });
               dispatch(addPlanList(response.data.filter((data) => !data.message)));
               dispatch(clearFailedPlan());
               handleClose();
@@ -144,6 +147,9 @@ export const ReadLessModal = ({ handleClose }: TProps) => {
           Alert.success({
             title: '플랜을 연장했어요!',
             action: () => {
+              extendData.forEach((data) => {
+                dispatch(deletePlanData(data.planId));
+              });
               dispatch(addPlanList(response.data));
               dispatch(clearFailedPlan());
               handleClose();

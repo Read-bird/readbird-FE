@@ -1,16 +1,18 @@
 {
-  "short_name": "ReadBird",
   "name": "ReadBird",
+  "short_name": "ReadBird",
+  "description": "Reading Book, Catching Birds",
   "icons": [
     {
-      "src": "blacklogo.svg",
+      "src": "blacklogo.png",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/"
+      "type": "image/png"
     }
   ],
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "filename": "manifest.json"
 }

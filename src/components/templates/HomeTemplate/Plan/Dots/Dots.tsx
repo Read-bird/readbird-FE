@@ -99,9 +99,9 @@ export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps
         cursor={isSame && isProgress ? 'pointer' : 'default'}
         onClick={handleClickOpenModal}
       />
-      <MiniModal isOpen={isOpen === planId} handleClick={handleClose}>
-        <Button onClick={handleClickOpenEdit}>수정</Button>
+      <MiniModal className="dots" isOpen={isOpen === planId} handleClick={handleClose}>
         <Button onClick={handleClickRemove(planId, userId)}>삭제</Button>
+        <Button onClick={handleClickOpenEdit}>수정</Button>
       </MiniModal>
 
       <PlanModalTemplate
@@ -116,12 +116,13 @@ export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps
 
 const Wrap = styled.div`
   position: relative;
+  width: 54px;
 `;
 
 const Button = styled.button`
-  width: 42px;
-  height: 28px;
-  border-radius: 20px;
+  width: 44px;
+  height: 21px;
+  border-radius: 15px;
   background-color: ${({ theme }) => theme.colors.basicDark};
   color: ${({ theme }) => theme.colors.white};
   border: none;

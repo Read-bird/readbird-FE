@@ -15,6 +15,7 @@ export const AppTemplate = () => {
 
 const AppWrap = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,6 +23,6 @@ const AppWrap = styled.div`
 
 const MainWrap = styled.main`
   width: 100%;
-  height: calc(100vh - 70px);
-  min-height: 680px;
+  height: 100%;
+  min-height: 530px;
 `;

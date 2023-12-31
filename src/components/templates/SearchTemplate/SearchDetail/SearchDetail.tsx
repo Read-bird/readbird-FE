@@ -95,7 +95,7 @@ export const SearchDetail = (props: TProps) => {
           imgStyle={imgStyle}
         />
         <Spacing height={15} />
-        <div className="scroll-area">
+        <div className="scroll-area hidden-scroll">
           <h2>{title}</h2>
           <Spacing height={15} />
           <FlexBox>

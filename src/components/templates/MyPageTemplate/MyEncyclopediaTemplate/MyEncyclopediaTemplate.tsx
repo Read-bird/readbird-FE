@@ -52,7 +52,7 @@ export const MyEncyclopediaTemplate = () => {
   return (
     <Wrap>
       <Spacing height={30} />
-      <StyledUl>
+      <StyledUl className="hidden-scroll">
         {collections?.map((collection, index) => (
           <li key={index} onClick={handleClick(collection)}>
             {collection.characterId === null ? (
@@ -79,14 +79,12 @@ const Wrap = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  max-height: calc(100vh - 165px);
   padding: 0 13px;
 `;
 
 const StyledUl = styled.ul`
   width: 100%;
   flex: 1;
-  max-height: calc(100vh - 195px);
 
   display: flex;
   justify-content: center;

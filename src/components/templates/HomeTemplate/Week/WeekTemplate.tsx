@@ -5,9 +5,10 @@ import { ERecordStatus, TRegisterFormValue } from '@api/types';
 import { IconPlus } from '@assets/icons';
 import { WeekCalendar } from '@components/common/Calendar';
 import { Spacing } from '@components/common/Spacing';
-import { Plan } from '@components/templates/HomeTemplate/Plan';
+import { WeekData } from '@components/templates/HomeTemplate/Week/WeekData';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { usePlanValidation } from '@hooks/planValidation';
+import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -15,7 +16,8 @@ import dayjs from 'dayjs';
 import { lazy, memo, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddPlanWrap, EmptyPlan, PageProgress, PlanListBox, PlanVisualBox, Wrap } from './Styled';
+import { FixedSizeList } from 'react-window';
+import { AddPlanWrap, EmptyPlan, ListWrap, PlanIconWrap, PlanVisualBox, Wrap } from './Styled';
 
 // 사용하지 않는 이미지의 경우 코드 스플리팅을 통해 다운로드 방지
 const IconEggNoPlan = lazy(() =>
@@ -32,7 +34,6 @@ const IconEggTwoPlan = lazy(() =>
 );
 
 export const WeekTemplate = memo(() => {
-  const MAX_CREATION_COUNT = 3;
   // 플랜 등록에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
@@ -65,6 +66,15 @@ export const WeekTemplate = memo(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const iconSize = planData.filter((plan) => plan.planStatus === ERecordStatus.inProgress).length;
+
+  const listHeight = useMemo(() => {
+    const doc = document.querySelector('#root') as HTMLElement;
+    const scrollHeight = doc.scrollHeight;
+    const headerHeight = 95;
+    const footerHeight = 70;
+    const bodyHeight = 307;
+    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+  }, []);
 
   // 등록하기 모달 띄우기
   const handleClickAdd = async () => {
@@ -107,41 +117,40 @@ export const WeekTemplate = memo(() => {
     <Wrap>
       {<WeekCalendar currentDate={date} record={weedRecord} />}
       <Spacing height={20} />
-      <PlanVisualBox>
-        {
+      <PlanIconWrap>
+        <PlanVisualBox>
           {
-            0: <IconEggNoPlan />,
-            1: <IconEggOnePlan />,
-            2: <IconEggTwoPlan />,
-            3: <IconEggThreePlan />
-          }[iconSize]
-        }
-      </PlanVisualBox>
+            {
+              0: <IconEggNoPlan />,
+              1: <IconEggOnePlan />,
+              2: <IconEggTwoPlan />,
+              3: <IconEggThreePlan />
+            }[iconSize]
+          }
+          {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
+          {iconSize < 3 && (
+            <AddPlanWrap onClick={handleClickAdd}>
+              <IconPlus fillColor={colors.basicDark} />
+            </AddPlanWrap>
+          )}
+        </PlanVisualBox>
+      </PlanIconWrap>
       <Spacing height={20} />
-      {!!planData?.length ? (
-        <PlanListBox>
-          {planData.map((plan) => (
-            <li key={plan.planId}>
-              <Plan {...plan} />
-            </li>
-          ))}
-          <li className="last">
-            <PageProgress>
-              {iconSize}/{MAX_CREATION_COUNT}
-            </PageProgress>
-          </li>
-        </PlanListBox>
-      ) : (
-        <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
-      )}
-      {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
-      {iconSize < 3 && (
-        <AddPlanWrap onClick={handleClickAdd}>
-          <IconPlus />
-        </AddPlanWrap>
-      )}
-      <Spacing height={5} />
-
+      <ListWrap>
+        {!!planData?.length ? (
+          <FixedSizeList
+            width="100%"
+            height={listHeight}
+            itemSize={120}
+            itemCount={planData.length}
+            itemData={planData}
+          >
+            {WeekData}
+          </FixedSizeList>
+        ) : (
+          <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
+        )}
+      </ListWrap>
       <FormProvider {...methods}>
         <PlanModalTemplate isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalIndex={1} />
       </FormProvider>

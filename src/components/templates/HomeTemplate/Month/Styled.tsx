@@ -4,6 +4,12 @@ export const Wrap = styled.div`
   width: 100%;
   height: 100%;
   padding: 20px 30px 0;
+`;
+
+export const Inner = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -13,7 +19,6 @@ export const Wrap = styled.div`
 
 export const Section = styled.section`
   width: 100%;
-
   display: flex;
   flex-direction: column;
 

@@ -38,11 +38,17 @@ export const MyLibraryTemplate = () => {
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
   }, []);
 
-  const getPlanList = async (page?: number) => {
+  const getPlanList = async (page: number) => {
     try {
       const res = await axiosFetch<any, TResponseData>({
-        url: '/api/user/plan/success',
-        method: 'get'
+        url: `/api/user/plan/success`,
+        method: 'get',
+        options: {
+          params: {
+            page,
+            scale: 10
+          }
+        }
       });
 
       if (res.status === 200) {
@@ -59,10 +65,10 @@ export const MyLibraryTemplate = () => {
   const getNextPage = useCallback(() => {
     getPlanList(page.current + 1);
     page.current += 1;
-  }, []);
+  }, [page]);
 
   useEffect(() => {
-    getPlanList();
+    getPlanList(page.current);
   }, []);
 
   return (
@@ -96,7 +102,6 @@ const Wrap = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  max-height: calc(100vh - 165px);
   padding: 0 13px;
 `;
 
