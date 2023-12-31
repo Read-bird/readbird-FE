@@ -60,22 +60,16 @@ export const SearchMain = () => {
       <Spacing height={20} />
       <BannerWrap
         dangerouslySetInnerHTML={{
-          __html: `<script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
-        crossorigin="anonymous"
-      ></script>
-      <ins
-        class="adsbygoogle"
-        style="display: block"
-        data-ad-client="ca-pub-1919598055512436"
-        data-ad-slot="1197662171"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>`
+          __html: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
+          crossorigin="anonymous"></script>
+     <!-- contents/364x66 -->
+     <ins class="adsbygoogle"
+          style="display:inline-block;width:364px;height:66px"
+          data-ad-client="ca-pub-1919598055512436"
+          data-ad-slot="3745103035"></ins>
+     <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+     </script>`
         }}
       ></BannerWrap>
       <Spacing height={18} />
@@ -112,7 +106,6 @@ const Wrap = styled.div`
 `;
 
 const BannerWrap = styled.section`
-  width: 100%;
   height: 66px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
