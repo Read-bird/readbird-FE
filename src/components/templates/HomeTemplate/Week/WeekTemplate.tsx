@@ -8,6 +8,7 @@ import { Spacing } from '@components/common/Spacing';
 import { WeekData } from '@components/templates/HomeTemplate/Week/WeekData';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { usePlanValidation } from '@hooks/planValidation';
+import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
@@ -15,7 +16,7 @@ import dayjs from 'dayjs';
 import { lazy, memo, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { VariableSizeList } from 'react-window';
+import { FixedSizeList } from 'react-window';
 import { AddPlanWrap, EmptyPlan, ListWrap, PlanVisualBox, Wrap } from './Styled';
 
 // 사용하지 않는 이미지의 경우 코드 스플리팅을 통해 다운로드 방지
@@ -33,7 +34,6 @@ const IconEggTwoPlan = lazy(() =>
 );
 
 export const WeekTemplate = memo(() => {
-  const maxSize = 3;
   // 플랜 등록에 대한 정보
   const methods = useForm<TRegisterFormValue>({
     mode: 'onSubmit',
@@ -126,36 +126,30 @@ export const WeekTemplate = memo(() => {
             3: <IconEggThreePlan />
           }[iconSize]
         }
+        {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
+        {iconSize < 3 && (
+          <AddPlanWrap onClick={handleClickAdd}>
+            <IconPlus fillColor={colors.basicDark} />
+          </AddPlanWrap>
+        )}
       </PlanVisualBox>
       <Spacing height={20} />
 
       <ListWrap>
         {!!planData?.length ? (
-          <VariableSizeList
+          <FixedSizeList
             width="100%"
             height={listHeight}
-            itemSize={(index) => (index === planData.length - 1 ? 165 : 120)}
+            itemSize={120}
             itemCount={planData.length}
-            itemData={{
-              list: planData,
-              lastIndex: planData.length - 1,
-              iconSize,
-              maxSize
-            }}
+            itemData={planData}
           >
             {WeekData}
-          </VariableSizeList>
+          </FixedSizeList>
         ) : (
           <EmptyPlan>아직 읽고 있는 책이 없어요.</EmptyPlan>
         )}
       </ListWrap>
-      {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
-      {iconSize < 3 && (
-        <AddPlanWrap onClick={handleClickAdd}>
-          <IconPlus />
-        </AddPlanWrap>
-      )}
-
       <FormProvider {...methods}>
         <PlanModalTemplate isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalIndex={1} />
       </FormProvider>

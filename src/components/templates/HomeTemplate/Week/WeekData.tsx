@@ -4,30 +4,19 @@ import { CSSProperties } from 'react';
 import styled from 'styled-components';
 
 type TProps = {
-  data: {
-    list: TPlan[];
-    lastIndex: number;
-    iconSize: number;
-    maxSize: number;
-  };
+  data: TPlan[];
   index: number;
   style: CSSProperties;
 };
 
 export const WeekData = ({ data, index, style }: TProps) => {
-  const plan = data.list[index];
-  const isLast = data.lastIndex === index;
+  const plan = data[index];
 
   return (
     <div style={{ ...style, textAlign: 'center' }}>
       <PlanWrap>
         <Plan {...plan} />
       </PlanWrap>
-      {isLast && (
-        <PageProgress>
-          {data.iconSize}/{data.maxSize}
-        </PageProgress>
-      )}
     </div>
   );
 };

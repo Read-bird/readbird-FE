@@ -16,6 +16,7 @@ export const TodayText = styled.strong`
 `;
 
 export const PlanVisualBox = styled.div`
+  position: relative;
   flex: 0 0 180px;
   width: 100%;
   max-width: 364px;
@@ -38,24 +39,17 @@ export const EmptyPlan = styled.p`
 
 export const AddPlanWrap = styled.div`
   position: absolute;
-  bottom: 2px;
-  right: 10px;
+  bottom: 0px;
+  right: 0px;
   width: auto;
   height: auto;
   cursor: pointer;
   transition: all 0.2s;
   user-select: none;
-
-  &:hover .path-fill {
-    fill: ${({ theme }) => theme.colors.basicDark};
-  }
-
-  &:active .path-fill {
-    fill: ${({ theme }) => theme.colors.basicDark};
-  }
+  transform: scale(0.7);
 
   &:active {
-    transform: scale(1.1);
+    transform: scale(0.9);
   }
 `;
 
