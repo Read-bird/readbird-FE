@@ -4,6 +4,10 @@ export const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Pretendard', sans-serif;
   }
+  
+  html, body, div#root {
+    height: 100%;
+  }
 
   body {
     background: #f5f5f5;
