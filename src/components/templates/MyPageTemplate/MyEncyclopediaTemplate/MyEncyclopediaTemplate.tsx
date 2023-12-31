@@ -52,7 +52,7 @@ export const MyEncyclopediaTemplate = () => {
   return (
     <Wrap>
       <Spacing height={30} />
-      <StyledUl>
+      <StyledUl className="hidden-scroll">
         {collections?.map((collection, index) => (
           <li key={index} onClick={handleClick(collection)}>
             {collection.characterId === null ? (

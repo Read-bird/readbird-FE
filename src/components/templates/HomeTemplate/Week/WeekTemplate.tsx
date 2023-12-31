@@ -140,7 +140,6 @@ export const WeekTemplate = memo(() => {
           <IconPlus />
         </AddPlanWrap>
       )}
-      <Spacing height={5} />
 
       <FormProvider {...methods}>
         <PlanModalTemplate isOpen={isModalOpen} setIsOpen={setIsModalOpen} modalIndex={1} />
