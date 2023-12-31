@@ -17,7 +17,7 @@ import { lazy, memo, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { FixedSizeList } from 'react-window';
-import { AddPlanWrap, EmptyPlan, ListWrap, PlanVisualBox, Wrap } from './Styled';
+import { AddPlanWrap, EmptyPlan, ListWrap, PlanIconWrap, PlanVisualBox, Wrap } from './Styled';
 
 // 사용하지 않는 이미지의 경우 코드 스플리팅을 통해 다운로드 방지
 const IconEggNoPlan = lazy(() =>
@@ -117,24 +117,25 @@ export const WeekTemplate = memo(() => {
     <Wrap>
       {<WeekCalendar currentDate={date} record={weedRecord} />}
       <Spacing height={20} />
-      <PlanVisualBox>
-        {
+      <PlanIconWrap>
+        <PlanVisualBox>
           {
-            0: <IconEggNoPlan />,
-            1: <IconEggOnePlan />,
-            2: <IconEggTwoPlan />,
-            3: <IconEggThreePlan />
-          }[iconSize]
-        }
-        {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
-        {iconSize < 3 && (
-          <AddPlanWrap onClick={handleClickAdd}>
-            <IconPlus fillColor={colors.basicDark} />
-          </AddPlanWrap>
-        )}
-      </PlanVisualBox>
+            {
+              0: <IconEggNoPlan />,
+              1: <IconEggOnePlan />,
+              2: <IconEggTwoPlan />,
+              3: <IconEggThreePlan />
+            }[iconSize]
+          }
+          {/* 총 등록개수가 3개가 되면 버튼 숨김 */}
+          {iconSize < 3 && (
+            <AddPlanWrap onClick={handleClickAdd}>
+              <IconPlus fillColor={colors.basicDark} />
+            </AddPlanWrap>
+          )}
+        </PlanVisualBox>
+      </PlanIconWrap>
       <Spacing height={20} />
-
       <ListWrap>
         {!!planData?.length ? (
           <FixedSizeList

@@ -15,10 +15,20 @@ export const TodayText = styled.strong`
   color: ${({ theme }) => theme.colors.white};
 `;
 
+export const PlanIconWrap = styled.div`
+  width: 100%;
+  flex: 0 0 180px;
+  padding: 0 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const PlanVisualBox = styled.div`
   position: relative;
-  flex: 0 0 180px;
   width: 100%;
+  height: 100%;
   max-width: 364px;
   border-radius: 20px;
   background-color: ${({ theme }) => `${theme.colors.basic}80`};
