@@ -4,4 +4,5 @@ export type TResponseCollection = {
   content: string;
   imageUrl: string;
   getDate: string;
+  message?: string;
 };

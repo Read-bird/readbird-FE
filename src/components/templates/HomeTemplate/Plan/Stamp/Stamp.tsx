@@ -93,15 +93,21 @@ export const Stamp = ({
         if (result.data.message.includes('success')) {
           // 플랜달성 모달을 띄워주며 캐릭터 획득
           dispatch(successPlan(planId));
-          dispatch(
-            setSelectCollections([
-              {
-                ...result.data.newCharacter,
-                title: '축하해요! 새가 부화했어요!'
-              }
-            ])
-          );
-          openSuccess();
+          if (result.data.newCharacter?.message) {
+            Alert.success({
+              title: `축하해요! 책을 모두 읽으셨네요!\n다만, ${result.data.newCharacter.message}`
+            });
+          } else {
+            dispatch(
+              setSelectCollections([
+                {
+                  ...result.data.newCharacter,
+                  title: '축하해요! 새가 부화했어요!'
+                }
+              ])
+            );
+            openSuccess();
+          }
         } else {
           // 플랜의 recordStatus 수정
           dispatch(
