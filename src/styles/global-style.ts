@@ -8,6 +8,8 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background: #f5f5f5;
     overflow: hidden;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
   }
   
   #root {
@@ -16,23 +18,12 @@ export const GlobalStyle = createGlobalStyle`
     max-width: 390px;
     margin: 0 auto;
     height: 100vh;
-    height: var(--vh);
     background: white;
     overflow-y: auto;
-
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
 
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-
-  body.swal2-height-auto {
-    height: 100vh !important;
-    height: var(--vh) !important;
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
   }
 
   *::-webkit-scrollbar {
