@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
 import { InputLabel } from '../InputLabel';
 import { SearchList } from '../SearchList';
@@ -50,6 +50,7 @@ type TProps = {
 };
 
 export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSearch, setSearch] = useState(false);
@@ -61,7 +62,6 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     register,
     setValue,
     getValues,
-    handleSubmit,
     reset,
     formState: { errors },
     clearErrors,
@@ -222,35 +222,37 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
           });
 
       if (!planId ? res.status === 201 : res.status === 200) {
-        const text = isRestore
+        const title = isRestore
           ? '플랜이 성공적으로 복구되었습니다.'
           : !planId
             ? '플랜이 성공적으로 등록되었습니다.'
             : '플랜이 성공적으로 수정되었습니다.';
 
         Alert.success({
-          title: '성공!',
-          text,
+          title,
           action: () => {
             if (props.planId) {
               dispatch(setPlanData(res.data));
             } else {
-              const addPlan = {
-                ...res.data,
-                isbn: props.isbn,
-                title: props.title,
-                author: props.author,
-                publisher: props.publisher,
-                startDate: props.startDate,
-                endDate: props.endDate,
-                totalPage: props.totalPage,
-                currentPage: props.currentPage,
-                coverImage: props.coverImage,
-                planStatus: ERecordStatus.inProgress,
-                recordStatus: ERecordStatus.inProgress
-              };
+              const regexp = /\/?(mypage)|(search)/g;
+              if (!regexp.test(location.pathname)) {
+                const addPlan = {
+                  ...res.data,
+                  isbn: props.isbn,
+                  title: props.title,
+                  author: props.author,
+                  publisher: props.publisher,
+                  startDate: props.startDate,
+                  endDate: props.endDate,
+                  totalPage: props.totalPage,
+                  currentPage: props.currentPage,
+                  coverImage: props.coverImage,
+                  planStatus: ERecordStatus.inProgress,
+                  recordStatus: ERecordStatus.inProgress
+                };
 
-              dispatch(addPlanData({ ...addPlan }));
+                dispatch(addPlanData({ ...addPlan }));
+              }
             }
           }
         });
