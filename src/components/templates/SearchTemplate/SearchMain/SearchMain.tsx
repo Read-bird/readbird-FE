@@ -60,12 +60,16 @@ export const SearchMain = () => {
       <Spacing height={20} />
       <BannerWrap
         dangerouslySetInnerHTML={{
-          __html: `<ins
-          className="adsbygoogle"
-          style={{ display: 'inline-block', width: '360px', height: '66px' }}
+          __html: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
+          crossorigin="anonymous"></script>
+     <!-- contents/364x66 -->
+     <ins class="adsbygoogle"
+          style="display:inline-block;width:364px;height:66px"
           data-ad-client="ca-pub-1919598055512436"
-          data-ad-slot="3745103035"
-        ></ins>`
+          data-ad-slot="3745103035"></ins>
+     <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+     </script>`
         }}
       ></BannerWrap>
       <Spacing height={18} />
