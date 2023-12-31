@@ -9,10 +9,6 @@ export const GlobalStyle = createGlobalStyle`
     background: #f5f5f5;
     overflow: hidden;
   }
-
-  :root {
-    --vh: 100%;
-  }
   
   #root {
     position: relative;
@@ -30,6 +26,13 @@ export const GlobalStyle = createGlobalStyle`
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  body.swal2-height-auto {
+    height: 100vh !important;
+    height: var(--vh) !important;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   *::-webkit-scrollbar {

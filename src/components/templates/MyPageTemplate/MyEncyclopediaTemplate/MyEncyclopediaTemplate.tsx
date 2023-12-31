@@ -9,7 +9,7 @@ import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -17,6 +17,16 @@ export const MyEncyclopediaTemplate = () => {
   const { collections } = useSelector((state: TRootState) => state.collectionStore);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+
+  const listHeight = useMemo(() => {
+    const doc = document.querySelector('#root') as HTMLElement;
+    const scrollHeight = doc.scrollHeight;
+    const headerHeight = 95;
+    const footerHeight = 70;
+    const bodyHeight = 30;
+    const height = scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return { height: `${height}px` };
+  }, []);
 
   const getEncyList = async () => {
     try {
@@ -52,7 +62,7 @@ export const MyEncyclopediaTemplate = () => {
   return (
     <Wrap>
       <Spacing height={30} />
-      <StyledUl className="hidden-scroll">
+      <StyledUl className="hidden-scroll" style={listHeight}>
         {collections?.map((collection, index) => (
           <li key={index} onClick={handleClick(collection)}>
             {collection.characterId === null ? (
@@ -75,16 +85,13 @@ export const MyEncyclopediaTemplate = () => {
 };
 
 const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  height: 100%;
   padding: 0 13px;
 `;
 
 const StyledUl = styled.ul`
   width: 100%;
-  flex: 1;
+  height: 100%;
 
   display: flex;
   justify-content: center;
