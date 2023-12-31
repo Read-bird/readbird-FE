@@ -119,7 +119,7 @@ export const SearchResult = memo(() => {
           {Book}
         </FixedSizeList>
       ) : (
-        <Empty>검색된 도서가 없어요</Empty>
+        <Empty style={{ height: `${listHeight}px` }}>검색된 도서가 없어요</Empty>
       )}
     </Wrap>
   );
