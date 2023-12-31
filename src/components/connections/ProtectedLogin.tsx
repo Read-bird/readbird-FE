@@ -18,9 +18,6 @@ export const ProtectedLogin = ({ loginNode, appNode }: TProps) => {
   const isLoginPath = useMemo(() => /login/g.test(location.pathname), [location.pathname]);
 
   useEffect(() => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty(`--vh`, `${vh}`);
-
     // 첫 접속시 당일 날짜 등록
     dispatch(setCurrentDate(dayjs().format('YYYY-MM-DD')));
     dispatch(setMonthCurrentDate(dayjs().format('YYYY-MM-DD')));
