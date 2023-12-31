@@ -58,14 +58,16 @@ export const SearchMain = () => {
   return (
     <Wrap>
       <Spacing height={20} />
-      <BannerWrap>
-        <ins
+      <BannerWrap
+        dangerouslySetInnerHTML={{
+          __html: `<ins
           className="adsbygoogle"
           style={{ display: 'inline-block', width: '360px', height: '66px' }}
           data-ad-client="ca-pub-1919598055512436"
           data-ad-slot="3745103035"
-        ></ins>
-      </BannerWrap>
+        ></ins>`
+        }}
+      ></BannerWrap>
       <Spacing height={18} />
       <Title>지금 가장 인기 있는 책 TOP 10</Title>
       <Spacing height={18} />
@@ -100,7 +102,6 @@ const Wrap = styled.div`
 `;
 
 const BannerWrap = styled.section`
-  /* width: 100%; */
   height: 66px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
