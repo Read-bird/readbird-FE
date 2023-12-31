@@ -4,7 +4,7 @@ import { Alert, convertError } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -32,6 +32,16 @@ export const MyMenu = () => {
       path: '/withdrawal'
     }
   ];
+  const listHeight = useMemo(() => {
+    const doc = document.querySelector('#root') as HTMLElement;
+    const scrollHeight = doc.scrollHeight;
+    const headerHeight = 95;
+    const footerHeight = 70;
+    const bodyHeight = 95;
+    const height = scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return { height: `${height}px` };
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isWithdrawal, setIsWithdrawal] = useState(false);
@@ -74,7 +84,7 @@ export const MyMenu = () => {
   };
 
   return (
-    <StyledMenu>
+    <StyledMenu style={listHeight}>
       {myPageMenu?.map((item, key) => (
         <li key={key} onClick={() => handleClick(item?.path)}>
           <span>{item.title}</span>

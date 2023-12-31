@@ -136,7 +136,7 @@ export const WeekTemplate = memo(() => {
         </PlanVisualBox>
       </PlanIconWrap>
       <Spacing height={20} />
-      <ListWrap>
+      <ListWrap style={{ height: `${listHeight}px` }}>
         {!!planData?.length ? (
           <FixedSizeList
             width="100%"
