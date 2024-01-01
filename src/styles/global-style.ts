@@ -5,15 +5,13 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Pretendard', sans-serif;
   }
   
-  html, body, div#root {
+  html, body {
     height: 100%;
   }
 
   body {
     background: #f5f5f5;
     overflow: hidden;
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
   }
   
   #root {
@@ -21,13 +19,20 @@ export const GlobalStyle = createGlobalStyle`
     min-width: 360px;
     max-width: 390px;
     margin: 0 auto;
-    height: 100vh;
+    height: 100%;
     background: white;
     overflow-y: auto;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-sizing: border-box;
 
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  body.swal2-height-auto {
+    height: 100% !important;
   }
 
   *::-webkit-scrollbar {
