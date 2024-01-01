@@ -62,9 +62,9 @@ export const SearchMain = () => {
         dangerouslySetInnerHTML={{
           __html: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
           crossorigin="anonymous"></script>
-     <!-- contents/364x66 -->
+     <!-- contents/336x66 -->
      <ins class="adsbygoogle"
-          style="display:inline-block;width:364px;height:66px"
+          style="display:inline-block;width:336px;height:66px"
           data-ad-client="ca-pub-1919598055512436"
           data-ad-slot="3745103035"></ins>
      <script>
@@ -106,6 +106,7 @@ const Wrap = styled.div`
 `;
 
 const BannerWrap = styled.section`
+  width: 100%;
   height: 66px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
