@@ -2,6 +2,7 @@ import { setAccessToken, setLoading } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { authFetch, axiosFetch } from '@api/axios';
 import { Alert } from '@utils/Alert';
+import { convertError } from '@utils/errors';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -80,7 +81,7 @@ export const useAxiosInterceptor = () => {
         // 유저 토큰이 유효하지 않을 떄
         else if (status === 401) {
           Alert.error({
-            title: '유저정보가 올바르지 않습니다.',
+            title: convertError(message),
             action: () => {
               dispatch(setAccessToken(''));
               localStorage.clear();
