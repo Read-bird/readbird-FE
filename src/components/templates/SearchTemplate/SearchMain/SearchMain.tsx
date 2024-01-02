@@ -1,6 +1,7 @@
 import { axiosFetch } from '@api/axios';
 import { TBookDetail } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
+import { DisplayAds } from '@components/connections';
 import { Book } from '@components/templates/SearchTemplate/Book';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
@@ -58,20 +59,9 @@ export const SearchMain = () => {
   return (
     <Wrap>
       <Spacing height={20} />
-      <BannerWrap
-        dangerouslySetInnerHTML={{
-          __html: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
-          crossorigin="anonymous"></script>
-     <!-- contents/336x66 -->
-     <ins class="adsbygoogle"
-          style="display:inline-block;width:336px;height:66px"
-          data-ad-client="ca-pub-1919598055512436"
-          data-ad-slot="3745103035"></ins>
-     <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-     </script>`
-        }}
-      ></BannerWrap>
+      <BannerWrap>
+        <DisplayAds />
+      </BannerWrap>
       <Spacing height={18} />
       <Title>지금 가장 인기 있는 책 TOP 10</Title>
       <Spacing height={18} />
