@@ -1,5 +1,6 @@
 import { TRootState } from '@/store/state';
 import { Images } from '@assets/images';
+import NOT_IMAGE from '@assets/images/purplelogo.png';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -14,6 +15,7 @@ export const MyUserInfo = () => {
           imgAlt={`${userInfo?.nickname}의 이미지`}
           imgWidth={45}
           imgHeight={45}
+          noImage={NOT_IMAGE}
         />
       </div>
       <div className="user-info">
@@ -35,8 +37,8 @@ const StyledUserWrap = styled.div`
     width: 45px;
     height: 45px;
     border-radius: 16px;
-    background: #fff;
     overflow: hidden;
+
     img {
       width: 100%;
       height: 100%;
