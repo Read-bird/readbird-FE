@@ -11,7 +11,7 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#B780DB",
   "background_color": "#ffffff",
   "orientation": "portrait",
   "filename": "manifest.json"
