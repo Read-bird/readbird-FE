@@ -67,7 +67,8 @@ const planSlice = createSlice({
             ...data,
             currentPage: data.totalPage,
             target: 0,
-            recordStatus: ERecordStatus.success
+            recordStatus: ERecordStatus.success,
+            planStatus: ERecordStatus.success
           };
         }
         return data;
@@ -85,7 +86,12 @@ const planSlice = createSlice({
     },
     setRecordStatus: (
       state,
-      action: PayloadAction<{ planId: number; recordStatus: ERecordStatus; currentPage: number }>
+      action: PayloadAction<{
+        planId: number;
+        recordStatus: ERecordStatus;
+        currentPage: number;
+        planStatus: ERecordStatus;
+      }>
     ) => {
       state.planData = state.planData.map((plan) => {
         if (plan.planId === action.payload.planId) {
