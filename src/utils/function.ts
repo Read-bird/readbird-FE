@@ -82,3 +82,28 @@ export const isSameDate = (currentDate: string, compareDate: string) => {
 
   return true;
 };
+
+export const isPastDate = (currentDate: string, compareDate: string | Date) => {
+  const current = new Date(currentDate);
+  const compare = new Date(compareDate);
+
+  if (current.getFullYear() < compare.getFullYear()) {
+    return true;
+  } else if (current.getFullYear() > compare.getFullYear()) {
+    return false;
+  }
+
+  if (current.getMonth() < compare.getMonth()) {
+    return true;
+  } else if (current.getMonth() > compare.getMonth()) {
+    return false;
+  }
+
+  if (current.getDate() < compare.getDate()) {
+    return true;
+  } else if (current.getDate() > compare.getDate()) {
+    return false;
+  }
+
+  return false;
+};
