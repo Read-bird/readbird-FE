@@ -69,8 +69,6 @@ export const MyRestoreTemplate = () => {
       methods.setValue('endDate', dayjs().format('YYYY-MM-DD'));
       methods.setValue('publisher', restoreData.publisher);
       methods.setValue('title', restoreData.title);
-      methods.setValue('endDate', restoreData.endDate);
-      methods.setValue('startDate', restoreData.startDate);
       methods.setValue('totalPage', restoreData.totalPage);
       methods.setValue('currentPage', restoreData.currentPage);
       methods.setValue('coverImage', restoreData.coverImage);
