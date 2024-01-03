@@ -114,6 +114,7 @@ export const Stamp = ({
             setRecordStatus({
               planId,
               recordStatus: ERecordStatus.success,
+              planStatus: ERecordStatus.inProgress,
               currentPage: maxPage
             })
           );
@@ -164,6 +165,7 @@ export const Stamp = ({
                 setRecordStatus({
                   planId,
                   recordStatus: ERecordStatus.failed,
+                  planStatus: ERecordStatus.failed,
                   currentPage: page
                 })
               );
@@ -173,6 +175,7 @@ export const Stamp = ({
                 setRecordStatus({
                   planId,
                   recordStatus: ERecordStatus.failed,
+                  planStatus: ERecordStatus.inProgress,
                   currentPage: page
                 })
               );

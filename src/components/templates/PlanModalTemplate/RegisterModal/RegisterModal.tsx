@@ -1,5 +1,5 @@
 import { addPlanData, setPlanData } from '@/store/reducers';
-import { Alert, convertError, debounce, go, lastDayMonth } from '@/utils';
+import { Alert, convertError, debounce, go, isPastDate, lastDayMonth } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import {
   EAchievementStatus,
@@ -130,7 +130,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     const props = getValues();
     if (!planId) {
       // 시작일이 오늘보다 이전날짜
-      if (dayjs(props.startDate).format('YYYY-MM-DD') < dayjs().format('YYYY-MM-DD')) {
+      if (isPastDate(props.startDate, new Date())) {
         setError('startDate', {
           message: '* 오늘보다 이전 날짜를 설정할 수 없습니다.'
         });
@@ -139,7 +139,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     }
 
     // 종료일이 시작일보다 이전날짜
-    if (dayjs(props.endDate).format('YYYY-MM-DD') < dayjs(props.startDate).format('YYYY-MM-DD')) {
+    if (isPastDate(props.endDate, props.startDate)) {
       setError('endDate', {
         message: '* 시작일보다 이전 날짜를 설정할 수 없습니다.'
       });
@@ -147,10 +147,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     }
 
     // 종료일이 1년초과
-    if (
-      dayjs(props.startDate).add(1, 'year').format('YYYY-MM-DD') <
-      dayjs(props.endDate).format('YYYY-MM-DD')
-    ) {
+    if (isPastDate(dayjs(props.startDate).add(1, 'year').format('YYYY-MM-DD'), props.endDate)) {
       setError('endDate', {
         message: '* 시작일에서 1년이 초과하는 날짜를 설정할 수 없습니다.'
       });
