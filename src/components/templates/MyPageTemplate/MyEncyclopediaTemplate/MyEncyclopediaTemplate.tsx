@@ -87,6 +87,7 @@ export const MyEncyclopediaTemplate = () => {
 const Wrap = styled.div`
   width: 100%;
   padding: 0 13px;
+  overflow: hidden;
 `;
 
 const StyledUl = styled.ul`
