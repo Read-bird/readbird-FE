@@ -1,4 +1,5 @@
 import {
+  clearUserInfo,
   setAccessToken,
   setLoading,
   setOpen,
@@ -40,9 +41,10 @@ export const CallbackTemplate = () => {
           }
         }
       );
+
       if (res.status === 200) {
         const { access_token } = res.data;
-        const resData = await axios.post<TLoginResType>(
+        const userRes = await axios.post<TLoginResType>(
           `${REACT_APP_SERVER_PATH}/api/user/login`,
           {},
           {
@@ -52,25 +54,25 @@ export const CallbackTemplate = () => {
           }
         );
 
-        if (resData.status === 200) {
-          const extractedToken = resData.headers?.authorization;
-          const refreshToken = resData.headers?.refreshtoken;
+        if (userRes.status === 200) {
+          const extractedToken = userRes.headers?.authorization;
+          const refreshToken = userRes.headers?.refreshtoken;
           localStorage.setItem('rb-access-token', extractedToken);
           localStorage.setItem('rb-refresh-token', refreshToken);
           dispatch(
             setUserInfo({
-              id: resData.data.userId,
-              email: resData.data.email,
-              nickname: resData.data.nickname,
-              profile: resData.data.imageUrl
+              id: userRes.data.userId,
+              email: userRes.data.email,
+              nickname: userRes.data.nickname,
+              profile: userRes.data.imageUrl
             })
           );
           dispatch(setAccessToken(extractedToken));
-          if (resData.data?.character) {
+          if (userRes.data?.character) {
             dispatch(
               setSelectCollections([
                 {
-                  ...resData.data.character,
+                  ...userRes.data.character,
                   title: `회원가입을 축하해요!\n새가 부화했어요!`,
                   description: `읽어보새와 함께 책을 읽고\n더 많은 새를 만나보세요!`
                 }
@@ -82,22 +84,31 @@ export const CallbackTemplate = () => {
           navigate('/');
         } else {
           Alert.error({
-            title: 'Error',
-            text: `로그인 에러가 발생했습니다.`
+            title: '로그인 오류가 발생했습니다.',
+            action: () => {
+              dispatch(clearUserInfo());
+              localStorage.clear();
+            }
           });
           navigate('/login');
         }
       } else {
         Alert.error({
-          title: 'Error',
-          text: `카카오 로그인 에러가 발생했습니다.`
+          title: '카카오 로그인 오류가 발생했습니다.',
+          action: () => {
+            dispatch(clearUserInfo());
+            localStorage.clear();
+          }
         });
         navigate('/login');
       }
-    } catch (err: any) {
+    } catch (err) {
       Alert.error({
-        title: 'Error',
-        text: `로그인 에러가 발생했습니다.`
+        title: '로그인 오류가 발생했습니다.',
+        action: () => {
+          dispatch(clearUserInfo());
+          localStorage.clear();
+        }
       });
       navigate('/login');
     } finally {

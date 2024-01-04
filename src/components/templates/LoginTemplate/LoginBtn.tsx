@@ -1,4 +1,4 @@
-import { setAccessToken, setUserInfo } from '@/store/reducers';
+import { clearUserInfo, setAccessToken, setUserInfo } from '@/store/reducers';
 import { axiosFetch } from '@api/axios';
 import { TLoginResType } from '@api/types';
 import { BtnKakaoLogin } from '@assets/images/BtnKakaoLogin';
@@ -45,12 +45,12 @@ export const LoginBtn = (props: TProps) => {
           })
         );
         dispatch(setAccessToken(extractedToken));
-        navigate('/');
       } else {
         Alert.error({
           title: '로그인 오류가 발생했습니다.',
           action: () => {
-            navigate('/login');
+            dispatch(clearUserInfo());
+            localStorage.clear();
           }
         });
       }
@@ -59,10 +59,13 @@ export const LoginBtn = (props: TProps) => {
         Alert.error({
           title: convertError(e.response?.data.message),
           action: () => {
-            navigate('/login');
+            dispatch(clearUserInfo());
+            localStorage.clear();
           }
         });
       }
+    } finally {
+      navigate('/');
     }
   };
 

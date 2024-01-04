@@ -25,10 +25,14 @@ const userSlice = createSlice({
     },
     setUserInfo: (state, action: PayloadAction<IUser>) => {
       state.userInfo = action.payload;
+    },
+    clearUserInfo: (state) => {
+      state.accessToken = '';
+      state.userInfo = null;
     }
   }
 });
 
-export const { setAccessToken, setUserInfo } = userSlice.actions;
+export const { setAccessToken, setUserInfo, clearUserInfo } = userSlice.actions;
 
 export const userStore = userSlice.reducer;

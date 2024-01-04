@@ -99,7 +99,7 @@ const BannerWrap = styled.section`
   width: 100%;
   height: 66px;
   border-radius: 20px;
-  background-color: ${({ theme }) => theme.colors.lightGray};
+  background-color: transparent;
 `;
 
 const Title = styled.h1`

@@ -1,4 +1,4 @@
-import { setAccessToken, setLoading } from '@/store/reducers';
+import { clearUserInfo, setLoading } from '@/store/reducers';
 import { TAppDispatch } from '@/store/state';
 import { authFetch, axiosFetch } from '@api/axios';
 import { Alert } from '@utils/Alert';
@@ -35,7 +35,7 @@ export const useAxiosInterceptor = () => {
           Alert.error({
             title: '서버와 연결이 원활하지 않습니다.',
             action: () => {
-              dispatch(setAccessToken(''));
+              dispatch(clearUserInfo());
               localStorage.clear();
             }
           });
@@ -72,7 +72,7 @@ export const useAxiosInterceptor = () => {
             Alert.error({
               title: '로그인이 만료되었습니다.',
               action: () => {
-                dispatch(setAccessToken(''));
+                dispatch(clearUserInfo());
                 localStorage.clear();
               }
             });
@@ -83,7 +83,17 @@ export const useAxiosInterceptor = () => {
           Alert.error({
             title: convertError(message),
             action: () => {
-              dispatch(setAccessToken(''));
+              dispatch(clearUserInfo());
+              localStorage.clear();
+            }
+          });
+        }
+        // 유저 토큰이 존재하지 않을 때
+        else if (status === 400 && message.includes('토큰')) {
+          Alert.error({
+            title: convertError(message),
+            action: () => {
+              dispatch(clearUserInfo());
               localStorage.clear();
             }
           });
