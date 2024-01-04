@@ -138,7 +138,7 @@ export const Stamp = ({
         autocapitalize: 'off'
       },
       inputValidator: (value) => {
-        if (Number(value) >= maxPage || Number(value) < currentPage) {
+        if (!value || Number(value) >= maxPage || Number(value) < currentPage) {
           return '* 읽은 쪽을 다시 확인해주세요.';
         }
       },
