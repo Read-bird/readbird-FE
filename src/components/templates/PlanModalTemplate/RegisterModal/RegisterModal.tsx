@@ -12,7 +12,16 @@ import { TSearchListData } from '@components/templates/PlanModalTemplate/SearchL
 import { usePlanValidation } from '@hooks/planValidation';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -65,7 +74,8 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     reset,
     formState: { errors },
     clearErrors,
-    setError
+    setError,
+    handleSubmit
   } = useFormContext<TRegisterFormValue>();
 
   const title = watch('title');
@@ -126,8 +136,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   };
 
   // 등록/수정 전 check
-  const handleSubmitCheck = async () => {
-    const props = getValues();
+  const handleSubmitCheck = async (props: TRegisterFormValue) => {
     if (!planId) {
       // 시작일이 오늘보다 이전날짜
       if (isPastDate(props.startDate, new Date())) {
@@ -353,6 +362,12 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
     [register, searchBookInfo]
   );
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   // 도서 검색 리스트 열기
   useEffect(() => {
     if (title && !isbn && !planId && !isRestore) {
@@ -365,7 +380,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
   }, []);
 
   return (
-    <StyledForm>
+    <StyledForm onSubmit={handleSubmit(handleSubmitCheck)} onKeyDown={handleKeyDown}>
       <InputLabel
         label={'책 이름'}
         type="text"
@@ -497,7 +512,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         <button type="button" className="btn-1 btn" onClick={handleCloseModal}>
           취소
         </button>
-        <button type="button" className="btn-2 btn" onClick={handleSubmitCheck}>
+        <button type="submit" className="btn-2 btn">
           {!!planId ? '수정' : '확인'}
         </button>
       </div>
