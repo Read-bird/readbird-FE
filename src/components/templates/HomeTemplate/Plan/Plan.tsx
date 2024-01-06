@@ -77,7 +77,7 @@ export const Plan = (props: TProps) => {
         <div>
           <FlexBox>
             <span className="book-name">{title}</span>
-            <Dday endDate={endDate} />
+            <Dday currentDate={currentDate} startDate={startDate} endDate={endDate} />
           </FlexBox>
           <FlexBox $justifyContent="flex-start">
             <span className="book-page">

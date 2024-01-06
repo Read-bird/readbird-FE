@@ -83,7 +83,7 @@ export const isSameDate = (currentDate: string, compareDate: string) => {
   return true;
 };
 
-export const isPastDate = (currentDate: string, compareDate: string | Date) => {
+export const isPastDate = (currentDate: string | Date, compareDate: string | Date) => {
   const current = new Date(currentDate);
   const compare = new Date(compareDate);
 

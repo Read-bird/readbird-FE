@@ -22,9 +22,9 @@ export const lastDayMonth = (day: Date): Record<number, number> => ({
 });
 
 // 특정 날짜까지의 디데이 계산 함수
-export const calculateDday = (targetDate: Date) => {
+export const calculateDday = (targetDate: Date, currDate: string | Date = new Date()) => {
   // 현재 날짜 구하기
-  const currentDate = new Date(dayjs().format('YYYY-MM-DD'));
+  const currentDate = new Date(dayjs(currDate).format('YYYY-MM-DD'));
 
   // 목표 날짜를 포함한 밀리초 단위의 타임스탬프 계산
   const targetTimestamp = targetDate.getTime();
