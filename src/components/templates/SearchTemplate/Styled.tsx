@@ -13,7 +13,7 @@ export const Wrap = styled.form`
 export const Head = styled.section`
   position: relative;
   width: 100%;
-  flex: 0 0 95px;
+  flex: 0 0 85px;
   padding: 0 13px;
 
   display: flex;

@@ -32,7 +32,7 @@ export const MyLibraryTemplate = () => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 95;
+    const headerHeight = 85;
     const footerHeight = 70;
     const bodyHeight = 30;
     return scrollHeight - (headerHeight + footerHeight + bodyHeight);
