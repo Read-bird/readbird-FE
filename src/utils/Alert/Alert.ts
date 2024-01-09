@@ -40,10 +40,11 @@ const input: TSwal = (args) => {
     inputAttributes: {
       autocapitalize: 'off'
     },
-    showCancelButton: true,
-    confirmButtonText: '확인',
     cancelButtonText: '취소',
+    confirmButtonText: '확인',
+    showCancelButton: true,
     showLoaderOnConfirm: true,
+    reverseButtons: true,
     allowOutsideClick: () => !Swal.isLoading(),
     ...args
   });
