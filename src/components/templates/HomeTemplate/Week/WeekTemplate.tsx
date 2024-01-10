@@ -10,6 +10,7 @@ import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { usePlanValidation } from '@hooks/planValidation';
 import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
+import { FootHeight, HeadHeight } from '@utils/constants';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
@@ -70,10 +71,8 @@ export const WeekTemplate = memo(() => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
     const bodyHeight = 307;
-    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return scrollHeight - (HeadHeight + FootHeight + bodyHeight);
   }, []);
 
   // 등록하기 모달 띄우기
@@ -139,6 +138,7 @@ export const WeekTemplate = memo(() => {
       <ListWrap style={{ height: `${listHeight}px` }}>
         {!!planData?.length ? (
           <FixedSizeList
+            className="scroll"
             width="100%"
             height={listHeight}
             itemSize={120}

@@ -4,6 +4,7 @@ import { Spacing } from '@components/common/Spacing';
 import { DisplayAds } from '@components/connections';
 import { Book } from '@components/templates/SearchTemplate/Book';
 import { Alert } from '@utils/Alert';
+import { FootHeight, HeadHeight } from '@utils/constants';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import { useEffect, useMemo, useState } from 'react';
@@ -15,10 +16,8 @@ export const SearchMain = () => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
     const bodyHeight = 20 + 66 + 18 + 23 + 18;
-    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return scrollHeight - (HeadHeight + FootHeight + bodyHeight);
   }, []);
 
   const itemData = useMemo(
@@ -67,6 +66,7 @@ export const SearchMain = () => {
       <Spacing height={18} />
       {!!topBookList.length ? (
         <FixedSizeList
+          className="hidden-scroll"
           itemSize={142}
           width="100%"
           height={listHeight}

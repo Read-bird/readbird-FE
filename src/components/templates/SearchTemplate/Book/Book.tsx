@@ -124,6 +124,7 @@ const BookTitle = styled.h2`
   font-size: 14px;
   font-weight: 700;
   color: black;
+  line-height: 16px;
 
   display: -webkit-box;
   overflow: hidden;

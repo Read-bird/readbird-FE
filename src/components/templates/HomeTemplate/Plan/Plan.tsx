@@ -169,6 +169,7 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
     font-size: 16px;
     font-weight: 700;
     color: #000000;
+    line-height: 18px;
     text-align: left;
 
     display: -webkit-box;

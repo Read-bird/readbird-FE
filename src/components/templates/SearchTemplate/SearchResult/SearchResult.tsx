@@ -6,6 +6,7 @@ import { TBookData } from '@components/templates/SearchTemplate/Book/Book';
 import { TFormValue } from '@components/templates/SearchTemplate/SearchTemplate';
 import { useGetSearchList } from '@components/templates/SearchTemplate/hooks';
 import { Alert } from '@utils/Alert';
+import { FootHeight, HeadHeight } from '@utils/constants';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,10 +60,8 @@ export const SearchResult = memo(() => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
     const bodyHeight = 20 + 30 + 20;
-    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return scrollHeight - (HeadHeight + FootHeight + bodyHeight);
   }, []);
 
   const getNextPage = useCallback(async () => {
@@ -103,6 +102,7 @@ export const SearchResult = memo(() => {
       </CheckList>
       {!!bookList.length ? (
         <FixedSizeList
+          className="scroll"
           ref={listRef}
           height={listHeight}
           itemSize={142}

@@ -103,6 +103,7 @@ const FlexBox = styled.div<{ $justifyContent?: string }>`
     font-size: 16px;
     font-weight: 700;
     color: #000000;
+    line-height: 18px;
 
     display: -webkit-box;
     overflow: hidden;
