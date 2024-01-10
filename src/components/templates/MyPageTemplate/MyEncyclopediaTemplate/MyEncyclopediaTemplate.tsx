@@ -9,7 +9,7 @@ import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -17,16 +17,6 @@ export const MyEncyclopediaTemplate = () => {
   const { collections } = useSelector((state: TRootState) => state.collectionStore);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-
-  const listHeight = useMemo(() => {
-    const doc = document.querySelector('#root') as HTMLElement;
-    const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
-    const bodyHeight = 30;
-    const height = scrollHeight - (headerHeight + footerHeight + bodyHeight);
-    return { height: `${height}px` };
-  }, []);
 
   const getEncyList = async () => {
     try {
@@ -62,7 +52,7 @@ export const MyEncyclopediaTemplate = () => {
   return (
     <Wrap>
       <Spacing height={30} />
-      <StyledUl className="hidden-scroll" style={listHeight}>
+      <StyledUl className="hidden-scroll">
         {collections?.map((collection, index) => (
           <li key={index} onClick={handleClick(collection)}>
             {collection.characterId === null ? (

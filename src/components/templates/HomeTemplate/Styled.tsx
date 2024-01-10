@@ -1,3 +1,4 @@
+import { HeadHeight } from '@utils/constants';
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
@@ -12,7 +13,7 @@ export const Wrap = styled.div`
 export const Head = styled.section`
   position: relative;
   width: 100%;
-  flex: 0 0 85px;
+  flex: 0 0 ${`${HeadHeight}px`};
 
   display: flex;
   flex-direction: column;

@@ -22,10 +22,21 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     background: white;
     overflow-y: auto;
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
     box-sizing: border-box;
 
+     // iOS 11.0 버전
+     padding-top: constant(safe-area-inset-top);
+    padding-right: constant(safe-area-inset-right);
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-left: constant(safe-area-inset-left);
+    // iOS 11.2 이상
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+
+    scrollbar-width: none;
+    
     &::-webkit-scrollbar {
       display: none;
     }
@@ -35,21 +46,51 @@ export const GlobalStyle = createGlobalStyle`
     height: 100% !important;
   }
 
-  *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-    background-color: transparent; 
-  }
-    
-  *::-webkit-scrollbar-thumb {
-    width: 5px;
-    height: 5px; 
-    background-color: #00000080; 
-    border-radius: 2px;
+  .scroll {
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background-color: transparent; 
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      width: 5px;
+      height: 5px; 
+      background-color: #00000080; 
+      border-radius: 2px;
+    }
+
+    *::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background-color: transparent; 
+    }
+      
+    *::-webkit-scrollbar-thumb {
+      width: 5px;
+      height: 5px; 
+      background-color: #00000080; 
+      border-radius: 2px;
+    }
+
+    * {
+      scrollbar-width: thin;
+    }
   }
 
-  .hidden-scroll::-webkit-scrollbar, .hidden-scroll  *::-webkit-scrollbar {
-    display: none;
+
+  .hidden-scroll {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    *::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .active {

@@ -5,6 +5,7 @@ import { RestoreBook } from '@components/templates/MyPageTemplate/MyRestoreTempl
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { usePlanValidation } from '@hooks/planValidation';
 import { Alert } from '@utils/Alert';
+import { FootHeight, HeadHeight } from '@utils/constants';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
@@ -50,10 +51,8 @@ export const MyRestoreTemplate = () => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
     const bodyHeight = 30;
-    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return scrollHeight - (HeadHeight + FootHeight + bodyHeight);
   }, []);
 
   // 플랜 복구 시
@@ -95,6 +94,7 @@ export const MyRestoreTemplate = () => {
       <Spacing height={30} />
       {!!restoreList.length ? (
         <FixedSizeList
+          className="scroll"
           height={listHeight}
           itemSize={105}
           width="100%"

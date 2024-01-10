@@ -3,6 +3,7 @@ import { TSearchBooksResult } from '@api/types';
 import { Spacing } from '@components/common/Spacing';
 import { Book } from '@components/templates/MyPageTemplate/MyLibraryTemplate/Book';
 import { Alert } from '@utils/Alert';
+import { FootHeight, HeadHeight } from '@utils/constants';
 import { convertError } from '@utils/errors';
 import { AxiosError } from 'axios';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -32,10 +33,8 @@ export const MyLibraryTemplate = () => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
     const bodyHeight = 30;
-    return scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    return scrollHeight - (HeadHeight + FootHeight + bodyHeight);
   }, []);
 
   const getPlanList = async (page: number) => {
@@ -76,6 +75,7 @@ export const MyLibraryTemplate = () => {
       <Spacing height={30} />
       {!!bookList.length ? (
         <FixedSizeList
+          className="scroll"
           height={listHeight}
           itemSize={142}
           width="100%"

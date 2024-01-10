@@ -1,6 +1,6 @@
 import { IconArrRightGray } from '@/assets';
 import { setAccessToken } from '@/store/reducers';
-import { Alert, convertError } from '@/utils';
+import { Alert, FootHeight, HeadHeight, convertError } from '@/utils';
 import { axiosFetch } from '@api/axios';
 import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { AxiosError } from 'axios';
@@ -35,10 +35,8 @@ export const MyMenu = () => {
   const listHeight = useMemo(() => {
     const doc = document.querySelector('#root') as HTMLElement;
     const scrollHeight = doc.scrollHeight;
-    const headerHeight = 85;
-    const footerHeight = 70;
     const bodyHeight = 95;
-    const height = scrollHeight - (headerHeight + footerHeight + bodyHeight);
+    const height = scrollHeight - (HeadHeight + FootHeight + bodyHeight);
     return { height: `${height}px` };
   }, []);
 
