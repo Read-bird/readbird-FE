@@ -7,7 +7,7 @@ import { Spacing } from '@components/common/Spacing';
 import { Dday } from '@components/templates/HomeTemplate/Plan/Dday';
 import { Dots } from '@components/templates/HomeTemplate/Plan/Dots';
 import { Stamp } from '@components/templates/HomeTemplate/Plan/Stamp';
-import dayjs from 'dayjs';
+import { isSameDate } from '@utils/function';
 import { useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,7 @@ export const Plan = (props: TProps) => {
     endDate,
     startDate,
     recordStatus,
+    planStatus,
     author,
     publisher
   } = props;
@@ -98,7 +99,7 @@ export const Plan = (props: TProps) => {
             planId={planId}
             userId={userInfo?.id ?? null}
             selectDate={currentDate}
-            isProgress={recordStatus === ERecordStatus.inProgress}
+            isProgress={planStatus === ERecordStatus.inProgress}
             endDate={endDate}
           />
         </FormProvider>
@@ -108,7 +109,7 @@ export const Plan = (props: TProps) => {
           selectDate={currentDate}
           maxPage={Number(currentPage) + Number(target)}
           currentPage={currentPage}
-          dday={dayjs(endDate).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')}
+          dday={isSameDate(new Date(), endDate)}
           openSuccess={openSuccess}
           openFailed={openFailed}
         />
