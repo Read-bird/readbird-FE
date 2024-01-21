@@ -7,9 +7,9 @@ import { PlanModalTemplate } from '@components/templates/PlanModalTemplate';
 import { colors } from '@style/global-style';
 import { Alert } from '@utils/Alert';
 import { convertError } from '@utils/errors';
+import { isPastDate } from '@utils/function';
 import { AxiosError } from 'axios';
-import dayjs from 'dayjs';
-import { MouseEvent, useCallback, useMemo, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -24,7 +24,6 @@ type TProps = {
 
 export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
-  const isSame = useMemo(() => dayjs(selectDate).isSame(new Date(), 'date'), [selectDate]);
   const [isEditModal, setIsEditModal] = useState(false);
   const dispatch = useDispatch();
   const { setValue } = useFormContext<TRegisterFormValue>();
@@ -36,12 +35,9 @@ export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps
   const handleClickOpenModal = useCallback(
     (e: MouseEvent<SVGElement>) => {
       e.stopPropagation();
-
-      if (isSame && isProgress) {
-        setOpen((prev) => (prev === planId ? null : planId));
-      }
+      setOpen((prev) => (prev === planId ? null : planId));
     },
-    [planId, isSame, isProgress]
+    [planId]
   );
 
   const handleClickOpenEdit = useCallback(() => {
@@ -96,12 +92,14 @@ export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps
         iconKey="dots"
         size={25}
         color={colors.darkGray}
-        cursor={isSame && isProgress ? 'pointer' : 'default'}
+        cursor={'pointer'}
         onClick={handleClickOpenModal}
       />
       <MiniModal className="dots" isOpen={isOpen === planId} handleClick={handleClose}>
         <Button onClick={handleClickRemove(planId, userId)}>삭제</Button>
-        <Button onClick={handleClickOpenEdit}>수정</Button>
+        {(isProgress || isPastDate(new Date(), selectDate)) && (
+          <Button onClick={handleClickOpenEdit}>수정</Button>
+        )}
       </MiniModal>
 
       <PlanModalTemplate

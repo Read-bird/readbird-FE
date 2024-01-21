@@ -64,7 +64,7 @@ export const debounce = (callback: (...args: any[]) => void, time: number) => {
 };
 
 // 날짜가 동일한지 확인
-export const isSameDate = (currentDate: string, compareDate: string) => {
+export const isSameDate = (currentDate: string | Date, compareDate: string | Date) => {
   const current = new Date(currentDate);
   const compare = new Date(compareDate);
 
@@ -83,6 +83,7 @@ export const isSameDate = (currentDate: string, compareDate: string) => {
   return true;
 };
 
+// 현재 날짜가 비교할 날짜보다 작은가?
 export const isPastDate = (currentDate: string | Date, compareDate: string | Date) => {
   const current = new Date(currentDate);
   const compare = new Date(compareDate);
