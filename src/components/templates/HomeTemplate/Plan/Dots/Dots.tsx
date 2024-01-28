@@ -20,9 +20,10 @@ type TProps = {
   selectDate: string;
   isProgress: boolean;
   endDate: string;
+  startDate: string;
 };
 
-export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps) => {
+export const Dots = ({ planId, userId, selectDate, isProgress, endDate, startDate }: TProps) => {
   const [isOpen, setOpen] = useState<number | null>(null);
   const [isEditModal, setIsEditModal] = useState(false);
   const dispatch = useDispatch();
@@ -43,8 +44,9 @@ export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps
   const handleClickOpenEdit = useCallback(() => {
     // 여기서 수정하기 모달 열기
     setValue('endDate', endDate);
+    setValue('startDate', startDate);
     setIsEditModal(true);
-  }, [endDate, setValue]);
+  }, [startDate, endDate, setValue]);
 
   // 플랜삭제
   const handleClickRemove = useCallback(
@@ -107,6 +109,7 @@ export const Dots = ({ planId, userId, selectDate, isProgress, endDate }: TProps
         setIsOpen={setIsEditModal}
         modalIndex={1}
         planId={planId}
+        isFuture={isPastDate(new Date(), startDate)}
       />
     </Wrap>
   );

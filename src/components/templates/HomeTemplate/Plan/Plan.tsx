@@ -101,6 +101,7 @@ export const Plan = (props: TProps) => {
             selectDate={currentDate}
             isProgress={planStatus === ERecordStatus.inProgress}
             endDate={endDate}
+            startDate={startDate}
           />
         </FormProvider>
         <Stamp
