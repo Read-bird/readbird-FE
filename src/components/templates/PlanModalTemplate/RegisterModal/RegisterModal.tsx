@@ -56,9 +56,10 @@ type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   planId?: number;
   isRestore: boolean;
+  isFuture: boolean;
 };
 
-export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
+export const RegisterModal = ({ setIsOpen, planId, isRestore, isFuture }: TProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -209,6 +210,11 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
         endDate: dayjs(props.endDate).format('YYYY-MM-DD')
       };
 
+      const editData = {
+        startDate: dayjs(props.startDate).format('YYYY-MM-DD'),
+        endDate: dayjs(props.endDate).format('YYYY-MM-DD')
+      };
+
       const res = !planId
         ? await axiosFetch<TRegisterProps, TResponseProps>({
             url: '/api/plan',
@@ -217,13 +223,11 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
               data: registerData
             }
           })
-        : await axiosFetch<Pick<TRegisterProps, 'endDate'>>({
+        : await axiosFetch<Pick<TRegisterProps, 'endDate' | 'startDate'>>({
             url: `/api/plan/${planId}`,
             method: 'put',
             options: {
-              data: {
-                endDate: dayjs(props.endDate).format('YYYY-MM-DD')
-              }
+              data: editData
             }
           });
 
@@ -460,7 +464,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
             id={'startDate-y'}
             options={options(...generateDate('Y', startDate))}
             handleChangeDate={handleChangeDate('Y', true)}
-            disabled={!!planId}
+            disabled={!!planId && !isFuture}
             value={dayjs(startDate).format('YYYY')}
           />
           <span>년</span>
@@ -468,7 +472,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
             id={'startDate-m'}
             options={options(...generateDate('M', startDate))}
             handleChangeDate={handleChangeDate('M', true)}
-            disabled={!!planId}
+            disabled={!!planId && !isFuture}
             value={dayjs(startDate).format('M')}
           />
           <span>월</span>
@@ -476,7 +480,7 @@ export const RegisterModal = ({ setIsOpen, planId, isRestore }: TProps) => {
             id={'startDate-d'}
             options={options(...generateDate('D', startDate))}
             handleChangeDate={handleChangeDate('D', true)}
-            disabled={!!planId}
+            disabled={!!planId && !isFuture}
             value={dayjs(startDate).format('D')}
           />
           <span>일 부터</span>
